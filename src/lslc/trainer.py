@@ -120,14 +120,33 @@ class LSLCSystem(nn.Module):
         training_ste: bool = True,
         router_out_override: RouterOutput | None = None,
         hierarchical_chapter_size: int | None = None,
+        query_input_ids: torch.Tensor | None = None,
+        salience_route_weight: float = 8.0,
+        flat_toc_max_tokens: int | None = None,
     ) -> tuple[RouterOutput, AssemblyOutput]:
         kd = self.cfg.k_deep if k_deep is None else k_deep
         ks = self.cfg.k_skim if k_skim is None else k_skim
-        router_out = (
-            router_out_override
-            if router_out_override is not None
-            else self.router(query_embed, toc_embeds, k_deep=kd, k_skim=ks)
-        )
+        if router_out_override is not None:
+            router_out = router_out_override
+        else:
+            q_tok_emb = None
+            bank_emb = None
+            if exact_bank is not None and embed_tokens_fn is not None and salience_route_weight > 0.0:
+                q_tok_emb = (
+                    embed_tokens_fn(query_input_ids)
+                    if query_input_ids is not None
+                    else query_embed.unsqueeze(1)
+                )
+                bank_emb = embed_tokens_fn(exact_bank.token_ids.clamp(min=0).to(z_book.device))
+            router_out = self.router(
+                query_embed,
+                toc_embeds,
+                k_deep=kd,
+                k_skim=ks,
+                query_token_embeds=q_tok_emb,
+                exact_bank_embeds=bank_emb,
+                salience_route_weight=salience_route_weight,
+            )
         assembly = self.assembler(
             z_book=z_book,
             projector=self.projector,
@@ -138,6 +157,7 @@ class LSLCSystem(nn.Module):
             mode=mode,
             training_ste=training_ste,
             hierarchical_chapter_size=hierarchical_chapter_size,
+            flat_toc_max_tokens=flat_toc_max_tokens,
         )
         return router_out, assembly
 

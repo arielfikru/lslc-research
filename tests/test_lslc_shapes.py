@@ -383,6 +383,51 @@ class TestLSLCMilestone1Gates(unittest.TestCase):
         self.assertTrue(torch.equal(route_used.deep_idx, ext_route.deep_idx))
         self.assertEqual(asm.prefix_embeds.shape[1], 4 + 8 + 48 + 32)
 
+    def test_in_vram_salience_maxsim_router_and_truncated_flat_toc_control(self) -> None:
+        """Pure GPU late-interaction SparseExactBank routing must identify target page and support flat_toc_max_tokens."""
+        embed_fn = self.llm.get_input_embeddings()
+        pages = torch.randint(50, 200, (1, 16, self.cfg.page_size))
+        # Plant unique high-salience signature tokens [401, 402, 403, 404] on page 11 after header delimiter ':' (25)
+        needle = torch.tensor([25, 401, 402, 403, 404, 15, 16, 17, 18, 12, 19, 20, 21, 22], dtype=torch.long)
+        pages[0, 11, 32 : 32 + len(needle)] = needle
+        q_ids = torch.tensor([[401, 402, 403, 404]], dtype=torch.long)
+        q_emb = embed_fn(q_ids).mean(dim=1)
+
+        z_book, bank, toc = self.wrapper.lslc.encode_book(pages, embed_fn, use_exact_bank=True, vocab_size=151936)
+        route_out, asm_trunc = self.wrapper.lslc.route_and_assemble(
+            z_book,
+            toc,
+            q_emb,
+            bank,
+            embed_fn,
+            k_deep=2,
+            k_skim=2,
+            mode="full",
+            training_ste=False,
+            query_input_ids=q_ids,
+            salience_route_weight=10.0,
+            flat_toc_max_tokens=5,
+        )
+        # Page 11 must be selected as the #1 winning deep page (placed last in deep_idx)
+        self.assertEqual(int(route_out.deep_idx[0, -1].item()), 11)
+        # Truncated flat TOC control: 5 TOC + 8 Skim + 48 Deep + 32 Exact = 93 active tokens
+        self.assertEqual(asm_trunc.prefix_embeds.shape[1], 5 + 8 + 48 + 32)
+
+    def test_pre_gate_rms_stability_across_k5_edits(self) -> None:
+        """Pre-gate RMS alignment in DeltaUpdater must prevent latent norm explosion across k=5 sequential edits."""
+        embed_fn = self.llm.get_input_embeddings()
+        page = torch.randint(0, 512, (1, 1, self.cfg.page_size))
+        z_book, bank, _ = self.wrapper.lslc.encode_book(page, embed_fn, use_exact_bank=True, vocab_size=512)
+        init_rms = float(z_book[:, 0, 2].float().pow(2).mean().sqrt().item())
+
+        for step_k in range(5):
+            e_ids = torch.randint(0, 512, (1, 12))
+            z_book, _, bank = self.wrapper.lslc.apply_page_delta(
+                z_book, torch.tensor([0]), e_ids, embed_fn, exact_bank=bank, vocab_size=512
+            )
+        final_rms = float(z_book[:, 0, 2].float().pow(2).mean().sqrt().item())
+        self.assertTrue(0.3 * init_rms <= final_rms <= 3.0 * init_rms, f"Norm drifted: {init_rms} -> {final_rms}")
+
 
 if __name__ == "__main__":
     unittest.main()

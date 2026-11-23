@@ -92,7 +92,11 @@ class DeltaUpdater(nn.Module):
         prior = self.sticky_spatial_prior.to(dtype=l2_feat.dtype, device=l2_feat.device)
         gate_l2 = torch.sigmoid(self.gate_head(l2_feat) + prior)  # [B, 1, H, W]
         delta_l2 = self.delta_head(l2_feat)  # [B, C, H, W]
-        z_l2 = ((1.0 - gate_l2) * z_page[:, 2] + gate_l2 * delta_l2).to(z_page.dtype)
+        # Pre-gate channel-wise RMS alignment prevents cumulative activation-norm drift across k >= 5 sequential edits
+        old_rms = z_page[:, 2].float().pow(2).mean(dim=1, keepdim=True).add(1e-6).sqrt()
+        delta_rms = delta_l2.float().pow(2).mean(dim=1, keepdim=True).add(1e-6).sqrt()
+        delta_l2_normed = (delta_l2.float() * (old_rms / delta_rms).clamp(0.25, 4.0)).to(delta_l2.dtype)
+        z_l2 = ((1.0 - gate_l2) * z_page[:, 2] + gate_l2 * delta_l2_normed).to(z_page.dtype)
 
         # Layer l=1 (Entity) stays untouched unless explicitly enabled
         do_entity = self.cfg.allow_entity_update if allow_entity_update is None else allow_entity_update

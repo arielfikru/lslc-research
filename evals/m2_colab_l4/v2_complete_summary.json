@@ -1,0 +1,1731 @@
+{
+  "version": "2.0.0",
+  "model": "Qwen/Qwen3-1.7B",
+  "gpu": "NVIDIA L4",
+  "vram_gb": 22.03,
+  "corpus": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "training": {
+    "base_with_static_l0": {
+      "steps": 240,
+      "elapsed_sec": 247.3,
+      "peak_vram_gb": 6.124,
+      "final_loss": 9.0134,
+      "final_ntp": 1.8559,
+      "final_rec": 3.8179,
+      "final_mat": 2.0398,
+      "final_sal": 1.3538,
+      "final_route": 18.25,
+      "final_gate": 0.0
+    },
+    "delta_k3_and_paraphrased": {
+      "steps": 130,
+      "elapsed_sec": 93.6,
+      "peak_vram_gb": 4.096,
+      "final_loss": 4.4641,
+      "final_ntp": 0.0143,
+      "final_rec": 3.572,
+      "final_mat": 0.0,
+      "final_sal": 0.0,
+      "final_route": 0.0,
+      "final_gate": 0.2361
+    },
+    "delta_k5_with_static": {
+      "steps": 120,
+      "elapsed_sec": 92.28,
+      "peak_vram_gb": 4.1,
+      "final_loss": 5.5816,
+      "final_ntp": 0.0065,
+      "final_rec": 4.0956,
+      "final_mat": 0.0,
+      "final_sal": 0.0,
+      "final_route": 0.001,
+      "final_gate": 0.2398
+    },
+    "router_multiscale_frozen_toc_proj": {
+      "steps": 100,
+      "elapsed_sec": 3.08,
+      "final_route_ce": 0.0
+    },
+    "trainable_params": 40420550
+  },
+  "state_override_v2": {
+    "k3_structured_numeric_overrides": {
+      "regime": "k3_structured",
+      "num_edits": 3,
+      "seeds": [
+        42,
+        1337,
+        9999
+      ],
+      "total_episodes": 108,
+      "lslc_max_toc_prefix_diff": 0.0625,
+      "lslc_e2e_gpu_router_top2_recall": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "direct_patch_regex_match_rate": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "edit_cost": {
+        "lslc_ms_per_edit": {
+          "mean": 8.6165,
+          "std": 0.0426,
+          "ci95": 0.0482
+        },
+        "rag_direct_text_patch_ms_per_edit": {
+          "mean": 1.4115,
+          "std": 0.0066,
+          "ci95": 0.0075
+        },
+        "rag_append_errata_ms_per_edit": {
+          "mean": 0.52,
+          "std": 0.0067,
+          "ci95": 0.0076
+        },
+        "rag_llm_rewrite_block_ms_per_edit": {
+          "mean": 497.803,
+          "std": 3.7339,
+          "ci95": 4.2253
+        },
+        "rag_llm_rewrite_block_decode_tokens": {
+          "mean": 11.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "rag_immutable_ms_per_edit": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        }
+      },
+      "systems": {
+        "raw_rag_immutable": {
+          "override_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_substr_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.3241,
+            "std": 0.035,
+            "ci95": 0.0396
+          },
+          "override_char_f1": {
+            "mean": 0.0315,
+            "std": 0.0046,
+            "ci95": 0.0052
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "raw_rag_append_errata": {
+          "override_strict_em": {
+            "mean": 0.0556,
+            "std": 0.0481,
+            "ci95": 0.0544
+          },
+          "override_substr_em": {
+            "mean": 0.5278,
+            "std": 0.0636,
+            "ci95": 0.072
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.8565,
+            "std": 0.0212,
+            "ci95": 0.024
+          },
+          "override_char_f1": {
+            "mean": 0.1577,
+            "std": 0.0305,
+            "ci95": 0.0345
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "raw_rag_direct_text_patch": {
+          "override_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_substr_em": {
+            "mean": 0.3333,
+            "std": 0.0722,
+            "ci95": 0.0817
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.9352,
+            "std": 0.0642,
+            "ci95": 0.0726
+          },
+          "override_char_f1": {
+            "mean": 0.0768,
+            "std": 0.0143,
+            "ci95": 0.0162
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "raw_rag_in_place_llm_rewrite": {
+          "override_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_substr_em": {
+            "mean": 0.4722,
+            "std": 0.0962,
+            "ci95": 0.1089
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.9722,
+            "std": 0.0241,
+            "ci95": 0.0272
+          },
+          "override_char_f1": {
+            "mean": 0.0852,
+            "std": 0.0174,
+            "ci95": 0.0197
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "lslc_e2e_gpu_router_delta": {
+          "override_strict_em": {
+            "mean": 0.9444,
+            "std": 0.0636,
+            "ci95": 0.072
+          },
+          "override_substr_em": {
+            "mean": 0.9583,
+            "std": 0.0417,
+            "ci95": 0.0472
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_char_f1": {
+            "mean": 0.9491,
+            "std": 0.0561,
+            "ci95": 0.0635
+          },
+          "static_retention_strict_em": {
+            "mean": 0.9722,
+            "std": 0.0481,
+            "ci95": 0.0544
+          },
+          "static_retention_substr_em": {
+            "mean": 0.9722,
+            "std": 0.0481,
+            "ci95": 0.0544
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.9815,
+            "std": 0.0321,
+            "ci95": 0.0363
+          }
+        },
+        "lslc_shared_bm25_delta": {
+          "override_strict_em": {
+            "mean": 0.8889,
+            "std": 0.0867,
+            "ci95": 0.0982
+          },
+          "override_substr_em": {
+            "mean": 0.9583,
+            "std": 0.0417,
+            "ci95": 0.0472
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.9769,
+            "std": 0.0401,
+            "ci95": 0.0454
+          },
+          "override_char_f1": {
+            "mean": 0.9074,
+            "std": 0.0566,
+            "ci95": 0.0641
+          },
+          "static_retention_strict_em": {
+            "mean": 0.9722,
+            "std": 0.0481,
+            "ci95": 0.0544
+          },
+          "static_retention_substr_em": {
+            "mean": 0.9722,
+            "std": 0.0481,
+            "ci95": 0.0544
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.9815,
+            "std": 0.0321,
+            "ci95": 0.0363
+          }
+        }
+      }
+    },
+    "k5_structured_symbolic_overrides": {
+      "regime": "k5_symbolic",
+      "num_edits": 5,
+      "seeds": [
+        42,
+        1337,
+        9999
+      ],
+      "total_episodes": 90,
+      "lslc_max_toc_prefix_diff": 0.0625,
+      "lslc_e2e_gpu_router_top2_recall": {
+        "mean": 0.9667,
+        "std": 0.0333,
+        "ci95": 0.0377
+      },
+      "direct_patch_regex_match_rate": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "edit_cost": {
+        "lslc_ms_per_edit": {
+          "mean": 8.6965,
+          "std": 0.1199,
+          "ci95": 0.1357
+        },
+        "rag_direct_text_patch_ms_per_edit": {
+          "mean": 1.328,
+          "std": 0.0044,
+          "ci95": 0.005
+        },
+        "rag_append_errata_ms_per_edit": {
+          "mean": 0.5208,
+          "std": 0.0031,
+          "ci95": 0.0035
+        },
+        "rag_llm_rewrite_block_ms_per_edit": {
+          "mean": 516.3968,
+          "std": 2.531,
+          "ci95": 2.8641
+        },
+        "rag_llm_rewrite_block_decode_tokens": {
+          "mean": 11.38,
+          "std": 0.04,
+          "ci95": 0.0453
+        },
+        "rag_immutable_ms_per_edit": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        }
+      },
+      "systems": {
+        "raw_rag_immutable": {
+          "override_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_substr_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.1332,
+            "std": 0.0357,
+            "ci95": 0.0404
+          },
+          "override_char_f1": {
+            "mean": 0.3824,
+            "std": 0.0129,
+            "ci95": 0.0146
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "raw_rag_append_errata": {
+          "override_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_substr_em": {
+            "mean": 0.4167,
+            "std": 0.0764,
+            "ci95": 0.0864
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.7542,
+            "std": 0.0075,
+            "ci95": 0.0085
+          },
+          "override_char_f1": {
+            "mean": 0.3872,
+            "std": 0.0147,
+            "ci95": 0.0167
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "raw_rag_direct_text_patch": {
+          "override_strict_em": {
+            "mean": 0.0333,
+            "std": 0.0289,
+            "ci95": 0.0327
+          },
+          "override_substr_em": {
+            "mean": 0.8667,
+            "std": 0.0764,
+            "ci95": 0.0864
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.7625,
+            "std": 0.0137,
+            "ci95": 0.0155
+          },
+          "override_char_f1": {
+            "mean": 0.4431,
+            "std": 0.0266,
+            "ci95": 0.0301
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "raw_rag_in_place_llm_rewrite": {
+          "override_strict_em": {
+            "mean": 0.0333,
+            "std": 0.0289,
+            "ci95": 0.0327
+          },
+          "override_substr_em": {
+            "mean": 0.9,
+            "std": 0.05,
+            "ci95": 0.0566
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.7569,
+            "std": 0.0144,
+            "ci95": 0.0163
+          },
+          "override_char_f1": {
+            "mean": 0.4465,
+            "std": 0.0248,
+            "ci95": 0.028
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "lslc_e2e_gpu_router_delta": {
+          "override_strict_em": {
+            "mean": 0.3833,
+            "std": 0.1041,
+            "ci95": 0.1178
+          },
+          "override_substr_em": {
+            "mean": 0.4,
+            "std": 0.0866,
+            "ci95": 0.098
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.8204,
+            "std": 0.0223,
+            "ci95": 0.0252
+          },
+          "override_char_f1": {
+            "mean": 0.5633,
+            "std": 0.0631,
+            "ci95": 0.0715
+          },
+          "static_retention_strict_em": {
+            "mean": 0.8667,
+            "std": 0.0577,
+            "ci95": 0.0653
+          },
+          "static_retention_substr_em": {
+            "mean": 0.8667,
+            "std": 0.0577,
+            "ci95": 0.0653
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.9556,
+            "std": 0.0192,
+            "ci95": 0.0218
+          }
+        },
+        "lslc_shared_bm25_delta": {
+          "override_strict_em": {
+            "mean": 0.4333,
+            "std": 0.0289,
+            "ci95": 0.0327
+          },
+          "override_substr_em": {
+            "mean": 0.4667,
+            "std": 0.0289,
+            "ci95": 0.0327
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.8657,
+            "std": 0.0176,
+            "ci95": 0.0199
+          },
+          "override_char_f1": {
+            "mean": 0.6069,
+            "std": 0.0364,
+            "ci95": 0.0412
+          },
+          "static_retention_strict_em": {
+            "mean": 0.9,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 0.9,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.9556,
+            "std": 0.0192,
+            "ci95": 0.0218
+          }
+        }
+      }
+    },
+    "k3_paraphrased_natural_language_overrides": {
+      "regime": "k3_paraphrased_nl",
+      "num_edits": 3,
+      "seeds": [
+        42,
+        1337,
+        9999
+      ],
+      "total_episodes": 90,
+      "lslc_max_toc_prefix_diff": 0.0625,
+      "lslc_e2e_gpu_router_top2_recall": {
+        "mean": 0.8111,
+        "std": 0.0192,
+        "ci95": 0.0218
+      },
+      "direct_patch_regex_match_rate": {
+        "mean": 0.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "edit_cost": {
+        "lslc_ms_per_edit": {
+          "mean": 8.6425,
+          "std": 0.2014,
+          "ci95": 0.2279
+        },
+        "rag_direct_text_patch_ms_per_edit": {
+          "mean": 0.0031,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "rag_append_errata_ms_per_edit": {
+          "mean": 0.5487,
+          "std": 0.0035,
+          "ci95": 0.004
+        },
+        "rag_llm_rewrite_block_ms_per_edit": {
+          "mean": 496.4336,
+          "std": 2.9757,
+          "ci95": 3.3674
+        },
+        "rag_llm_rewrite_block_decode_tokens": {
+          "mean": 11.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "rag_immutable_ms_per_edit": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        }
+      },
+      "systems": {
+        "raw_rag_immutable": {
+          "override_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_substr_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.3111,
+            "std": 0.0536,
+            "ci95": 0.0606
+          },
+          "override_char_f1": {
+            "mean": 0.0274,
+            "std": 0.0078,
+            "ci95": 0.0088
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "raw_rag_append_errata": {
+          "override_strict_em": {
+            "mean": 0.0333,
+            "std": 0.0289,
+            "ci95": 0.0327
+          },
+          "override_substr_em": {
+            "mean": 0.4,
+            "std": 0.0866,
+            "ci95": 0.098
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.7611,
+            "std": 0.0255,
+            "ci95": 0.0288
+          },
+          "override_char_f1": {
+            "mean": 0.1163,
+            "std": 0.0234,
+            "ci95": 0.0264
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "raw_rag_direct_text_patch": {
+          "override_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_substr_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.3111,
+            "std": 0.0536,
+            "ci95": 0.0606
+          },
+          "override_char_f1": {
+            "mean": 0.0274,
+            "std": 0.0078,
+            "ci95": 0.0088
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "raw_rag_in_place_llm_rewrite": {
+          "override_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_substr_em": {
+            "mean": 0.3,
+            "std": 0.1323,
+            "ci95": 0.1497
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.9333,
+            "std": 0.0289,
+            "ci95": 0.0327
+          },
+          "override_char_f1": {
+            "mean": 0.0728,
+            "std": 0.0048,
+            "ci95": 0.0055
+          },
+          "static_retention_strict_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_substr_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.6667,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "lslc_e2e_gpu_router_delta": {
+          "override_strict_em": {
+            "mean": 0.0833,
+            "std": 0.0764,
+            "ci95": 0.0864
+          },
+          "override_substr_em": {
+            "mean": 0.35,
+            "std": 0.05,
+            "ci95": 0.0566
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.5556,
+            "std": 0.0822,
+            "ci95": 0.093
+          },
+          "override_char_f1": {
+            "mean": 0.1772,
+            "std": 0.06,
+            "ci95": 0.0679
+          },
+          "static_retention_strict_em": {
+            "mean": 0.9333,
+            "std": 0.0577,
+            "ci95": 0.0653
+          },
+          "static_retention_substr_em": {
+            "mean": 0.9333,
+            "std": 0.0577,
+            "ci95": 0.0653
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.9667,
+            "std": 0.0333,
+            "ci95": 0.0377
+          }
+        },
+        "lslc_shared_bm25_delta": {
+          "override_strict_em": {
+            "mean": 0.1,
+            "std": 0.0866,
+            "ci95": 0.098
+          },
+          "override_substr_em": {
+            "mean": 0.4,
+            "std": 0.0866,
+            "ci95": 0.098
+          },
+          "override_tf_content_tok_acc": {
+            "mean": 0.6778,
+            "std": 0.077,
+            "ci95": 0.0871
+          },
+          "override_char_f1": {
+            "mean": 0.1596,
+            "std": 0.0722,
+            "ci95": 0.0817
+          },
+          "static_retention_strict_em": {
+            "mean": 0.9667,
+            "std": 0.0577,
+            "ci95": 0.0653
+          },
+          "static_retention_substr_em": {
+            "mean": 0.9667,
+            "std": 0.0577,
+            "ci95": 0.0653
+          },
+          "static_retention_tf_tok_acc": {
+            "mean": 0.9778,
+            "std": 0.0385,
+            "ci95": 0.0436
+          }
+        }
+      }
+    },
+    "full_page_256tok_llm_rewrite_latency": {
+      "trials": 5,
+      "prompt_tokens": 301,
+      "generated_tokens": {
+        "mean": 256.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "latency_ms_per_edit": {
+        "mean": 11250.8713,
+        "std": 34.5925,
+        "ci95": 30.3217
+      }
+    }
+  },
+  "niah_32k_v2": {
+    "num_pages": 128,
+    "context_tokens": 32768,
+    "chapter_size": 16,
+    "seeds": [
+      42,
+      1337,
+      9999
+    ],
+    "episodes_per_seed": 60,
+    "total_episodes": 180,
+    "salience_capture_rate": {
+      "mean": 0.9951,
+      "std": 0.0021,
+      "ci95": 0.0024
+    },
+    "bm25_cpu_host_ram_kib": 269.79,
+    "retriever_recall": {
+      "bm25_exact_top1": {
+        "mean": 0.9444,
+        "std": 0.0385,
+        "ci95": 0.0436
+      },
+      "bm25_exact_top2": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "bm25_semantic_top1": {
+        "mean": 0.8222,
+        "std": 0.0385,
+        "ci95": 0.0436
+      },
+      "bm25_semantic_top2": {
+        "mean": 0.9444,
+        "std": 0.0192,
+        "ci95": 0.0218
+      },
+      "bm25_overall_top1": {
+        "mean": 0.8833,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "bm25_overall_top2": {
+        "mean": 0.9722,
+        "std": 0.0096,
+        "ci95": 0.0109
+      },
+      "e2e_gpu_router_exact_top1": {
+        "mean": 0.7,
+        "std": 0.0667,
+        "ci95": 0.0754
+      },
+      "e2e_gpu_router_exact_top2": {
+        "mean": 0.7333,
+        "std": 0.0882,
+        "ci95": 0.0998
+      },
+      "e2e_gpu_router_semantic_top1": {
+        "mean": 0.1778,
+        "std": 0.0962,
+        "ci95": 0.1089
+      },
+      "e2e_gpu_router_semantic_top2": {
+        "mean": 0.1889,
+        "std": 0.1072,
+        "ci95": 0.1213
+      },
+      "e2e_gpu_router_overall_top1": {
+        "mean": 0.4389,
+        "std": 0.0585,
+        "ci95": 0.0662
+      },
+      "e2e_gpu_router_overall_top2": {
+        "mean": 0.4611,
+        "std": 0.0509,
+        "ci95": 0.0576
+      }
+    },
+    "systems": {
+      "raw_rag_shared_bm25": {
+        "active_prefix_tokens": 512,
+        "exact_strict_em": {
+          "mean": 0.1333,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_substr_em": {
+          "mean": 0.2778,
+          "std": 0.0509,
+          "ci95": 0.0576
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 1.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_char_f1": {
+          "mean": 0.4122,
+          "std": 0.023,
+          "ci95": 0.026
+        },
+        "semantic_strict_em": {
+          "mean": 0.0111,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "semantic_substr_em": {
+          "mean": 0.9444,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.8461,
+          "std": 0.0119,
+          "ci95": 0.0135
+        },
+        "semantic_char_f1": {
+          "mean": 0.9223,
+          "std": 0.0078,
+          "ci95": 0.0088
+        }
+      },
+      "lslc_e2e_gpu_router_flat": {
+        "active_prefix_tokens": 218,
+        "exact_strict_em": {
+          "mean": 0.3111,
+          "std": 0.0839,
+          "ci95": 0.0949
+        },
+        "exact_substr_em": {
+          "mean": 0.5778,
+          "std": 0.0385,
+          "ci95": 0.0436
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.7556,
+          "std": 0.0606,
+          "ci95": 0.0686
+        },
+        "exact_char_f1": {
+          "mean": 0.7358,
+          "std": 0.0278,
+          "ci95": 0.0314
+        },
+        "semantic_strict_em": {
+          "mean": 0.0444,
+          "std": 0.0385,
+          "ci95": 0.0436
+        },
+        "semantic_substr_em": {
+          "mean": 0.4556,
+          "std": 0.0694,
+          "ci95": 0.0785
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.7773,
+          "std": 0.0229,
+          "ci95": 0.026
+        },
+        "semantic_char_f1": {
+          "mean": 0.7028,
+          "std": 0.0179,
+          "ci95": 0.0203
+        }
+      },
+      "lslc_e2e_gpu_router_hier": {
+        "active_prefix_tokens": 131,
+        "exact_strict_em": {
+          "mean": 0.3111,
+          "std": 0.0385,
+          "ci95": 0.0436
+        },
+        "exact_substr_em": {
+          "mean": 0.6111,
+          "std": 0.0694,
+          "ci95": 0.0785
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.7469,
+          "std": 0.0617,
+          "ci95": 0.0698
+        },
+        "exact_char_f1": {
+          "mean": 0.7663,
+          "std": 0.0436,
+          "ci95": 0.0493
+        },
+        "semantic_strict_em": {
+          "mean": 0.7444,
+          "std": 0.0839,
+          "ci95": 0.0949
+        },
+        "semantic_substr_em": {
+          "mean": 0.9778,
+          "std": 0.0385,
+          "ci95": 0.0436
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.9664,
+          "std": 0.0159,
+          "ci95": 0.018
+        },
+        "semantic_char_f1": {
+          "mean": 0.8711,
+          "std": 0.016,
+          "ci95": 0.0181
+        }
+      },
+      "lslc_shared_bm25_flat": {
+        "active_prefix_tokens": 218,
+        "exact_strict_em": {
+          "mean": 0.3667,
+          "std": 0.1202,
+          "ci95": 0.136
+        },
+        "exact_substr_em": {
+          "mean": 0.6556,
+          "std": 0.0509,
+          "ci95": 0.0576
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.9469,
+          "std": 0.0086,
+          "ci95": 0.0097
+        },
+        "exact_char_f1": {
+          "mean": 0.7778,
+          "std": 0.0401,
+          "ci95": 0.0454
+        },
+        "semantic_strict_em": {
+          "mean": 0.0556,
+          "std": 0.0509,
+          "ci95": 0.0576
+        },
+        "semantic_substr_em": {
+          "mean": 0.4,
+          "std": 0.0333,
+          "ci95": 0.0377
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.7701,
+          "std": 0.0095,
+          "ci95": 0.0108
+        },
+        "semantic_char_f1": {
+          "mean": 0.7372,
+          "std": 0.0192,
+          "ci95": 0.0217
+        }
+      },
+      "lslc_shared_bm25_trunc_flat_ctrl": {
+        "active_prefix_tokens": 133,
+        "exact_strict_em": {
+          "mean": 0.4444,
+          "std": 0.0509,
+          "ci95": 0.0576
+        },
+        "exact_substr_em": {
+          "mean": 0.8222,
+          "std": 0.1072,
+          "ci95": 0.1213
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.9704,
+          "std": 0.0225,
+          "ci95": 0.0255
+        },
+        "exact_char_f1": {
+          "mean": 0.8711,
+          "std": 0.0501,
+          "ci95": 0.0567
+        },
+        "semantic_strict_em": {
+          "mean": 0.7222,
+          "std": 0.0509,
+          "ci95": 0.0576
+        },
+        "semantic_substr_em": {
+          "mean": 0.9889,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.9637,
+          "std": 0.0136,
+          "ci95": 0.0154
+        },
+        "semantic_char_f1": {
+          "mean": 0.8584,
+          "std": 0.0127,
+          "ci95": 0.0144
+        }
+      },
+      "lslc_shared_bm25_hier": {
+        "active_prefix_tokens": 133,
+        "exact_strict_em": {
+          "mean": 0.4556,
+          "std": 0.0694,
+          "ci95": 0.0785
+        },
+        "exact_substr_em": {
+          "mean": 0.8222,
+          "std": 0.1072,
+          "ci95": 0.1213
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.9704,
+          "std": 0.0259,
+          "ci95": 0.0293
+        },
+        "exact_char_f1": {
+          "mean": 0.8682,
+          "std": 0.0523,
+          "ci95": 0.0592
+        },
+        "semantic_strict_em": {
+          "mean": 0.7444,
+          "std": 0.0509,
+          "ci95": 0.0576
+        },
+        "semantic_substr_em": {
+          "mean": 0.9889,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.9637,
+          "std": 0.0136,
+          "ci95": 0.0154
+        },
+        "semantic_char_f1": {
+          "mean": 0.8648,
+          "std": 0.012,
+          "ci95": 0.0136
+        }
+      }
+    }
+  },
+  "niah_128k_v2": {
+    "num_pages": 512,
+    "context_tokens": 131072,
+    "chapter_size": 16,
+    "seeds": [
+      42,
+      1337,
+      9999
+    ],
+    "episodes_per_seed": 20,
+    "total_episodes": 60,
+    "salience_capture_rate": {
+      "mean": 0.9963,
+      "std": 0.0064,
+      "ci95": 0.0073
+    },
+    "bm25_cpu_host_ram_kib": 857.01,
+    "retriever_recall": {
+      "bm25_exact_top1": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "bm25_exact_top2": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "bm25_semantic_top1": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "bm25_semantic_top2": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "bm25_overall_top1": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "bm25_overall_top2": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "e2e_gpu_router_exact_top1": {
+        "mean": 0.7,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "e2e_gpu_router_exact_top2": {
+        "mean": 0.7,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "e2e_gpu_router_semantic_top1": {
+        "mean": 0.2,
+        "std": 0.1,
+        "ci95": 0.1132
+      },
+      "e2e_gpu_router_semantic_top2": {
+        "mean": 0.2,
+        "std": 0.1,
+        "ci95": 0.1132
+      },
+      "e2e_gpu_router_overall_top1": {
+        "mean": 0.45,
+        "std": 0.05,
+        "ci95": 0.0566
+      },
+      "e2e_gpu_router_overall_top2": {
+        "mean": 0.45,
+        "std": 0.05,
+        "ci95": 0.0566
+      }
+    },
+    "systems": {
+      "raw_rag_shared_bm25": {
+        "active_prefix_tokens": 512,
+        "exact_strict_em": {
+          "mean": 0.1667,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "exact_substr_em": {
+          "mean": 0.3,
+          "std": 0.1,
+          "ci95": 0.1132
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 1.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_char_f1": {
+          "mean": 0.4326,
+          "std": 0.0581,
+          "ci95": 0.0657
+        },
+        "semantic_strict_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_substr_em": {
+          "mean": 1.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.8819,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_char_f1": {
+          "mean": 0.9488,
+          "std": 0.0,
+          "ci95": 0.0
+        }
+      },
+      "lslc_e2e_gpu_router_flat": {
+        "active_prefix_tokens": 602,
+        "exact_strict_em": {
+          "mean": 0.2667,
+          "std": 0.1155,
+          "ci95": 0.1307
+        },
+        "exact_substr_em": {
+          "mean": 0.4667,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.7074,
+          "std": 0.0064,
+          "ci95": 0.0073
+        },
+        "exact_char_f1": {
+          "mean": 0.5802,
+          "std": 0.066,
+          "ci95": 0.0746
+        },
+        "semantic_strict_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_substr_em": {
+          "mean": 0.1,
+          "std": 0.1,
+          "ci95": 0.1132
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.3463,
+          "std": 0.065,
+          "ci95": 0.0736
+        },
+        "semantic_char_f1": {
+          "mean": 0.719,
+          "std": 0.0645,
+          "ci95": 0.073
+        }
+      },
+      "lslc_e2e_gpu_router_hier": {
+        "active_prefix_tokens": 158,
+        "exact_strict_em": {
+          "mean": 0.3333,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "exact_substr_em": {
+          "mean": 0.5667,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.7444,
+          "std": 0.0222,
+          "ci95": 0.0251
+        },
+        "exact_char_f1": {
+          "mean": 0.7766,
+          "std": 0.0219,
+          "ci95": 0.0247
+        },
+        "semantic_strict_em": {
+          "mean": 0.4667,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "semantic_substr_em": {
+          "mean": 0.7667,
+          "std": 0.1528,
+          "ci95": 0.1729
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.9255,
+          "std": 0.0056,
+          "ci95": 0.0064
+        },
+        "semantic_char_f1": {
+          "mean": 0.8035,
+          "std": 0.0439,
+          "ci95": 0.0497
+        }
+      },
+      "lslc_shared_bm25_flat": {
+        "active_prefix_tokens": 602,
+        "exact_strict_em": {
+          "mean": 0.3333,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "exact_substr_em": {
+          "mean": 0.6,
+          "std": 0.2,
+          "ci95": 0.2263
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.9259,
+          "std": 0.0321,
+          "ci95": 0.0363
+        },
+        "exact_char_f1": {
+          "mean": 0.7656,
+          "std": 0.1117,
+          "ci95": 0.1264
+        },
+        "semantic_strict_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_substr_em": {
+          "mean": 0.2,
+          "std": 0.1,
+          "ci95": 0.1132
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.3227,
+          "std": 0.0775,
+          "ci95": 0.0877
+        },
+        "semantic_char_f1": {
+          "mean": 0.5686,
+          "std": 0.0424,
+          "ci95": 0.048
+        }
+      },
+      "lslc_shared_bm25_trunc_flat_ctrl": {
+        "active_prefix_tokens": 158,
+        "exact_strict_em": {
+          "mean": 0.4,
+          "std": 0.1,
+          "ci95": 0.1132
+        },
+        "exact_substr_em": {
+          "mean": 0.7333,
+          "std": 0.1155,
+          "ci95": 0.1307
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.9407,
+          "std": 0.0321,
+          "ci95": 0.0363
+        },
+        "exact_char_f1": {
+          "mean": 0.8637,
+          "std": 0.0475,
+          "ci95": 0.0537
+        },
+        "semantic_strict_em": {
+          "mean": 0.2333,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "semantic_substr_em": {
+          "mean": 0.7,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.9005,
+          "std": 0.0069,
+          "ci95": 0.0078
+        },
+        "semantic_char_f1": {
+          "mean": 0.8093,
+          "std": 0.0279,
+          "ci95": 0.0316
+        }
+      },
+      "lslc_shared_bm25_hier": {
+        "active_prefix_tokens": 158,
+        "exact_strict_em": {
+          "mean": 0.4333,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "exact_substr_em": {
+          "mean": 0.7333,
+          "std": 0.1155,
+          "ci95": 0.1307
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.9407,
+          "std": 0.0321,
+          "ci95": 0.0363
+        },
+        "exact_char_f1": {
+          "mean": 0.8603,
+          "std": 0.0466,
+          "ci95": 0.0527
+        },
+        "semantic_strict_em": {
+          "mean": 0.2333,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "semantic_substr_em": {
+          "mean": 0.7,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.8926,
+          "std": 0.0136,
+          "ci95": 0.0154
+        },
+        "semantic_char_f1": {
+          "mean": 0.8056,
+          "std": 0.0305,
+          "ci95": 0.0345
+        }
+      }
+    }
+  },
+  "memory_and_latency_scaling": {
+    "32k": {
+      "context_tokens": 32768,
+      "num_pages": 128,
+      "encode_total_ms": 39.29,
+      "encode_per_page_ms": 0.307,
+      "full_fp16_kv_mib": 3584.0,
+      "rag_const_k2": {
+        "active_prefix_tokens": 512,
+        "active_seq_tokens_with_q": 528,
+        "net_vram_mib": 57.89,
+        "query_ttft_ms": 51.24
+      },
+      "lslc_flat_toc": {
+        "active_prefix_tokens": 218,
+        "net_vram_mib": 27.11,
+        "ratio_vs_full_kv": 132.21,
+        "ratio_vs_rag_const_k2": 2.14,
+        "cold_query_ttft_ms": 53.43,
+        "warm_toc_ttft_ms": 53.12
+      },
+      "lslc_hier_toc_c16": {
+        "active_prefix_tokens": 118,
+        "net_vram_mib": 16.17,
+        "ratio_vs_full_kv": 221.62,
+        "ratio_vs_rag_const_k2": 3.58,
+        "cold_query_ttft_ms": 52.89,
+        "warm_toc_ttft_ms": 49.59,
+        "max_toc_prefix_diff_on_edit": 0.0
+      }
+    },
+    "128k": {
+      "context_tokens": 131072,
+      "num_pages": 512,
+      "encode_total_ms": 152.23,
+      "encode_per_page_ms": 0.297,
+      "full_fp16_kv_mib": 14336.0,
+      "rag_const_k2": {
+        "active_prefix_tokens": 512,
+        "active_seq_tokens_with_q": 528,
+        "net_vram_mib": 58.31,
+        "query_ttft_ms": 51.46
+      },
+      "lslc_flat_toc": {
+        "active_prefix_tokens": 602,
+        "net_vram_mib": 73.66,
+        "ratio_vs_full_kv": 194.63,
+        "ratio_vs_rag_const_k2": 0.79,
+        "cold_query_ttft_ms": 62.4,
+        "warm_toc_ttft_ms": 46.93
+      },
+      "lslc_hier_toc_c16": {
+        "active_prefix_tokens": 158,
+        "net_vram_mib": 25.09,
+        "ratio_vs_full_kv": 571.3,
+        "ratio_vs_rag_const_k2": 2.32,
+        "cold_query_ttft_ms": 56.27,
+        "warm_toc_ttft_ms": 49.37,
+        "max_toc_prefix_diff_on_edit": 0.0
+      }
+    },
+    "256k": {
+      "context_tokens": 262144,
+      "num_pages": 1024,
+      "encode_total_ms": 306.49,
+      "encode_per_page_ms": 0.299,
+      "full_fp16_kv_mib": 28672.0,
+      "rag_const_k2": {
+        "active_prefix_tokens": 512,
+        "active_seq_tokens_with_q": 528,
+        "net_vram_mib": 58.88,
+        "query_ttft_ms": 51.23
+      },
+      "lslc_flat_toc": {
+        "active_prefix_tokens": 1114,
+        "net_vram_mib": 135.72,
+        "ratio_vs_full_kv": 211.26,
+        "ratio_vs_rag_const_k2": 0.43,
+        "cold_query_ttft_ms": 110.66,
+        "warm_toc_ttft_ms": 48.59
+      },
+      "lslc_hier_toc_c16": {
+        "active_prefix_tokens": 189,
+        "net_vram_mib": 34.55,
+        "ratio_vs_full_kv": 829.94,
+        "ratio_vs_rag_const_k2": 1.7,
+        "cold_query_ttft_ms": 67.45,
+        "warm_toc_ttft_ms": 50.11,
+        "max_toc_prefix_diff_on_edit": 0.0
+      }
+    },
+    "analytical_flat_vs_const_k2_rag_crossover": {
+      "crossover_pages": 384.3,
+      "crossover_tokens": 98371,
+      "note": "Exact page count P* where 1-level Flat LSLC active-KV + store overtakes Constant-k=2 RAG (eliminated by 2-level Hierarchical TOC)."
+    }
+  },
+  "iso_budget_1d_vs_3d_ablation": {
+    "1d_flat": {
+      "total_module_params": 40420550,
+      "page_latent_bytes": 12288,
+      "sparse_exact_bank_bytes_per_page": 128,
+      "wikitext2_ppl_full": 22.407,
+      "wikitext2_ppl_skim_2x2": 29.1917,
+      "exact_niah_strict_em": 0.1333,
+      "exact_niah_substr_em": 0.7333,
+      "exact_niah_tf_tok_acc": 0.8519,
+      "semantic_niah_strict_em": 0.6,
+      "semantic_niah_substr_em": 0.6667,
+      "semantic_niah_skim_only_em": 0.0,
+      "k3_override_strict_em": 0.0,
+      "k3_override_substr_em": 0.0,
+      "static_l0_retention_strict_em": 1.0,
+      "static_l0_retention_substr_em": 1.0,
+      "max_toc_prefix_diff": 0.753906
+    },
+    "1d_3layer": {
+      "total_module_params": 40420550,
+      "page_latent_bytes": 12288,
+      "sparse_exact_bank_bytes_per_page": 128,
+      "wikitext2_ppl_full": 24.8578,
+      "wikitext2_ppl_skim_2x2": 30.0847,
+      "exact_niah_strict_em": 0.2,
+      "exact_niah_substr_em": 0.7333,
+      "exact_niah_tf_tok_acc": 0.8,
+      "semantic_niah_strict_em": 0.4667,
+      "semantic_niah_substr_em": 0.9333,
+      "semantic_niah_skim_only_em": 0.0,
+      "k3_override_strict_em": 0.0,
+      "k3_override_substr_em": 0.0,
+      "static_l0_retention_strict_em": 0.625,
+      "static_l0_retention_substr_em": 0.625,
+      "max_toc_prefix_diff": 0.0
+    },
+    "3d_spatial": {
+      "total_module_params": 40420550,
+      "page_latent_bytes": 12288,
+      "sparse_exact_bank_bytes_per_page": 128,
+      "wikitext2_ppl_full": 18.9425,
+      "wikitext2_ppl_skim_2x2": 30.4564,
+      "exact_niah_strict_em": 0.2,
+      "exact_niah_substr_em": 0.7333,
+      "exact_niah_tf_tok_acc": 0.8519,
+      "semantic_niah_strict_em": 0.4667,
+      "semantic_niah_substr_em": 1.0,
+      "semantic_niah_skim_only_em": 0.0,
+      "k3_override_strict_em": 0.0,
+      "k3_override_substr_em": 0.0,
+      "static_l0_retention_strict_em": 1.0,
+      "static_l0_retention_substr_em": 1.0,
+      "max_toc_prefix_diff": 0.0
+    }
+  }
+}

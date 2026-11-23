@@ -18,16 +18,16 @@ pip install -e ".[quant,dev]"
 
 ## 2. Instant Local Verification (CPU or Laptop GPU, 0 Cloud Cost)
 
-1. **Run the 12-test architectural & tensor-shape suite:**
+1. **Run the 14-test architectural & tensor-shape suite:**
    ```bash
    python -m unittest -v tests/test_lslc_shapes.py
    ```
    Verifies:
    - `[B, P, 3, 128, 4, 4]` book tensor geometry (`12 KiB/page` FP16)
    - `FactorizedRoPE3D` rotary invariance and `PageRoPE1D` modularity
-   - `SparseExactBank` strict `8 bytes/token` discrete storage (`128 B/page`)
-   - `DeltaUpdater` convex override on $\ell=2$ with strict $\max|\Delta_{\text{TOC}}| = 0.0$ across $\ell \in \{0, 1\}$
-   - 2-level Chapter$\rightarrow$Page hierarchical TOC active-token cap and external retriever `router_out_override`
+   - `SparseExactBank` strict `8 bytes/token` discrete storage (`128 B/page`) and right-of-header `SalienceGate` capture
+   - `DeltaUpdater` pre-gate channel-wise RMS alignment and convex override on $\ell=2$ with strict $\max|\Delta_{\text{TOC}}| = 0.0$ across $\ell \in \{0, 1\}$
+   - 2-level Chapter$\rightarrow$Page hierarchical TOC active-token cap, equal-token `flat_toc_max_tokens` control, in-VRAM `SparseExactBank` `MaxSim` routing (`0 B` CPU RAM), and external retriever `router_out_override`
    - Non-zero gradient flow across all 5 trainable LSLC modules under a frozen LLM
 
 2. **Run the self-contained Living-Book inference & delta-override demo:**
@@ -53,6 +53,7 @@ All empirical JSON outputs from our NVIDIA L4 (`bfloat16`) and Tesla T4 (`float1
 | `python scripts/colab_run_hard_stress.py` | **5-Regime Adversarial Stress Suite (`Qwen3-1.7B` BF16 & `Qwen3-8B` 4-bit NF4, L4):** (EC-1) 8-page multi-file Python codebases; (EC-2) 4-key adversarial decoys; (EC-3) deep $k=5$ symbolic state overrides; (EC-4) live CUDA `128K` (`P=512`) & `256K` (`P=1,024`) profiling; (EC-5) multi-step context reasoning. | [`evals/m2_colab_l4/hard_stress_summary.json`](evals/m2_colab_l4/hard_stress_summary.json) |
 | `python scripts/colab_run_reviewer_rebuttal.py` | **3-Seed L4 BF16 Override & Batch-Encode Suite (`seeds={42,1337,9999}`):** Head-to-head `LSLC In-Place DeltaUpdater` vs. `Raw-Text Chunk RAG (Immutable & Append-Errata)` on $k=3$ numeric and $k=5$ symbolic overrides + `32K` NIAH and `128`-page encode latency. | [`evals/m2_colab_l4/reviewer_rebuttal_summary.json`](evals/m2_colab_l4/reviewer_rebuttal_summary.json) |
 | `python scripts/colab_run_rebuttal_v2.py` | **Unified 3-Seed 2-Level Hierarchy & Editable-RAG Benchmark (T4 FP16):** Live CUDA `32K/128K/256K` 2-level hierarchy vs. Constant-$k=2$ RAG, $N=180$ shared-BM25 `32K` NIAH, and 4-way $k=3/k=5$ overrides with targeted & full-page In-Place LLM-Rewrite RAG latency. | [`evals/m2_colab_l4/rebuttal_v2_summary.json`](evals/m2_colab_l4/rebuttal_v2_summary.json) |
+| `python scripts/colab_run_v2_complete.py` | **Complete `v2.0.0` Unified Benchmark (L4 BF16, 3 Seeds `{42,1337,9999}`):** End-to-End Pure GPU Router (`0 B` CPU) vs. Shared BM25 (`270–857 KiB` CPU) at `32K` ($N=180$) & `128K` ($N=60$) NIAH with equal-token Truncated Flat TOC control; 5-way State Overrides ($N=288$) including deterministic `Direct Text-Patch + BM25 Re-Index RAG` across structured $k=3, k=5$ & paraphrased natural-language edits plus restored static $\ell=0$ retention (`86.7%–97.2%`); and controlled iso-parameter/iso-byte/iso-step `1D-Flat` vs. `1D-3Layer` vs. `3D-Spatial` ablation. | [`evals/m2_colab_l4/v2_complete_summary.json`](evals/m2_colab_l4/v2_complete_summary.json) |
 
 ---
 

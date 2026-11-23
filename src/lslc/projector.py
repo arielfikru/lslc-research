@@ -128,8 +128,11 @@ class QueryToTOCRouter(nn.Module):
         toc_embeds: torch.Tensor,
         k_deep: int,
         k_skim: int,
+        query_token_embeds: torch.Tensor | None = None,
+        exact_bank_embeds: torch.Tensor | None = None,
+        salience_route_weight: float = 8.0,
     ) -> RouterOutput:
-        """Route [B, d_llm] query over [B, P, 1, d_llm] page TOC tokens."""
+        """Route [B, d_llm] query over [B, P, 1, d_llm] page TOC tokens (+ optional in-VRAM SparseExactBank MaxSim)."""
         bsz, num_pages, _, _ = toc_embeds.shape
         device = toc_embeds.device
         if not torch.is_autocast_enabled():
@@ -143,6 +146,24 @@ class QueryToTOCRouter(nn.Module):
         q = self.page_rope(q, torch.tensor([num_pages], device=device))
 
         logits = torch.bmm(q, k.transpose(1, 2)).squeeze(1) * self.scale  # [B, P]
+
+        if (
+            query_token_embeds is not None
+            and exact_bank_embeds is not None
+            and exact_bank_embeds.numel() > 0
+            and salience_route_weight > 0.0
+            and num_pages > 1
+        ):
+            q_norm = F.normalize(query_token_embeds.float(), dim=-1)  # [B, M, d]
+            page_sigs = torch.cat((exact_bank_embeds.float(), toc_embeds.float()), dim=2)  # [B, P, K+1, d]
+            b_norm = F.normalize(page_sigs, dim=-1)
+            sim = torch.einsum("bmd,bpkd->bpmk", q_norm, b_norm)  # [B, P, M, K+1]
+            max_per_q = sim.amax(dim=-1)  # [B, P, M]
+            top_m = min(4, max_per_q.shape[-1])
+            sal_score = torch.topk(max_per_q, k=top_m, dim=-1).values.mean(dim=-1)  # [B, P]
+            sal_z = (sal_score - sal_score.mean(dim=-1, keepdim=True)) / (sal_score.std(dim=-1, keepdim=True) + 1e-6)
+            logits = logits + (salience_route_weight * sal_z).to(logits.dtype)
+
         probs = F.softmax(logits, dim=-1)
 
         kd = min(num_pages, max(0, k_deep))
@@ -185,6 +206,7 @@ class BookPrefixAssembler(nn.Module):
         mode: str = "full",
         training_ste: bool = True,
         hierarchical_chapter_size: int | None = None,
+        flat_toc_max_tokens: int | None = None,
     ) -> AssemblyOutput:
         """Assemble Mode A causal prefix: [TOC | Skim | Deep l0 | Deep l1 | Deep l2 | Exact]."""
         bsz, num_pages, _, _, _, _ = z_book.shape
@@ -276,7 +298,13 @@ class BookPrefixAssembler(nn.Module):
             extra_toc_bounds["chapter_toc"] = (0, chapter_tocs.shape[1])
             extra_toc_bounds["expanded_toc"] = (chapter_tocs.shape[1], toc_toks.shape[1])
         else:
-            toc_toks = _gather_page_tokens(toc_all, router_out.toc_idx)
+            toc_idx_use = router_out.toc_idx
+            if flat_toc_max_tokens is not None and flat_toc_max_tokens > 0 and toc_idx_use.shape[1] > flat_toc_max_tokens:
+                # Uniformly subsample unrouted flat TOC indices to match a target token budget (ablation control)
+                n_toc = toc_idx_use.shape[1]
+                sel_pos = torch.linspace(0, n_toc - 1, steps=int(flat_toc_max_tokens), device=device).long()
+                toc_idx_use = toc_idx_use[:, sel_pos]
+            toc_toks = _gather_page_tokens(toc_all, toc_idx_use)
 
         skim_toks = _gather_page_tokens(skim_all, router_out.skim_idx)
         l0_toks = _gather_page_tokens(deep_all["l0"], router_out.deep_idx)

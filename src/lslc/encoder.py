@@ -252,6 +252,11 @@ class SalienceGate(nn.Module):
                 is_compound_sym = F.max_pool1d(is_joiner.float().unsqueeze(1), kernel_size=3, stride=1, padding=1).squeeze(1) > 0.5
                 is_digit_code = is_digit | is_joiner | is_compound_sym
                 is_delim = (token_ids == 28) | (token_ids == 284) | (token_ids == 25) | (token_ids == 551)
+                is_header_delim = (token_ids == 25) | (token_ids == 551) | (token_ids == 60) | (token_ids == 933)
+                after_header = (
+                    F.avg_pool1d(F.pad(is_header_delim.float().unsqueeze(1), (12, 0)), kernel_size=13, stride=1).squeeze(1)
+                    > 0.0
+                )
                 code_signal = (is_digit_code.float() + 0.5 * is_delim.float()).unsqueeze(1)
                 cluster_density = F.avg_pool1d(code_signal, kernel_size=9, stride=1, padding=4).squeeze(1)
                 max_cluster = F.max_pool1d(cluster_density.unsqueeze(1), kernel_size=7, stride=1, padding=3).squeeze(1)
@@ -264,6 +269,7 @@ class SalienceGate(nn.Module):
                     + 1.2 * right_closer
                     + 1.0 * F.relu(lookahead_key - 0.30)
                     + 0.5 * is_delim.float() * lookahead_key
+                    + 0.45 * after_header.float()
                 )
             else:
                 # Small mock vocabularies: local token-ID variance highlights anomalous spans

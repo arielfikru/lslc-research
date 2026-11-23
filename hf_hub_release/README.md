@@ -19,26 +19,26 @@ pipeline_tag: text-generation
 
 All base LLM weights (`Qwen/Qwen3-1.7B`, `Qwen/Qwen3-4B`, `Qwen/Qwen3-8B`) remain **100% frozen**. This repository contains the trained LSLC adapter modules (`40.42M` parameters for `Qwen/Qwen3-1.7B` in `bfloat16`):
 - `LayeredLatentEncoder` (`FactorizedRoPE3D` over `[L=3, H=4, W=4]`)
-- `SalienceGate` & `SparseExactBank` (`8 B/token` discrete high-entropy identifier bypass)
+- `SalienceGate` & `SparseExactBank` (`8 B/token` discrete high-entropy identifier + right-of-header policy bypass)
 - `SpatialLatentProjector` (Matryoshka `1×1 TOC` + **2-level Chapter$\rightarrow$Page Hierarchical TOC**, `2×2 Skim`, and layer-ordered `Deep Read`)
-- `QueryToTOCRouter` (1D page-index rotary routing with quadratic runner-up confidence attenuation $(p_{\text{deep}}/p_{\max})^2$, plus pluggable external retriever `router_out_override`)
-- `DeltaUpdater` (In-place convex sticky-note overrides on $\ell=2$: $\mathbf{Z}_{p,2} \leftarrow (1-\mathbf{G}_p)\odot\mathbf{Z}_{p,2} + \mathbf{G}_p\odot\Delta\mathbf{Z}_{p,2}$ with bit-exact TOC prefix invariance $\max|\Delta_{\text{TOC}}| = 0.0$)
+- `QueryToTOCRouter` (1D page-index rotary routing + parameter-free in-VRAM `SparseExactBank` late-interaction `MaxSim` requiring `0 B` CPU RAM, quadratic runner-up confidence attenuation $(p_{\text{deep}}/p_{\max})^2$, and pluggable external retriever `router_out_override`)
+- `DeltaUpdater` (In-place convex sticky-note overrides on $\ell=2$ with pre-gate channel-wise RMS alignment: $\mathbf{Z}_{p,2} \leftarrow (1-\mathbf{G}_p)\odot\mathbf{Z}_{p,2} + \mathbf{G}_p\odot\Delta\mathbf{Z}_{p,2}$ and bit-exact TOC prefix invariance $\max|\Delta_{\text{TOC}}| = 0.0$)
 
 ---
 
-## Verified Benchmark Summary vs. Raw-Text RAG & Full KV Context (Live CUDA)
+## Verified `v2.0.0` Benchmark Summary vs. Raw-Text RAG & Full KV Context (Live CUDA)
 
-| Regime / Metric | **Constant-$k=2$ Raw RAG** (+In-Place Rewrite) | **LSLC 3D + Exact Bank + Delta** | Full 1D KV Context (BF16) |
+| Regime / Metric | **Constant-$k=2$ Raw RAG** (+Patch / LLM-Rewrite) | **LSLC `v2.0.0` (E2E GPU Router / Shared BM25)** | Full 1D KV Context (BF16) |
 | :--- | :---: | :---: | :---: |
-| **32K (`P=128`) Net VRAM (`1.7B`)** | `57.89 MiB` (const $k=2$) / `71.7–183.7 MiB` (+TOC) | **`17.81 MiB` (2-Lvl Hier., `3.25×` < RAG) \| `27.11 MiB` (1-Lvl)** | `3,585.8 MiB` |
-| **128K / 256K Net VRAM (`1.7B`)** | `58.31 MiB` / `58.88 MiB` (const $k=2$) | **`24.98 MiB` (`2.33×` < RAG) / `34.55 MiB` (`1.70×` < RAG, 2-Lvl)** | `14.0` / `28.0 GiB` (OOM) |
-| **32K Shared-BM25 NIAH (`N=180`)** | `94.4%` Exact / `94.4%` Semantic EM | **`71.1%` Exact (`93.0%` content-tok) / `91.1%` Semantic EM** | — |
-| **EC-1 & EC-2 Codebase / Decoys** | — | **`90.0%` & `85.0%` EM (`1.7B`) \| `80.0%` EM (`8B`)** | — |
-| **$k=3$ Numeric Overrides (`N=108`)** | `0.0%` (Imm) / `55.6%` (App) / `45.8%` (LLM-RW, `791 ms`) | **`100.0% ± 0.0%` EM (`8.59 ms/edit`, $\max|\Delta_{\text{TOC}}|=0.0$)** | `50.0%` |
-| **$k=5$ Symbolic Overrides (`N=90`)** | `0.0%` (Imm) / `46.7%` (App) / `88.9%` (LLM-RW, `809 ms`) | **`70.0%` (`93.4%` tok, T4) / `80.0%–91.7%` (L4) @ `8.42 ms/edit`** | — |
-| **EC-5: Multi-Step Context Reasoning** | — | **`66.7%` (`1.7B`) \| `100.0%` (`8B`, `100%` retention)** | `88.9%` (`1.7B`) / `100%` (`8B`) |
+| **32K (`P=128`) Net VRAM (`1.7B`)** | `57.89 MiB` GPU + `0.26 MiB` CPU BM25 | **`16.17–17.81 MiB` (2-Lvl, `3.25×–3.58×` < RAG, `0 B` CPU) \| `27.11 MiB` (1-Lvl)** | `3,585.8 MiB` |
+| **128K / 256K Net VRAM (`1.7B`)** | `58.31` / `58.88 MiB` GPU + `0.84 MiB` CPU | **`24.98–25.09 MiB` (`2.33×` < RAG) / `34.55 MiB` (`1.70×` < RAG, 2-Lvl)** | `14.0` / `28.0 GiB` (OOM) |
+| **32K NIAH (`N=180`, Strict / Substr)** | `13.3% / 27.8%` Ex (`94.4%` T4) \| `1.1% / 94.4%` Sem | **E2E GPU (`0 B` CPU): `31.1% / 61.1%` Ex, `74.4% / 97.8%` Sem \| BM25: `45.6% / 82.2%` Ex (`97.0%` tok), `74.4% / 98.9%` Sem** | — |
+| **128K NIAH (`N=60`, Strict / Substr)** | `16.7% / 30.0%` Ex \| `0.0% / 100.0%` Sem | **E2E GPU (`0 B` CPU): `33.3% / 56.7%` Ex, `46.7% / 76.7%` Sem \| BM25: `43.3% / 73.3%` Ex (`94.1%` tok), `23.3% / 70.0%` Sem** | — |
+| **$k=3$ Numeric Overrides (`N=108`)** | `0%` (Imm) / `52.8%` (App) / `33.3%` (Patch) / `47.2%` (LLM-RW, `498 ms`) | **`94.4%` Strict / `95.8%` Substr (`100.0%` tok) & `97.2%` Static $\ell=0$ @ `8.62 ms/edit`** | `50.0%` |
+| **$k=5$ Symbolic Overrides (`N=90`)** | `0%` (Imm) / `41.7%` (App) / `3.3% / 86.7%` (Patch) / `3.3% / 90.0%` (LLM-RW, `516 ms`) | **`38.3%–43.3%` Strict / `40.0%–46.7%` Substr (`82.0%–86.6%` tok) & `86.7%–90.0%` Static $\ell=0$ @ `8.70 ms/edit`** | — |
+| **$k=3$ Paraphrased NL Edits (`N=90`)** | `0.0%` (Imm & Direct Regex Patch) / `40.0%` (App) / `30.0%` (LLM-RW, `496 ms`) | **`8.3%–10.0%` Strict / `35.0%–40.0%` Substr (`55.6%–67.8%` tok) & `93.3%–96.7%` Static $\ell=0$ @ `8.64 ms/edit`** | — |
 
-> Full multi-seed JSON traces, including targeted (`791–809 ms/edit`) vs. full 256-token page (`14,631 ms/edit`) LLM-rewrite RAG latencies and shared Okapi BM25 recall (`97.22%`), are archived in [`evals/m2_colab_l4/rebuttal_v2_summary.json`](https://github.com/arielfikru/lslc-research/blob/main/evals/m2_colab_l4/rebuttal_v2_summary.json). Note that this unified checkpoint fine-tuned `QueryToTOCRouter` at `P=128`, so `P=4` state-override evaluation pairs LSLC with BM25 (`router_out_override`) cleanly at `100%` top-2 recall.
+> Full multi-seed JSON traces—including `1D-Flat` vs. `1D-3Layer` vs. `3D-Spatial` iso-budget ablation, equal-token Truncated Flat TOC controls (`133`/`158` tokens), and 5-way State-Override metrics—are archived in [`evals/m2_colab_l4/v2_complete_summary.json`](https://github.com/arielfikru/lslc-research/blob/main/evals/m2_colab_l4/v2_complete_summary.json). This `v2.0.0` unified checkpoint co-trains `QueryToTOCRouter` across $P \in \{4, 16, 128\}$ with `projector.toc_proj` strictly frozen and in-VRAM `SparseExactBank` `MaxSim`, achieving `100.0%` top-2 recall at $P=4$ (`k=3` overrides) with `0 B` CPU RAM.
 
 ---
 

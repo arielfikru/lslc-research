@@ -1208,6 +1208,8 @@ def main() -> int:
     args = parser.parse_args()
 
     device = torch.device("cuda")
+    if not torch.cuda.is_bf16_supported():
+        torch.backends.cudnn.enabled = False
     props = torch.cuda.get_device_properties(0)
     print(f"=== LSLC REBUTTAL V2 UNIFIED SUITE on {props.name} ===", flush=True)
 

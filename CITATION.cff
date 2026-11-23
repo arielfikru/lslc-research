@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: "Layered Spatial Latent Caching (LSLC): In-Place Editable Compressed Context Memory vs. Raw-Text RAG with Volatility-Ordered Prefix Caching"
+message: "If you use this software, adapter weights, or paper, please cite it as below."
+type: software
+authors:
+  - given-names: Ariel
+    family-names: Fikru
+repository-code: "https://github.com/arielfikru/lslc-research"
+license: MIT
+date-released: 2026-11-23
+keywords:
+  - kv-cache
+  - context-compression
+  - latent-memory
+  - editable-memory
+  - prefix-caching
+  - rag
+  - qwen3

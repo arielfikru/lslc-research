@@ -7,6 +7,10 @@
 \usepackage{multirow}
 \usepackage{microtype}
 \usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usepackage{hyperref}
 
 \hypersetup{
@@ -16,7 +20,6 @@
     urlcolor=blue!60!black
 }
 
-\newcommand{\tbd}{\textit{[TBD]}}
 \newcommand{\vect}[1]{\mathbf{#1}}
 
 \title{\textbf{Layered Spatial Latent Caching (LSLC): In-Place Editable Compressed Context Memory vs.\ Raw-Text RAG with Volatility-Ordered Prefix Caching}}
@@ -32,7 +35,7 @@
 \maketitle
 
 \begin{abstract}
-Retrieval-Augmented Generation (RAG) over raw text chunks avoids quadratic Full-KV prefill ($O(N \cdot d_{\text{kv}})$) by retrieving top-$k$ pages per query, yet remains fundamentally unsuited for multi-turn in-place revisions: immutable chunks serve stale constraints ($0.0\%$ override EM), appending errata leaves conflicting history in the prompt ($38.3\%$--$52.1\%$ EM), and LLM-based chunk rewrites incur full autoregressive decode latency per edit. Conversely, recent 2026 latent context compressors (\textbf{LCLMs}, \textbf{Memorilla}) compress history into read-only continuous slots that lose exact verbatim identifiers, while recent editable KV methods (\emph{Models Take Notes at Prefill}) operate over uncompressed standard KV caches. We target the unoccupied intersection of \emph{in-place editable compressed memory} and \emph{prefix-cache preservation} with \textbf{Layered Spatial Latent Caching (LSLC)}, representing context as a modular, multi-layer 2D latent book $\vect{Z} \in \mathbb{R}^{B \times P \times L \times C \times H \times W}$ ($12\,\text{KiB/page}$) paired with a $128\,\text{byte/page}$ \textbf{Sparse Exact-Recall Footnote Bank}. LSLC introduces three core mechanisms: (1)~\textbf{Volatility-Ordered Prefix Caching} (with 1-level TOC at $\le 32\text{K}$ and 2-level Chapter$\rightarrow$Page hierarchy above $\sim 100\text{K}$), ordering projected blocks from immutable global TOC and \emph{Skim} tokens through static/entity layers ($\ell \in \{0,1\}$) to mutable dynamic working memory ($\ell=2$), structurally guaranteeing zero TOC prefix drift ($\max|\Delta_{\text{TOC}}|=0.0$); (2)~\textbf{In-Place Convex Sticky-Note Delta-Updates}, overwriting stale constraints on $\ell=2$ via $\vect{Z}_{p,2} \leftarrow (1 - \vect{G}_p) \odot \vect{Z}_{p,2} + \vect{G}_p \odot \Delta\vect{Z}_{p,2}$; and (3)~\textbf{Hybrid Continuous-Discrete Page Memory}, pairing 3D spatial-layer latents (\texttt{FactorizedRoPE3D}) with an $8\,\text{byte/token}$ \texttt{SparseExactBank} resolved via the frozen LLM's embedding table. Against Raw-Text Chunk RAG at $32\text{K}$ ($P=128$) on \texttt{Qwen3-1.7B} (NVIDIA L4), LSLC reduces active KV+store VRAM by $2.65\times$--$6.78\times$ ($27.11\,\text{MiB}$ vs.\ $71.72$--$183.72\,\text{MiB}$ for shared-TOC RAG, or $132.3\times$--$133.9\times$ below Full BF16 KV context) and accelerates query TTFT to $54.6$--$57.5\,\text{ms}$, while matching RAG token accuracy under shared router indices, scoring $80.0\%$--$90.0\%$ EM on 8-page Python codebases and 4-key decoys, and reaching $100.0\%$ EM on $k=3$ numeric overrides ($80.0\%$--$91.7\%$ on $k=5$ symbolic overrides) without accumulating conflicting errata.
+Retrieval-Augmented Generation (RAG) over raw text chunks avoids quadratic Full-KV prefill ($O(N \cdot d_{\text{kv}})$) by retrieving top-$k$ pages per query, yet remains fundamentally unsuited for multi-turn in-place revisions: immutable chunks serve stale constraints ($0.0\%$ override EM), appending errata leaves conflicting history in the prompt ($46.7\%$--$55.6\%$ EM), and LLM-based chunk rewrites incur $790.9$--$14{,}630.9\,\text{ms/edit}$ autoregressive decode latency. Conversely, recent 2026 latent context compressors (\textbf{LCLMs}, \textbf{Memorilla}) compress history into read-only continuous slots that lose exact verbatim identifiers, while recent editable KV methods (\emph{Models Take Notes at Prefill}) operate over uncompressed standard KV caches. We target the unoccupied intersection of \emph{in-place editable compressed memory} and \emph{prefix-cache preservation} with \textbf{Layered Spatial Latent Caching (LSLC)}, representing context as a modular, multi-layer 2D latent book $\vect{Z} \in \mathbb{R}^{B \times P \times L \times C \times H \times W}$ ($12\,\text{KiB/page}$) paired with a $128\,\text{byte/page}$ \textbf{Sparse Exact-Recall Footnote Bank}. LSLC introduces three core mechanisms: (1)~\textbf{Volatility-Ordered Prefix Caching} (with 1-level TOC at $\le 32\text{K}$ and 2-level Chapter$\rightarrow$Page hierarchy above $\sim 100\text{K}$), ordering projected blocks from immutable global TOC and \emph{Skim} tokens through static/entity layers ($\ell \in \{0,1\}$) to mutable dynamic working memory ($\ell=2$), guaranteeing zero TOC prefix drift ($\max|\Delta_{\text{TOC}}|=0.0$); (2)~\textbf{In-Place Convex Sticky-Note Delta-Updates}, overwriting stale constraints on $\ell=2$ via $\vect{Z}_{p,2} \leftarrow (1 - \vect{G}_p) \odot \vect{Z}_{p,2} + \vect{G}_p \odot \Delta\vect{Z}_{p,2}$; and (3)~\textbf{Hybrid Continuous-Discrete Page Memory}, pairing 3D spatial-layer latents (\texttt{FactorizedRoPE3D}) with an $8\,\text{byte/token}$ \texttt{SparseExactBank} resolved via the frozen LLM's embedding table. Against Constant-$k=2$ Raw-Text Chunk RAG ($57.89$--$58.88\,\text{MiB}$ live), our 2-level hierarchical LSLC cuts live CUDA net VRAM by $1.70\times$--$3.25\times$ across $32\text{K}$--$256\text{K}$ ($17.81\,\text{MiB}$ at $32\text{K}$, $24.98\,\text{MiB}$ at $128\text{K}$, $34.55\,\text{MiB}$ at $256\text{K}$---up to $829.9\times$ below Full BF16 KV); under a shared non-oracle Okapi BM25 retriever across $N=180$ $32\text{K}$ NIAH episodes, 2-level LSLC achieves $91.1\%$ Semantic EM (vs.\ $94.4\%$ RAG) and $71.1\%$ Exact EM ($93.0\%$ content-token accuracy); and across 3-seed state overrides ($N=198$), LSLC executes edits in $8.42$--$8.59\,\text{ms/edit}$ ($92\times$--$1{,}738\times$ faster than LLM chunk rewrites), reaching $100.0\%$ EM on $k=3$ numeric overrides and $70.0\%$--$91.7\%$ EM on $k=5$ symbolic overrides.
 \end{abstract}
 
 \section{Introduction}
@@ -67,7 +70,7 @@ AutoCompressors~\cite{chevalier2023autocompressors} and ICAE~\cite{ge2024icae} c
 \paragraph{Mutable Neural Memory, Editable KV Caches, and Looped State Refinement.}
 Test-time memory architectures such as \textbf{Titans}~\cite{behrouz2025titans} learn to update neural long-term memory weights online during inference, whereas Perceiver-style cross-attention architectures~\cite{jaegle2021perceiver} map arbitrary inputs onto fixed latent arrays. Closest to our editability motivation, Li~\cite{li2026notes} (\emph{Models Take Notes at Prefill}) shows that standard KV caches act as memoized prefill conclusions that can be amended via append-only CoT errata while maintaining high vLLM prefix-cache hit rates. Concurrently along the orthogonal axis of recurrent compute depth, \textbf{GLM-5.4}~\cite{zai2026glm54} (\emph{Loop Transformer}) demonstrates at $750\text{B}$-parameter scale that multi-pass hidden-state overwrites suffer severe activation-norm explosion unless governed by independent \emph{gated progressive updates} (conservative global context formation in Pass~1 followed by difficulty-sensitive local refinement in Pass~2), paired with a \emph{hybrid KV cache} that reuses Pass~1 sparse KV states and attention indices alongside a compact Pass~2 local window. LSLC independently uncovers and exploits this exact structural isomorphism along the \emph{context-memory axis}: executing \emph{in-place, $O(1)$-memory convex spatial delta overrides} ($\vect{Z}_{p,2} \leftarrow (1-\vect{G}_p)\odot\vect{Z}_{p,2} + \vect{G}_p\odot\Delta\vect{Z}_{p,2}$) inside a $132\times$--$143\times$ compressed 3D latent book while reusing a write-protected global prefix ($\text{TOC}_{1..P}$ and $\ell \in \{0,1\}$, $\max|\Delta_{\text{TOC}}| = 0.0$) and sharing router \texttt{deep\_idx} indices across latent projection and $O(1)$ \texttt{SparseExactBank} gather.
 
-\section{Backbone Analysis & Memory Accounting}
+\section{Backbone Analysis \& Memory Accounting}
 \label{sec:backbone}
 
 To ensure rigorous, apples-to-apples comparisons against standard 1D KV-cache baselines, LSLC selects pure dense Grouped-Query Attention (GQA) Transformer backbones: \texttt{Qwen3-1.7B} (primary MVE) and \texttt{Qwen3-4B} (scaling validation)~\cite{yang2025qwen3}. Hybrid linear-attention models (e.g., 3:1 Gated DeltaNet architectures) and sliding-window multimodal models are intentionally excluded from primary benchmarks because their non-uniform KV layouts confound direct comparisons against H2O, StreamingLLM, and INT4 KV baselines.
@@ -83,25 +86,62 @@ Table~\ref{tab:memory_accounting} details the exact verified KV costs and end-to
 \caption{Exact analytical VRAM accounting comparing standard 1D KV-cache baselines against LSLC across \texttt{Qwen3-1.7B} ($N_{\text{lay}}=28, H_{\text{kv}}=8, d_h=128 \Rightarrow 112\,\text{KiB/tok}$) and \texttt{Qwen3-4B} ($N_{\text{lay}}=36, H_{\text{kv}}=8, d_h=128 \Rightarrow 144\,\text{KiB/tok}$). LSLC net VRAM includes the entire $[P, 3, 128, 4, 4]$ FP16 book ($12\,\text{KiB/page}$), the Sparse Exact Bank ($128\,\text{B/page}$), and active FP16 LLM KV-cache for all projected tokens ($100$ active tokens at $4\text{K}$; $218$ active tokens at $32\text{K}$).}
 \label{tab:memory_accounting}
 \small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}llrrrrr@{}}
 \toprule
 \textbf{Context ($N$)} & \textbf{Backbone} & \textbf{FP16 KV} & \textbf{INT4 KV (Ideal)} & \textbf{H2O-20\%} & \textbf{LSLC Net Total} & \textbf{Ratio vs.\ FP16 / INT4} \\
 \midrule
-$4{,}096$ ($P=16$) & \texttt{Qwen3-1.7B} ($d=2048$) & $448.0\,\text{MiB}$ & $112.0\,\text{MiB}$ & $89.6\,\text{MiB}$ & $\mathbf{11.13\,\text{MiB}}$ & $\mathbf{40.2\times} \;/\; \mathbf{10.1\times}$ \\
+$4{,}096$ ($P=16$) & \texttt{Qwen3-1.7B} ($d=2048$) & $448.0\,\text{MiB}$ & $112.0\,\text{MiB}$ & $89.6\,\text{MiB}$ & $\mathbf{11.13\,\text{MiB}}$ & $\mathbf{40.3\times} \;/\; \mathbf{10.1\times}$ \\
 $4{,}096$ ($P=16$) & \texttt{Qwen3-4B} ($d=2560$) & $576.0\,\text{MiB}$ & $144.0\,\text{MiB}$ & $115.2\,\text{MiB}$ & $\mathbf{14.25\,\text{MiB}}$ & $\mathbf{40.4\times} \;/\; \mathbf{10.1\times}$ \\
 \midrule
 $32{,}768$ ($P=128$) & \texttt{Qwen3-1.7B} ($d=2048$) & $3{,}584.0\,\text{MiB}$ & $896.0\,\text{MiB}$ & $716.8\,\text{MiB}$ & $\mathbf{25.36\,\text{MiB}}$ & $\mathbf{141.3\times} \;/\; \mathbf{35.3\times}$ \\
 $32{,}768$ ($P=128$) & \texttt{Qwen3-4B} ($d=2560$) & $4{,}608.0\,\text{MiB}$ & $1{,}152.0\,\text{MiB}$ & $921.6\,\text{MiB}$ & $\mathbf{32.17\,\text{MiB}}$ & $\mathbf{143.2\times} \;/\; \mathbf{35.8\times}$ \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table*}
 
 \section{Method: Layered Spatial Latent Caching}
 \label{sec:method}
 
-Let an incoming token sequence $X = (x_1, \dots, x_N)$ be partitioned into modular pages of length $T_p = 256$ tokens, yielding $P = \lceil N / T_p \rceil$ pages with frozen token embeddings $\vect{E}_p \in \mathbb{R}^{T_p \times d_{\text{llm}}}$. LSLC encodes each page independently into a multi-layer 2D latent tensor $\vect{Z}_p \in \mathbb{R}^{L \times C \times H \times W}$ ($L=3, C=128, H=4, W=4$) plus a sparse exact index $\mathcal{I}_p$, and decodes context dynamically on demand for a frozen LLM backbone.
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.85cm and 0.95cm,
+    box/.style={draw=black!75, rounded corners=3pt, minimum height=0.85cm, align=center, font=\footnotesize, inner sep=5pt, fill=black!2},
+    imm/.style={draw=blue!55!black, rounded corners=3pt, minimum height=0.85cm, align=center, font=\footnotesize, inner sep=5pt, fill=blue!5},
+    mut/.style={draw=orange!70!black, rounded corners=3pt, minimum height=0.85cm, align=center, font=\footnotesize, inner sep=5pt, fill=orange!7},
+    arr/.style={-{Stealth[length=2.2mm]}, semithick, draw=black!80}
+]
+\node[box] (page) {Raw Page $X_p$\\($T_p=256$ tokens)};
+\node[box, right=of page] (enc) {\texttt{LayeredLatentEncoder}\\(\texttt{FactorizedRoPE3D})};
+\node[box, above right=0.35cm and 0.95cm of enc] (book) {3D Latent Book $\vect{Z}_p$\\$[3,128,4,4]$ ($12\,\text{KiB/p}$)};
+\node[box, below right=0.35cm and 0.95cm of enc] (bank) {\texttt{SalienceGate} $\rightarrow$ \texttt{SparseExactBank}\\($16$ tok/p $\times 8\,\text{B} = 128\,\text{B/p}$)};
+\node[mut, right=of book] (delta) {\texttt{DeltaUpdater} (Turn $X_\Delta$)\\$(1-\vect{G}_p)\odot\vect{Z}_{p,2}+\vect{G}_p\odot\Delta\vect{Z}_{p,2}$\\($\ell=2$ Sticky-Note Only)};
+\node[imm, right=1.15cm of delta, yshift=-0.15cm] (b1) {\textbf{Bank 1 (Immutable, $\max|\Delta_{\text{TOC}}|=0.0$)}\\Chapter/Page TOC $\mid$ Skim $\mid$ Deep $\ell \in \{0,1\}$};
+\node[mut, below=0.35cm of b1] (b2) {\textbf{Bank 2 (Mutable Tail Window)}\\Deep $\ell=2$ ($16$ tok/p) $\mid$ $(p/p_{\max})^2$ Footnotes $\mathcal{I}_{\text{deep}}$};
+\node[box, right=1.05cm of b1, yshift=-0.55cm] (llm) {\textbf{Frozen Qwen3 LLM}\\Causal Attention + KV Reuse\\$+ X_{\text{turn}} \rightarrow$ Output};
 
-\subsection{Pillar 1: Spatial-Layer Encoder & 3D Factorized RoPE}
+\draw[arr] (page) -- (enc);
+\draw[arr] (enc.east) |- (book.west);
+\draw[arr] (enc.east) |- (bank.west);
+\draw[arr] (book) -- (delta);
+\draw[arr] (book.north) -- ++(0,0.40) -| (b1.north);
+\draw[arr] (delta.east) -- ++(0.35,0) |- (b2.west);
+\draw[arr] (bank.east) -| (b2.south);
+\draw[arr] (b1.east) -- (llm.west |- b1.east);
+\draw[arr] (b2.east) -- (llm.west |- b2.east);
+\end{tikzpicture}%
+}
+\caption{End-to-end LSLC dataflow and volatility-ordered Two-Bank prefix layout. Structural layers ($\ell \in \{0,1\}$, TOC, and Skim) reside in Bank~1 and stay bit-identical across $\ell=2$ convex sticky-note edits, preserving downstream prefix KV caches while the $128\,\text{B/page}$ \texttt{SparseExactBank} anchors exact discrete identifiers.}
+\label{fig:architecture}
+\end{figure*}
+
+Let an incoming token sequence $X = (x_1, \dots, x_N)$ be partitioned into modular pages of length $T_p = 256$ tokens, yielding $P = \lceil N / T_p \rceil$ pages with frozen token embeddings $\vect{E}_p \in \mathbb{R}^{T_p \times d_{\text{llm}}}$. LSLC encodes each page independently into a multi-layer 2D latent tensor $\vect{Z}_p \in \mathbb{R}^{L \times C \times H \times W}$ ($L=3, C=128, H=4, W=4$) plus a sparse exact index $\mathcal{I}_p$, and decodes context dynamically on demand for a frozen LLM backbone (Figure~\ref{fig:architecture}).
+
+\subsection{Pillar 1: Spatial-Layer Encoder \& 3D Factorized RoPE}
 Inside \texttt{LayeredLatentEncoder}, the $T_p=256$ tokens of page $p$ are divided into $H \times W = 16$ ordered $16$-token discourse sub-spans so spatial neighborhoods $(h, w)$ preserve local sequential continuity under 2D pooling. A lightweight Perceiver-style cross-attention stack~\cite{jaegle2021perceiver} maps learnable queries $\vect{Q}_{\text{book}} \in \mathbb{R}^{(L \cdot H \cdot W) \times d_{\text{enc}}}$ over $\vect{E}_p$, followed by bottleneck projection to $C=128$ channels.
 
 To encode layer identity alongside 2D spatial layout without confounding dimensions, internal encoder and delta-updater self-attention applies \textbf{3D Factorized Spatial-Layer RoPE}~\cite{su2024roformer}. Partitioning the rotary channels $d_{\text{rot}}$ into $(d_\ell, d_h, d_w)$, each latent slot at coordinate $(\ell, h, w)$ rotates its query/key sub-vectors by:
@@ -110,7 +150,7 @@ To encode layer identity alongside 2D spatial layout without confounding dimensi
 \end{equation}
 while cross-page routing uses a separate 1D page-index rotary offset $p \in \{0, \dots, P-1\}$ so pages remain modular and appendable without re-indexing prior pages.
 
-\subsection{Pillar 2: Multi-Resolution Book Pyramid & Matryoshka Zoom}
+\subsection{Pillar 2: Multi-Resolution Book Pyramid \& Matryoshka Zoom}
 Given a page tensor $\vect{Z}_p \in \mathbb{R}^{L \times C \times 4 \times 4}$, LSLC constructs three hierarchical reading resolutions using $O(L \cdot C \cdot H \cdot W)$ pooling:
 \begin{itemize}
     \item \textbf{Level 0 --- Table of Contents (TOC, $1\times 1$):} Global average pooling over the consolidated structural layers $\vect{Z}_{p, 0:2}$ ($\ell \in \{0,1\}$, $2C=256$ channels) produces $\vect{u}_p^{\text{TOC}} = \mathrm{Proj}_{\text{TOC}}(\mathrm{Pool}_{1\times 1}(\vect{Z}_{p, 0:2})) \in \mathbb{R}^{1 \times d_{\text{llm}}}$, emitting \textbf{$1$ token/page} permanently resident in LLM context while staying invariant under $\ell=2$ delta-updates.
@@ -122,38 +162,47 @@ At inference time, a lightweight \texttt{QueryToTOCRouter} scores query embeddin
 
 To prevent blurred zoom-out representations when pooling $4\times 4 \rightarrow 2\times 2 \rightarrow 1\times 1$, training enforces \textbf{Matryoshka Multi-Scale Supervision}: stochastic resolution dropout samples TOC-only, Skim, or Deep Read projections during optimization so a single page tensor remains decodable across every zoom level.
 
-\subsection{Pillar 3: Anti-Collapse Layers, Prefix Caching & Delta-Updates}
+\subsection{Pillar 3: Anti-Collapse Layers, Prefix Caching \& Delta-Updates}
 Unconstrained end-to-end training causes \emph{layer collapse}, mixing static and transient features indiscriminately across $\ell \in \{0,1,2\}$. LSLC enforces structural specialization via two inductive biases:
 \begin{enumerate}
     \item \textbf{Layer-Ordered Two-Bank Causal Prefix Alignment (Mode~A):} Soft-prompt tokens enter the frozen LLM \texttt{inputs\_embeds} in strict monotonicity of volatility, forming a \textbf{Two-Bank Prefix} over a single causal attention softmax:
-    \begin{equation}
-    \mathcal{S}_{\text{LLM}} = \big[\underbrace{\text{TOC}_{1..P} \;\big|\; \text{Skim} \;\big|\; \text{Deep}_{\ell=0} \;\big|\; \text{Deep}_{\ell=1}}_{\text{Bank 1: Invariant Structural Prefix (Reused)}} \;\big|\; \underbrace{\text{Deep}_{\ell=2} \;\big|\; \mathcal{I}_{\text{deep}}}_{\text{Bank 2: Local Dynamic \& Exact Window}} \;\big|\; X_{\text{turn}}\big].
-    \end{equation}
-    Whenever a turn revision modifies only $\ell=2$, the LLM's KV prefix cache for the global $\text{TOC}_{1..P}$ block remains $100\%$ invariant across all queries and edits by structural construction (since TOC pools exclusively over $\ell \in \{0,1\}$), while downstream Skim, $\ell=0$, and $\ell=1$ KV blocks (Bank~1) remain cached whenever consecutive turns inspect the same routed page set, updating only Bank~2 at the tail of the prefix. Notably, this structure is the spatial-memory dual of the \emph{Two-Bank Sparse MLA} (`[Pass 1 Sparse Prefix | Pass 2 128-token Local SWA Window]`) independently introduced for recurrent layer looping in GLM-5.4~\cite{zai2026glm54}. (Mode~B replaces soft-prompt prefixes with gated cross-attention adapters~\cite{jaegle2021perceiver} in future work to eliminate causal ordering dependencies entirely.)
+    \begin{align}
+    \mathcal{S}_{\text{LLM}} = \Big[&\underbrace{\text{TOC}_{1..P} \mid \text{Skim} \mid \text{Deep}_{\ell=0} \mid \text{Deep}_{\ell=1}}_{\text{Bank 1: Invariant Structural Prefix}} \nonumber \\
+    &\mid \underbrace{\text{Deep}_{\ell=2} \mid \mathcal{I}_{\text{deep}}}_{\text{Bank 2: Mutable}} \mid X_{\text{turn}}\Big].
+    \end{align}
+    Whenever a turn revision modifies only $\ell=2$, the LLM's KV prefix cache for the global $\text{TOC}_{1..P}$ block remains $100\%$ invariant across all queries and edits by structural construction (since TOC pools exclusively over $\ell \in \{0,1\}$), while downstream Skim, $\ell=0$, and $\ell=1$ KV blocks (Bank~1) remain cached whenever consecutive turns inspect the same routed page set, updating only Bank~2 at the tail of the prefix. Notably, this structure is the spatial-memory dual of the \emph{Two-Bank Sparse MLA} (\texttt{[Pass 1 Sparse Prefix | Pass 2 128-token Local SWA Window]}) independently introduced for recurrent layer looping in GLM-5.4~\cite{zai2026glm54}. (Mode~B replaces soft-prompt prefixes with gated cross-attention adapters~\cite{jaegle2021perceiver} in future work to eliminate causal ordering dependencies entirely.)
     \item \textbf{In-Place Sticky-Note Delta-Updates (Spatial Damp Gate):} Given a revision turn $X_{\Delta}$ targeting page $p$ (selected by router top-$1$ or explicit page address), \texttt{DeltaUpdater} predicts a sparse update gate $\vect{G}_p \in [0, 1]^{H \times W}$ and override candidate $\Delta\vect{Z}_{p,2} \in \mathbb{R}^{C \times H \times W}$ applied exclusively to dynamic layer $\ell=2$:
     \begin{equation}
-    \vect{Z}_{p, 2}^{\text{new}} = (1 - \vect{G}_p) \odot \vect{Z}_{p, 2}^{\text{old}} + \vect{G}_p \odot \Delta\vect{Z}_{p, 2} \;\equiv\; \vect{Z}_{p, 2}^{\text{old}} + \vect{G}_p \odot \big(\Delta\vect{Z}_{p, 2} - \vect{Z}_{p, 2}^{\text{old}}\big), \qquad \mathcal{L}_{\text{sparse}} = \lambda_{\text{sp}} \Phi_{[\tau_{\min}, \tau_{\max}]}(\|\vect{G}_p\|_1),
+    \label{eq:delta}
+    \begin{aligned}
+    \vect{Z}_{p, 2}^{\text{new}} &= (1 - \vect{G}_p) \odot \vect{Z}_{p, 2}^{\text{old}} + \vect{G}_p \odot \Delta\vect{Z}_{p, 2} \\
+    &\equiv \vect{Z}_{p, 2}^{\text{old}} + \vect{G}_p \odot \big(\Delta\vect{Z}_{p, 2} - \vect{Z}_{p, 2}^{\text{old}}\big), \\
+    \mathcal{L}_{\text{sparse}} &= \lambda_{\text{sp}} \Phi_{[\tau_{\min}, \tau_{\max}]}(\|\vect{G}_p\|_1),
+    \end{aligned}
     \end{equation}
-    where $\Phi_{[\tau_{\min}, \tau_{\max}]}$ penalizes gate activation outside target sparsity band $[0.12, 0.26]$, while structural layers $\vect{Z}_{p, 0:2}$ ($\ell \in \{0,1\}$) remain strictly write-protected after initial consolidation. Algebraically, Eq.~(4) is identical to the recurrent \emph{Damp Gate} ($\vect{x}_t = \vect{x}_{t-1} + \beta_t(\vect{h}_t - \vect{x}_{t-1})$) used in GLM-5.4~\cite{zai2026glm54} to prevent activation-norm explosion across multi-pass hidden-state overwrites.
+    where $\Phi_{[\tau_{\min}, \tau_{\max}]}$ penalizes gate activation outside target sparsity band $[0.12, 0.26]$, while structural layers $\vect{Z}_{p, 0:2}$ ($\ell \in \{0,1\}$) remain strictly write-protected after initial consolidation. Algebraically, Eq.~\eqref{eq:delta} is identical to the recurrent \emph{Damp Gate} ($\vect{x}_t = \vect{x}_{t-1} + \beta_t(\vect{h}_t - \vect{x}_{t-1})$) used in GLM-5.4~\cite{zai2026glm54} to prevent activation-norm explosion across multi-pass hidden-state overwrites.
 \end{enumerate}
 
-\subsection{Pillar 4: Sparse Exact-Recall Footnote Bank & Objective}
+\subsection{Pillar 4: Sparse Exact-Recall Footnote Bank \& Objective}
 Although a $12\,\text{KiB}$ FP16 page latent ($6{,}144$ continuous scalars) occupies more raw bytes than $256$ discrete \texttt{int32} token IDs ($1\,\text{KiB}$), continuous soft-prompt vectors must project into distributed $d_{\text{llm}}$-dimensional hidden semantics rather than indexing the discrete vocabulary table directly. Consequently, pure continuous bottlenecks suffer an optimization and representation-alignment bottleneck on arbitrary high-entropy identifiers (hex hashes, random numeric codes, snake\_case symbols). To decouple semantic compression from verbatim token copy without falling back to full-page raw-text re-prefill (which would consume $256$ active KV tokens per retrieved page rather than $24 + 16 = 40$), \texttt{SalienceGate} scores every raw token $i$ in page $p$ via:
 \begin{equation}
 s_i = \sigma\big(\vect{w}_s^\top \vect{e}_i + \gamma H_{\text{surprisal}}(x_i)\big),
 \end{equation}
-selecting the top-$\rho$ ($\rho = 6.25\%$, i.e., $16$ tokens per $256$-token page) into compact $8$-byte records $(\texttt{token\_id: int32},\; \texttt{page\_id: uint16},\; \texttt{h: uint8},\; \texttt{w: uint8})$ consuming only $128\,\text{bytes/page}$ ($16\,\text{KiB}$ for $32{,}768$ tokens). When page $p$ enters Deep Read, embeddings are gathered in $O(1)$ directly from the frozen LLM's \texttt{embed\_tokens} table, summed with bounded $(h, w)$ spatial tags, and weighted by relative router confidence $(p_{\text{deep}}/p_{\max})^2$ prior to $X_{\text{turn}}$.
+selecting the top-$\rho$ ($\rho = 6.25\%$, i.e., $16$ tokens per $256$-token page) into compact $8$-byte records $(\texttt{token\_id}\!:\!\texttt{int32},\allowbreak\;\texttt{page\_id}\!:\!\texttt{uint16},\allowbreak\;\texttt{h}\!:\!\texttt{uint8},\allowbreak\;\texttt{w}\!:\!\texttt{uint8})$ consuming only $128\,\text{bytes/page}$ ($16\,\text{KiB}$ for $32{,}768$ tokens). When page $p$ enters Deep Read, embeddings are gathered in $O(1)$ directly from the frozen LLM's \texttt{embed\_tokens} table, summed with bounded $(h, w)$ spatial tags, and weighted by relative router confidence $(p_{\text{deep}}/p_{\max})^2$ prior to $X_{\text{turn}}$.
 
 All trainable LSLC modules ($40.42\text{M}$ trainable parameters on \texttt{Qwen3-1.7B} and $53.52\text{M}$ on \texttt{Qwen3-4B}; base LLM strictly frozen) are optimized jointly via:
 \begin{equation}
-\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{NTP}} + \lambda_{\text{rec}}\mathcal{L}_{\text{autoenc}} + \lambda_{\text{mat}}\mathcal{L}_{\text{Matryoshka}} + \lambda_{\text{sp}}\|\vect{G}\|_1 + \lambda_{\text{route}}\mathcal{L}_{\text{router}},
+\begin{aligned}
+\mathcal{L}_{\text{total}} &= \mathcal{L}_{\text{NTP}} + \lambda_{\text{rec}}\mathcal{L}_{\text{autoenc}} + \lambda_{\text{mat}}\mathcal{L}_{\text{Matryoshka}} \\
+&\quad + \lambda_{\text{sp}}\|\vect{G}\|_1 + \lambda_{\text{route}}\mathcal{L}_{\text{router}},
+\end{aligned}
 \end{equation}
 combining next-token prediction, page autoencoding reconstruction, multi-scale zoom distillation, delta-gate $L_1$ sparsity, and auxiliary router supervision.
 
-\section{Experimental Protocol & Empirical Results}
+\section{Experimental Protocol \& Empirical Results}
 \label{sec:protocol}
 
-All experiments were executed on a single NVIDIA L4 GPU ($22.03\,\text{GiB}$ VRAM, native \texttt{bfloat16}) on Google Colab across \texttt{Qwen/Qwen3-1.7B} ($40.42\text{M}$ trainable LSLC parameters) and \texttt{Qwen/Qwen3-4B} ($53.52\text{M}$ trainable LSLC parameters), with $100\%$ of base LLM parameters strictly frozen:
+Core ablation and adversarial stress-test suites (Tables~\ref{tab:ablations}--\ref{tab:hard_stress}) were executed on a single NVIDIA L4 GPU ($22.03\,\text{GiB}$ VRAM, native \texttt{bfloat16}) on Google Colab across \texttt{Qwen/Qwen3-1.7B} ($40.42\text{M}$ trainable LSLC parameters), \texttt{Qwen/Qwen3-4B} ($53.52\text{M}$), and 4-bit \texttt{NF4} \texttt{Qwen/Qwen3-8B} ($108.56\text{M}$), while the unified multi-seed 2-level hierarchy and editable-RAG evaluation (Figure~\ref{fig:vram_crossover}, Table~\ref{tab:unified_eval}) was executed on a single Tesla T4 GPU ($14.56\,\text{GiB}$ VRAM, \texttt{float16}), with $100\%$ of base LLM parameters strictly frozen:
 \begin{enumerate}
     \item \textbf{Long-Context Language Modeling:} Held-out continuation Perplexity (PPL $\downarrow$) on \texttt{Salesforce/wikitext} (\texttt{wikitext-2-raw-v1}, $78{,}379$ training tokens, $35{,}520$ validation tokens).
     \item \textbf{Needle-in-a-Haystack (Exact vs.\ Semantic NIAH):} Held-out evaluation ($N_{\text{eval}}=30$ episodes across $5$ depths $\{0.0, 0.25, 0.50, 0.75, 1.0\}$ embedded in real WikiText-2 validation passages, $\text{seed}=9999$) decoupling 9-token high-entropy numeric codes (e.g., \texttt{API-KEY = 3034-3582}, \texttt{NODE-PORT = 5877-6370}) from semantic factual retrieval, evaluated on both $4$-page ($1\text{K}$) and $16$-page ($4\text{K}$) books.
@@ -163,9 +212,11 @@ All experiments were executed on a single NVIDIA L4 GPU ($22.03\,\text{GiB}$ VRA
 
 \begin{table*}[t]
 \centering
-\caption{Empirical ablation and baseline comparison matrix on NVIDIA L4 (\texttt{bfloat16}) across \texttt{Qwen3-1.7B} and \texttt{Qwen3-4B}. Notice the explicit separation of evaluation regimes: columns 3--5 report **32K ($P=128$) live CUDA systems profiling** (net allocated VRAM and query prefill TTFT over an encoded book in VRAM, where one-time streaming page encoding takes $\sim 1.8\,\text{ms/page}$ and Warm TTFT reuses the invariant $122$-token TOC KV prefix), whereas columns 6--9 report **controlled $1\text{K}$ ($P=4$, Tracks~0A--2, 4) and $4\text{K}$ ($P=16$, Track~3) quality benchmarks**. Entries marked $^\dagger$ denote analytical prefill latency estimates scaled by active-token / memory-bandwidth ratios for simulated baselines without custom fused CUDA kernels. Entries marked $^\ddagger$ (Track~0B) evaluate quality under simulated group-wise symmetric INT4 quantization (\texttt{group\_size=64}), yielding 4-decimal perplexity parity ($11.6739$) with BF16 Full KV on \texttt{Qwen3-4B}. Structural 1D-vs-3D ablation (Track~0E) and 16-page $4\text{K}$ routing decomposition (Track~3) are conducted on \texttt{Qwen3-1.7B}.}
+\caption{Empirical ablation and baseline comparison matrix on NVIDIA L4 (\texttt{bfloat16}) across \texttt{Qwen3-1.7B} and \texttt{Qwen3-4B}. Notice the explicit separation of evaluation regimes: columns 3--5 report \textbf{32K ($P=128$) live CUDA systems profiling} (net allocated VRAM and query prefill TTFT over an encoded book in VRAM, where one-time streaming page encoding takes $0.21\text{--}0.35\,\text{ms/page}$ on L4 ($1.23\text{--}1.24\,\text{ms/page}$ on T4) and Warm TTFT reuses the invariant $122$-token TOC KV prefix), whereas columns 6--9 report \textbf{controlled $1\text{K}$ ($P=4$, Tracks~0A--2, 4) and $4\text{K}$ ($P=16$, Track~3) quality benchmarks}. Entries marked $^\dagger$ denote analytical VRAM or prefill latency estimates derived from active-token / memory-bandwidth ratios for simulated baselines and the Track~1 dense-only ablation. Entries marked $^\ddagger$ (Track~0B) evaluate quality under simulated group-wise symmetric INT4 quantization (\texttt{group\_size=64}), yielding 4-decimal perplexity parity ($11.6739$) with BF16 Full KV on \texttt{Qwen3-4B}. Structural 1D-vs-3D ablation (Track~0E) and 16-page $4\text{K}$ routing decomposition (Track~3) are conducted on \texttt{Qwen3-1.7B}.}
 \label{tab:ablations}
 \small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}llccccccc@{}}
 \toprule
 \textbf{Track} & \textbf{Method / Configuration} & \textbf{32K Ratio} $\uparrow$ & \textbf{32K VRAM} $\downarrow$ & \textbf{32K Query TTFT} $\downarrow$ & \textbf{1K PPL} $\downarrow$ & \textbf{1K/4K Exact NIAH} $\uparrow$ & \textbf{1K/4K Sem.\ NIAH} $\uparrow$ & \textbf{1K Delta-Edit / $\max|\Delta_{\text{TOC}}|$} \\
@@ -173,11 +224,11 @@ All experiments were executed on a single NVIDIA L4 GPU ($22.03\,\text{GiB}$ VRA
 \multicolumn{9}{@{}l}{\textit{\textbf{Primary MVE Backbone: \texttt{Qwen/Qwen3-1.7B}} ($d_{\text{llm}}=2048, N_{\text{lay}}=28, 112\,\text{KiB/tok FP16 KV}$)}} \\
 \textbf{0A} & Full 1D KV-Cache (BF16) & $1.00\times$ & $3{,}585.8\,\text{MiB}$ & $5{,}235.4\,\text{ms}$ & $15.24$ & $93.3\% \;/\; 90.0\%$ & $100.0\%$ & $50.0\%$ (Append) \\
 \textbf{0B}$^\ddagger$ & Quantized 1D KV-Cache (INT4) & $4.00\times$ & $896.0\,\text{MiB}$ & $1{,}410.0\,\text{ms}^\dagger$ & $15.20$ & $100.0\% \;/\; 90.0\%$ & $100.0\%$ & N/A \\
-\textbf{0C} & StreamingLLM-128 (Sink+Win) & $256.0\times$ & $14.00\,\text{MiB}$ & $54.8\,\text{ms}$ & $15.81$ & $0.0\% \;/\; 9.3\%$ & $53.3\%$ & N/A \\
+\textbf{0C} & StreamingLLM-128 (Sink+Win) & $256.0\times^\dagger$ & $14.00\,\text{MiB}^\dagger$ & $54.8\,\text{ms}^\dagger$ & $15.81$ & $0.0\% \;/\; 9.3\%$ & $53.3\%$ & N/A \\
 \textbf{0D} & H2O Eviction (20\% Budget) & $5.00\times$ & $716.8\,\text{MiB}$ & $1{,}050.0\,\text{ms}^\dagger$ & $16.02$ & $0.0\% \;/\; 16.0\%$ & $53.3\%$ & N/A \\
 \textbf{0E} & Flat 1D Latent Cache ($12\,\text{KiB/p}$) & $132.3\times$ & $27.10\,\text{MiB}$ & $92.0\,\text{ms}$ & $24.05$ & $0.0\% \;/\; 29.3\%$ & $46.7\%$ & $\max|\Delta|=1.097$ \\
 \midrule
-\textbf{1} & LSLC 3D Dense Only (No Exact) & $152.8\times$ & $23.47\,\text{MiB}$ & $90.1 \;/\; 54.2\,\text{ms}$ & $16.59$ & $0.0\% \;/\; 24.7\%$ & $\mathbf{100.0\%}$ & $\text{Static}=100\%$ \\
+\textbf{1} & LSLC 3D Dense Only (No Exact) & $152.0\times^\dagger$ & $23.59\,\text{MiB}^\dagger$ & $90.1 \;/\; 54.2\,\text{ms}^\dagger$ & $16.59$ & $0.0\% \;/\; 24.7\%$ & $\mathbf{100.0\%}$ & N/A \\
 \textbf{2} & LSLC 3D + \texttt{SparseExactBank} & $\mathbf{132.3\times}$ & $\mathbf{27.11\,\text{MiB}}$ & $\mathbf{92.9 \;/\; 58.0\,\text{ms}}$ & $\mathbf{15.66}$ & $\mathbf{66.7\% \;/\; 90.7\%}$ & $\mathbf{100.0\%}$ & $\text{Capture}=100\%$ \\
 \textbf{3} & LSLC 16-Page $4\text{K}$ Multi-Page Book & $34.9\times$ ($4\text{K}$) & $12.88\,\text{MiB}$ ($4\text{K}$) & $74.0 \;/\; 55.6\,\text{ms}$ & $15.66$ & $50.0\% \;/\; 70.0\%$ & $\mathbf{100.0\%}$ & $\text{Capture}=100\%$ \\
 \textbf{4} & LSLC + Sticky-Note \texttt{DeltaUpdater} & $\mathbf{132.3\times}$ & $\mathbf{27.11\,\text{MiB}}$ & $\mathbf{92.9 \;/\; 58.0\,\text{ms}}$ & $15.66$ & $66.7\% \;/\; 90.7\%$ & $\mathbf{100.0\%}$ & $\mathbf{100.0\%} \;/\; \mathbf{0.0}$ \\
@@ -185,14 +236,15 @@ All experiments were executed on a single NVIDIA L4 GPU ($22.03\,\text{GiB}$ VRA
 \multicolumn{9}{@{}l}{\textit{\textbf{Scaling Validation Backbone: \texttt{Qwen/Qwen3-4B}} ($d_{\text{llm}}=2560, N_{\text{lay}}=36, 144\,\text{KiB/tok FP16 KV}$)}} \\
 \textbf{0A} & Full 1D KV-Cache (BF16) & $1.00\times$ & $4{,}610.3\,\text{MiB}$ & $12{,}725.8\,\text{ms}$ & $11.67$ & $100.0\% \;/\; 94.7\%$ & $93.3\%$ & $81.3\%$ (Append) \\
 \textbf{0B}$^\ddagger$ & Quantized 1D KV-Cache (INT4) & $4.00\times$ & $1{,}152.0\,\text{MiB}$ & $3{,}180.0\,\text{ms}^\dagger$ & $11.67$ & $100.0\% \;/\; 94.7\%$ & $93.3\%$ & N/A \\
-\textbf{0C} & StreamingLLM-128 (Sink+Win) & $256.0\times$ & $18.00\,\text{MiB}$ & $78.5\,\text{ms}$ & $13.64$ & $0.0\% \;/\; 16.7\%$ & $6.7\%$ & N/A \\
+\textbf{0C} & StreamingLLM-128 (Sink+Win) & $256.0\times^\dagger$ & $18.00\,\text{MiB}^\dagger$ & $78.5\,\text{ms}^\dagger$ & $13.64$ & $0.0\% \;/\; 16.7\%$ & $6.7\%$ & N/A \\
 \textbf{0D} & H2O Eviction (20\% Budget) & $5.00\times$ & $921.6\,\text{MiB}$ & $2{,}540.0\,\text{ms}^\dagger$ & $14.27$ & $0.0\% \;/\; 35.3\%$ & $0.0\%$ & N/A \\
 \midrule
-\textbf{1} & LSLC 3D Dense Only (No Exact) & $154.5\times$ & $29.84\,\text{MiB}$ & $108.0 \;/\; 80.1\,\text{ms}$ & $\mathbf{12.88}$ & $0.0\% \;/\; 27.3\%$ & $\mathbf{100.0\%}$ & $\text{Static}=100\%$ \\
+\textbf{1} & LSLC 3D Dense Only (No Exact) & $154.2\times^\dagger$ & $29.90\,\text{MiB}^\dagger$ & $108.0 \;/\; 80.1\,\text{ms}^\dagger$ & $\mathbf{12.88}$ & $0.0\% \;/\; 27.3\%$ & $\mathbf{100.0\%}$ & N/A \\
 \textbf{2} & LSLC 3D + \texttt{SparseExactBank} & $\mathbf{133.9\times}$ & $\mathbf{34.42\,\text{MiB}}$ & $\mathbf{111.8 \;/\; 84.3\,\text{ms}}$ & $14.24$ & $\mathbf{66.7\% \;/\; 79.3\%}$ & $\mathbf{100.0\%}$ & $\text{Capture}=100\%$ \\
 \textbf{4} & LSLC + Sticky-Note \texttt{DeltaUpdater} & $\mathbf{133.9\times}$ & $\mathbf{34.42\,\text{MiB}}$ & $\mathbf{111.8 \;/\; 84.3\,\text{ms}}$ & $14.24$ & $66.7\% \;/\; 79.3\%$ & $\mathbf{100.0\%}$ & $\mathbf{100.0\%} \;/\; \mathbf{0.0}$ \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table*}
 
 \subsection{Key Empirical Findings}
@@ -205,19 +257,21 @@ On continuous 3D latents alone (Track~1), both backbones achieve $\mathbf{100.0\
 \paragraph{3.\ Positive Scaling Law \& Sparse-Footnote Fluency Trade-Off (\texttt{Qwen3-1.7B} $\rightarrow$ \texttt{Qwen3-4B}).}
 Scaling the frozen backbone from $1.7\text{B}$ to $4\text{B}$ improves LSLC Track~1 perplexity from $16.59 \rightarrow \mathbf{12.88}$ (outperforming both StreamingLLM at $13.64$ and H2O-$20\%$ at $14.27$) and Track~2 perplexity from $15.66 \rightarrow \mathbf{14.24}$ (with pure \texttt{deep\_only} zoom reaching $\mathbf{13.51}$ and \texttt{toc\_only} reaching $15.78$). Notably, whereas adding \texttt{SparseExactBank} on \texttt{Qwen3-1.7B} (300 steps, $40.42\text{M}$ params) reduces mixed-mode PPL ($16.59 \rightarrow 15.66$), on the wider \texttt{Qwen3-4B} projector ($d_{\text{llm}}=2560$, $53.52\text{M}$ params trained under a fixed 250-step budget) injecting discrete verbatim footnote tokens introduces a modest general-prose fluency trade-off in mixed shallow/deep mode ($12.88 \rightarrow 14.24$ PPL, while \texttt{deep\_only} remains at $13.51$) alongside a slightly lower teacher-forced Exact NIAH token accuracy ($79.3\%$ vs.\ $90.7\%$ on $1.7\text{B}$), even as autoregressive Exact String Match ($66.7\%$) and needle capture ($100.0\%$) match $1.7\text{B}$. At $N=32{,}768$ tokens on \texttt{Qwen3-4B}, Full BF16 KV-cache requires $4{,}610.25\,\text{MiB}$ and $12{,}725.77\,\text{ms}$ ($12.73\,\text{s}$) TTFT, whereas LSLC consumes only $\mathbf{34.42\,\text{MiB}}$ ($\mathbf{133.93\times}$ smaller) with $\mathbf{111.83\,\text{ms}}$ Cold TTFT ($\mathbf{113.8\times}$ faster) and $\mathbf{84.30\,\text{ms}}$ Warm TTFT ($\mathbf{151.0\times}$ faster).
 
-\section{Discussion, Error Decomposition & Limitations}
+\section{Discussion, Error Decomposition \& Limitations}
 
 \paragraph{3-Stage Error Decomposition on Multi-Page 4K Books (Track~3).}
 On 16-page ($4{,}096$-token) books (Track~3 on \texttt{Qwen3-1.7B}), LSLC maintains $\mathbf{100.0\%}$ \texttt{SalienceGate} needle capture rate and $\mathbf{100.0\%}$ Semantic NIAH EM, while autoregressive Exact NIAH EM settles at $50.0\%$ ($70.0\%$ token accuracy). Telemetry decomposes this gap into three transparent stages: (1)~\emph{Intra-Page Capture} remains lossless at $100.0\%$ because \texttt{SalienceGate} operates page-modularly ($T_p=256$); (2)~\emph{Top-$k_{\text{deep}}$ Query-to-TOC Routing} ($k_{\text{deep}}=2$ of $16$ pages $= 12.5\%$ budget) achieves $40.0\%$ top-2 recall after 300 steps of light training, bounding exact footnote gather whenever the target page falls outside \texttt{deep\_idx}; and (3)~\emph{Cross-Page Attention Dilution} across $100$ active virtual tokens (including $16$ exact tokens from the runner-up \texttt{deep\_idx} page containing background Wikipedia dates/numbers).
 
 \paragraph{Single-Page Confidence Weighting vs.\ Multi-Hop Trade-Off (Track~4).}
-In Track~4 ($N_{\text{train}}=96$, $N_{\text{eval}}=24$ held-out episodes, $k=3$ sequential in-place overrides per episode), \texttt{DeltaUpdater} maintains active spatial gate sparsity inside the target band ($\text{mean}(\vect{G}_p) = 0.191$--$0.259 \in [0.05, 0.35]$), achieves $\mathbf{100.0\%}$ held-out Delta-Edit Exact Match on both \texttt{Qwen3-1.7B} and \texttt{Qwen3-4B}, and preserves strict bit-identical prefix invariance ($\max|\Delta_{\text{prefix}}| = \mathbf{0.0}$). We note an important architectural trade-off in footnote assembly: when evaluating pure latent static retention ($\ell=0$ without cross-page exact-footnote override), static policy retention achieves $\mathbf{100.0\%}$ EM; however, when runner-up \texttt{deep\_idx} pages carry high-salience numeric override footnotes, weighting footnotes by relative router confidence $(p_{\text{deep}}/p_{\max})^2$ suppresses distractor noise for single-page queries at the theoretical cost of attenuating secondary pages during equal-weight multi-hop synthesis, motivating independent sigmoid threshold gating in future multi-hop extensions.
+In Track~4 ($N_{\text{train}}=96$, $N_{\text{eval}}=24$ held-out episodes, $k=3$ sequential in-place overrides per episode), \texttt{DeltaUpdater} maintains active spatial gate sparsity inside the target band ($\text{mean}(\vect{G}_p) = 0.191$--$0.259 \in [0.05, 0.35]$), achieves $\mathbf{100.0\%}$ held-out Delta-Edit Exact Match on both \texttt{Qwen3-1.7B} and \texttt{Qwen3-4B}, and preserves strict bit-identical prefix invariance ($\max|\Delta_{\text{prefix}}| = \mathbf{0.0}$). We note two architectural trade-offs observed in Track~4. First, while pre-override latent probes on \texttt{Qwen3-1.7B} retain static $\ell=0$ rules ($100.0\%$ EM), optimizing \texttt{DeltaUpdater} exclusively on override turns without joint static-query replay shifts un-replayed static readout ($0.0\%$ EM in Track~4 and unified probes) even though $\vect{Z}_{p,0:2}$ remains bit-identical ($\max|\Delta_{\text{prefix}}|=0.0$). Second, weighting footnotes by relative router confidence $(p_{\text{deep}}/p_{\max})^2$ suppresses distractor noise for single-page queries at the cost of attenuating secondary pages during equal-weight multi-hop synthesis, motivating joint static replay and independent sigmoid threshold gating in future extensions.
 
 \begin{table*}[t]
 \centering
-\caption{Adversarial Stress-Test and Single-L4 Feasibility Evaluation across \texttt{Qwen/Qwen3-1.7B} (native \texttt{bfloat16}, $40.42\text{M}$ LSLC params) and \texttt{Qwen/Qwen3-8B} (4-bit \texttt{NF4} frozen weights with \texttt{bfloat16} activations/KV-cache, $108.56\text{M}$ LSLC params) on a single $22.03\,\text{GiB}$ NVIDIA L4 GPU. Evaluates: (EC-1) 8-page ($2{,}048$-token) multi-file Python codebases ($N_{\text{eval}}=20$); (EC-2) 4 co-existing near-miss decoy keys per book ($N_{\text{eval}}=20$); (EC-3) deep $k=5$ sequential non-numeric symbolic state overrides ($N_{\text{eval}}=20$); (EC-4) live CUDA $128\text{K}$ ($P=512$) and $256\text{K}$ ($P=1{,}024$) systems profiling (compared against analytical uncompressed BF16 KV requirements, which exceed single-L4 VRAM); and (EC-5) context-grounded multi-step reasoning (2-step arithmetic, Python \texttt{if/else} branch tracing, and 3-entity transitive deduction over book contents). In EC-1, ``BPE Sub-Token Capture'' measures the fraction of target BPE sub-tokens stored in the 16-slot discrete bank, while episode EM exceeds sub-token capture because the continuous 3D latent book completes suffix tokens once anchored by captured prefix tokens.}
+\caption{Adversarial Stress-Test and Single-L4 Feasibility Evaluation across \texttt{Qwen/Qwen3-1.7B} (native \texttt{bfloat16}, $40.42\text{M}$ LSLC params) and \texttt{Qwen/Qwen3-8B} (4-bit \texttt{NF4} frozen weights with \texttt{bfloat16} activations/KV-cache, $108.56\text{M}$ LSLC params) on a single $22.03\,\text{GiB}$ NVIDIA L4 GPU. Evaluates: (EC-1) 8-page ($2{,}048$-token) multi-file Python codebases ($N_{\text{eval}}=20$); (EC-2) 4 co-existing near-miss decoy keys per book ($N_{\text{eval}}=20$); (EC-3) deep $k=5$ sequential non-numeric symbolic state overrides ($N_{\text{eval}}=20$); (EC-4) live CUDA $128\text{K}$ ($P=512$) and $256\text{K}$ ($P=1{,}024$) systems profiling (compared against analytical uncompressed BF16 KV requirements, which exceed single-L4 VRAM); and (EC-5) context-grounded multi-step reasoning ($N_{\text{eval}}=18$: 2-step arithmetic, Python \texttt{if/else} branch tracing, and 3-entity transitive deduction over book contents). In EC-1, ``BPE Sub-Token Capture'' measures the fraction of target BPE sub-tokens stored in the 16-slot discrete bank, while episode EM exceeds sub-token capture because the continuous 3D latent book completes suffix tokens once anchored by captured prefix tokens.}
 \label{tab:hard_stress}
 \small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}llcc@{}}
 \toprule
 \textbf{Stress Regime} & \textbf{Evaluation Metric} & \textbf{\texttt{Qwen3-1.7B} (\texttt{BF16})} & \textbf{\texttt{Qwen3-8B} (\texttt{NF4} W / \texttt{BF16} KV)} \\
@@ -239,33 +293,131 @@ In Track~4 ($N_{\text{train}}=96$, $N_{\text{eval}}=24$ held-out episodes, $k=3$
 \midrule
 \textbf{EC-5: Multi-Step Context Reasoning} & Full KV vs.\ LSLC Book Accuracy (Retention) & $88.89\% \rightarrow 66.67\%$ ($75.0\%$) & $\mathbf{100.00\%} \rightarrow \mathbf{100.00\%}$ ($\mathbf{100.0\%}$) \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
+\\[3pt]
+{\footnotesize $^\S$Analytical uncompressed BF16 KV requirement (exceeds single-$22\,\text{GiB}$ L4 VRAM).}
+\end{table*}
+
+\begin{figure*}[t]
+\centering
+\begin{minipage}[t]{0.47\textwidth}
+\begin{tikzpicture}
+\begin{axis}[
+    width=\linewidth, height=5.1cm,
+    axis x line*=bottom,
+    axis y line*=left,
+    title={\small (a) Context VRAM Scaling (\texttt{Qwen3-1.7B}, Live CUDA)},
+    xlabel={\small Context Length (Tokens)},
+    ylabel={\small Net Context VRAM (MiB)},
+    symbolic x coords={32K,128K,256K},
+    xtick=data,
+    ymin=0, ymax=175,
+    enlarge x limits=0.18,
+    ymajorgrids=true,
+    grid style=dashed,
+    legend pos=north west,
+    legend style={font=\scriptsize, draw=none, fill=white, fill opacity=0.9, inner sep=1.5pt},
+    tick label style={font=\scriptsize}
+]
+\addplot[color=blue!70!black, mark=square*, thick] coordinates {(32K, 27.11) (128K, 73.66) (256K, 135.72)};
+\addlegendentry{LSLC 1-Level Flat TOC}
+\addplot[color=black!70, mark=triangle*, thick, dashed] coordinates {(32K, 57.89) (128K, 58.31) (256K, 58.88)};
+\addlegendentry{Constant-$k=2$ Raw RAG}
+\addplot[color=green!55!black, mark=*, very thick] coordinates {(32K, 17.81) (128K, 24.98) (256K, 34.55)};
+\addlegendentry{LSLC 2-Level Hier.\ ($c=16$)}
+\end{axis}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.47\textwidth}
+\begin{tikzpicture}
+\begin{axis}[
+    width=\linewidth, height=5.1cm,
+    axis x line*=bottom,
+    axis y line*=left,
+    ybar, bar width=18pt,
+    ymode=log, log origin=0,
+    ymin=1, ymax=90000,
+    enlarge x limits=0.25,
+    title={\small (b) Per-Edit Revision Latency (ms/edit, Log Scale)},
+    ylabel={\small Latency per Edit (ms)},
+    symbolic x coords={LSLC Delta,RAG Block RW,RAG Full RW},
+    xtick=data,
+    nodes near coords,
+    every node near coord/.append style={font=\scriptsize},
+    point meta=explicit symbolic,
+    ymajorgrids=true,
+    grid style=dashed,
+    tick label style={font=\scriptsize}
+]
+\addplot[fill=green!55!black!70, draw=black!70] coordinates {
+    (LSLC Delta, 8.5) [8.5 ms]
+    (RAG Block RW, 800) [800 ms]
+    (RAG Full RW, 14631) [14,631 ms]
+};
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+\caption{\textbf{(a)} Live CUDA net VRAM across $32\text{K}$--$256\text{K}$ tokens on \texttt{Qwen3-1.7B}: flat 1-level LSLC crosses above Constant-$k=2$ Raw RAG at $P^* = 384.3$ pages ($\approx 98.4\text{K}$ tokens), whereas the 2-level Chapter$\rightarrow$Page TOC ($c=16$) stays strictly below RAG through $256\text{K}$ ($34.55\,\text{MiB}$ vs.\ $58.88\,\text{MiB}$, $\max|\Delta_{\text{TOC}}|=0.0$). \textbf{(b)} Synchronized CUDA per-edit latency on Tesla T4: LSLC \texttt{DeltaUpdater} edits $\ell=2$ in $8.4$--$8.6\,\text{ms/edit}$ ($92\times$--$1{,}738\times$ faster than LLM chunk rewrites).}
+\label{fig:vram_crossover}
+\end{figure*}
+
+\begin{table*}[t]
+\centering
+\caption{Unified-checkpoint multi-seed benchmark on \texttt{Qwen3-1.7B} (Tesla T4 \texttt{FP16} unified adapter; 3 seeds $\{42, 1337, 9999\}$): \textbf{Top:} $32\text{K}$ ($P=128$, $N=180$ total episodes) Exact/Semantic NIAH under a shared non-oracle Okapi BM25 retriever ($97.22\%$ top-2 recall) and learned \texttt{QueryToTOCRouter} ($70.0\%$ top-2 recall), with leading-whitespace-stripped \texttt{content\_tok\_acc} and free-running \texttt{gen\_char\_f1} (lower than EM because greedy decode continues past the short target phrase). \textbf{Bottom:} 4-way $k=3$ ($N=108$) and $k=5$ ($N=90$) sequential state overrides with synchronized per-edit latency ($\text{ms/edit}$).}
+\label{tab:unified_eval}
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{32K ($P=128$, $N=180$) Retrieval System} & \textbf{Active Prefix} & \textbf{Exact EM / Content-Tok} & \textbf{Semantic EM / Char-F1} & \textbf{Top-2 Recall} \\
+\midrule
+Raw-Text Chunk RAG (Shared BM25, Const $k=2$) & $512$ tok & $\mathbf{94.4\% \pm 3.9\%} \;/\; \mathbf{100.0\%}$ & $\mathbf{94.4\% \pm 1.9\%} \;/\; 44.1\%$ & $97.2\%$ ($100\%$ Ex) \\
+LSLC (Learned Router, Flat 1-Level TOC) & $218$ tok & $60.0\% \pm 5.8\% \;/\; 88.9\%$ & $0.0\% \;/\; 23.7\%$ & $70.0\%$ ($100\%$ Ex) \\
+LSLC (Shared BM25, Flat 1-Level TOC) & $218$ tok & $62.2\% \pm 1.9\% \;/\; 91.2\%$ & $2.2\% \;/\; 23.6\%$ & $97.2\%$ \\
+\textbf{LSLC (Shared BM25, 2-Level Hier.\ $c=16$)} & $\mathbf{133}$ tok & $\mathbf{71.1\% \pm 6.9\%} \;/\; \mathbf{93.0\%}$ & $\mathbf{91.1\% \pm 5.1\%} \;/\; 29.0\%$ & $97.2\%$ \\
+\midrule
+\textbf{Multi-Turn State-Override System} & \textbf{Edit Cost (ms/edit)} & \textbf{$k=3$ EM / Content-Tok} & \textbf{$k=5$ EM / Content-Tok} & \textbf{TOC $\max|\Delta|$} \\
+\midrule
+Raw-Text RAG (Immutable, BM25) & $0.00$ ms & $0.0\% \;/\; 32.9\%$ & $0.0\% \;/\; 12.9\%$ & --- \\
+Raw-Text RAG (Append-Errata, BM25) & $0.58$--$0.59$ ms & $55.6\% \pm 6.4\% \;/\; 86.1\%$ & $46.7\% \pm 0.0\% \;/\; 75.1\%$ & Invalidates KV \\
+Raw-Text RAG (In-Place LLM Rewrite, 11 tok) & $790.9$--$808.6$ ms$^\P$ & $45.8\% \pm 15.0\% \;/\; 97.2\%$ & $\mathbf{88.9\% \pm 3.9\%} \;/\; 75.5\%$ & Re-indexes page \\
+\textbf{LSLC \texttt{DeltaUpdater} (Shared BM25)} & $\mathbf{8.42}$--$\mathbf{8.59}$ ms & $\mathbf{100.0\% \pm 0.0\%} \;/\; \mathbf{100.0\%}$ & $70.0\% \pm 15.3\% \;/\; \mathbf{93.4\%}$ & $\mathbf{0.0}$ \\
+\bottomrule
+\end{tabular}%
+}
+\\[3pt]
+{\footnotesize $^\P$Targeted 11-token state-block rewrite (\texttt{Qwen3-1.7B}, KV-cached greedy); full 256-token page rewrite measures $14{,}630.9 \pm 225.4\,\text{ms/edit}$.}
 \end{table*}
 
 \paragraph{Adversarial Stress-Testing, $k=5$ Symbolic Overrides \& Constant-$k$ RAG Memory Crossover (Table~\ref{tab:hard_stress}).}
-To test whether LSLC's editability and hybrid exact-recall mechanism survive beyond 4-page numeric templates, Table~\ref{tab:hard_stress} evaluates five stress regimes across \texttt{Qwen3-1.7B} (\texttt{BF16}) and \texttt{Qwen3-8B} (loaded with 4-bit \texttt{NF4} weights and \texttt{BF16} runtime KV-cache on a single $22\,\text{GiB}$ L4 GPU). First, pairing integer \texttt{PageRoPE1D} with quadratic runner-up confidence attenuation $(p_{\text{deep}}/p_{\max})^2$ suppresses distractor footnotes from secondary pages, enabling LSLC to achieve $\mathbf{90.0\%}$ episode EM ($\mathbf{96.0\%}$ token accuracy) on 8-page multi-file Python codebases (\textbf{EC-1}) on \texttt{Qwen3-1.7B} and $\mathbf{80.0\%}$ EM ($\mathbf{96.5\%}$ token accuracy) on \texttt{Qwen3-8B}, while reaching $\mathbf{85.0\%}$ EM on $1.7\text{B}$ and $\mathbf{80.0\%}$ EM on $8\text{B}$ under four near-miss decoy keys (\textbf{EC-2}). Second, on context-grounded multi-step reasoning (\textbf{EC-5}), \texttt{Qwen3-8B} reaches $\mathbf{100.0\%}$ accuracy matching Full KV. Third, under deep $k=5$ sequential symbolic overrides (\textbf{EC-3}), a cold \texttt{DeltaUpdater} (trained directly after codebase/decoy tasks) scores $\mathbf{80.0\%}$ EM ($93.75\%$ token accuracy) on $1.7\text{B}$ and $55.0\%$ EM ($90.89\%$ token accuracy) on 4-bit $8\text{B}$ due to cumulative pre-gate norm drift without an intermediate \texttt{RMSNorm}~\cite{zai2026glm54}.
+To test whether LSLC's editability and hybrid exact-recall mechanism survive beyond 4-page numeric templates, Table~\ref{tab:hard_stress} evaluates five stress regimes across \texttt{Qwen3-1.7B} (\texttt{BF16}) and \texttt{Qwen3-8B} (loaded with 4-bit \texttt{NF4} weights and \texttt{BF16} runtime KV-cache on a single $22\,\text{GiB}$ L4 GPU). Pairing integer \texttt{PageRoPE1D} with quadratic runner-up confidence attenuation $(p_{\text{deep}}/p_{\max})^2$ suppresses distractor footnotes from secondary pages, reaching $\mathbf{90.0\%}$ episode EM ($\mathbf{96.0\%}$ token accuracy) on 8-page multi-file Python codebases (\textbf{EC-1}) on \texttt{Qwen3-1.7B} and $\mathbf{80.0\%}$ EM on \texttt{Qwen3-8B}, alongside $\mathbf{85.0\%}$ ($1.7\text{B}$) and $\mathbf{80.0\%}$ ($8\text{B}$) EM under four near-miss decoy keys (\textbf{EC-2}). On context-grounded multi-step reasoning (\textbf{EC-5}), \texttt{Qwen3-8B} reaches $\mathbf{100.0\%}$ accuracy matching Full KV. Under deep $k=5$ sequential symbolic overrides (\textbf{EC-3}), a cold-trained \texttt{DeltaUpdater} scores $\mathbf{80.0\%}$ EM ($93.75\%$ token accuracy) on \texttt{BF16} \texttt{Qwen3-1.7B} and $55.0\%$ EM ($90.89\%$ token accuracy) on 4-bit \texttt{Qwen3-8B} due to cumulative pre-gate norm drift without an intermediate \texttt{RMSNorm}~\cite{zai2026glm54}.
 
-Finally, live CUDA systems profiling at $128\text{K}$ ($P=512$) and $256\text{K}$ ($P=1{,}024$) tokens (\textbf{EC-4}) exposes both LSLC's Full-KV asymptote and a decisive memory crossover against \textbf{Constant-$k$ Raw-Text Chunk RAG}:
+Finally, live CUDA systems profiling from $32\text{K}$ to $256\text{K}$ tokens (Figure~\ref{fig:vram_crossover}) exposes both LSLC's Full-KV asymptote and its exact crossover against \textbf{Constant-$k$ Raw-Text Chunk RAG}:
 \begin{itemize}
-    \item Against Full BF16 KV, a flat 1-level TOC emits $1$ active KV token per page ($112\,\text{KiB}$ on $1.7\text{B}$, $144\,\text{KiB}$ on $4\text{B}/8\text{B}$) alongside $12.125\,\text{KiB/page}$ storage, bounding 1-level compression as $P \to \infty$ by $\lim_{P\to\infty}\frac{256\cdot\text{KV}_{\text{tok}}}{12.125\,\text{KiB}+\text{KV}_{\text{tok}}} = \mathbf{231.0\times}$ ($1.7\text{B}$) and $\mathbf{236.2\times}$ ($4\text{B}/8\text{B}$).
-    \item Crucially, standard \textbf{Constant-$k=2$ Raw-Text Chunk RAG} (zero TOC tokens in LLM KV; only $512$ retrieved raw tokens $= 56.14\text{--}57.12\,\text{MiB}$ on $1.7\text{B}$ and $72.14\text{--}73.12\,\text{MiB}$ on $4\text{B}/8\text{B}$ across $32\text{K--}256\text{K}$, storing $1{,}152\,\text{B/page}$ raw IDs+index) has constant active KV, whereas flat 1-level LSLC grows by $127{,}104\,\text{B/page}$ ($1.7\text{B}$). Equating both curves yields the exact crossover:
+    \item Against Full BF16 KV, a flat 1-level TOC emits $1$ active KV token per page alongside $12.125\,\text{KiB/page}$ storage, bounding 1-level compression as $P \to \infty$ by $\lim_{P\to\infty}\frac{256\cdot\text{KV}_{\text{tok}}}{12.125\,\text{KiB}+\text{KV}_{\text{tok}}} = \mathbf{231.0\times}$ ($1.7\text{B}$) and $\mathbf{236.1\times}$ ($4\text{B}/8\text{B}$).
+    \item Standard \textbf{Constant-$k=2$ Raw-Text Chunk RAG} (zero TOC tokens in LLM KV; strictly $512$ retrieved raw tokens $= 57.89\text{--}58.88\,\text{MiB}$ live on \texttt{Qwen3-1.7B}, storing $1{,}152\,\text{B/page}$ raw IDs+index) keeps active KV constant, whereas flat 1-level LSLC grows by $127{,}104\,\text{B/page}$ ($1.7\text{B}$), crossing at:
     \begin{equation}
-    P^* = \frac{(512 - 90)\cdot \text{KV}_{\text{tok}}}{12{,}416 + \text{KV}_{\text{tok}} - 1{,}152} \;\Longrightarrow\; \mathbf{384.3\text{ pages} \;(\approx 98.4\text{K})} \text{ on } \texttt{1.7B}, \quad \mathbf{392.1\text{ pages} \;(\approx 100.4\text{K})} \text{ on } \texttt{4B/8B}.
+    \begin{aligned}
+    P^* &= \frac{(512 - 90)\cdot \text{KV}_{\text{tok}}}{12{,}416 + \text{KV}_{\text{tok}} - 1{,}152} \\
+    &\Longrightarrow \mathbf{384.3\text{ pages} \;(\approx 98.4\text{K})} \text{ on } \texttt{1.7B}, \\
+    &\hphantom{\Longrightarrow\;} \mathbf{392.1\text{ pages} \;(\approx 100.4\text{K})} \text{ on } \texttt{4B/8B}.
+    \end{aligned}
     \end{equation}
-    Consequently, at $128\text{K}$ ($73.66\,\text{MiB}$) and $256\text{K}$ ($135.72\,\text{MiB}$), flat 1-level LSLC becomes \emph{larger} than Constant-$k=2$ Raw RAG ($\sim 56.6$--$57.1\,\text{MiB}$), making a \textbf{2-level Chapter$\rightarrow$Page TOC hierarchy} mandatory above $100\text{K}$ tokens. With \texttt{hierarchical\_chapter\_size=16} (implemented in \texttt{BookPrefixAssembler} with verified $\max|\Delta_{\text{TOC}}| = 0.0$), worst-case active prefix tokens drop to $\le 134$ ($32\text{K}$), $\le 158$ ($128\text{K}$), and $\le 190$ ($256\text{K}$), keeping analytical net VRAM on \texttt{Qwen3-1.7B} at $\mathbf{\le 16.2\,\text{MiB}}$ ($32\text{K}$), $\mathbf{\le 23.3\,\text{MiB}}$ ($128\text{K}$), and $\mathbf{\le 32.9\,\text{MiB}}$ ($256\text{K}$)---strictly smaller than Constant-$k=2$ RAG across the entire range.
+    At $128\text{K}$ ($73.66\,\text{MiB}$) and $256\text{K}$ ($135.72\,\text{MiB}$), flat 1-level LSLC indeed exceeds Constant-$k=2$ RAG ($58.31$--$58.88\,\text{MiB}$). Activating our \textbf{2-level Chapter$\rightarrow$Page hierarchy} (\texttt{chapter\_size=16}) cuts live CUDA net VRAM on \texttt{Qwen3-1.7B} to $\mathbf{17.81\,\text{MiB}}$ ($32\text{K}$, $133$ active prefix tokens, $3.25\times <$ RAG), $\mathbf{24.98\,\text{MiB}}$ ($128\text{K}$, $157$ tokens, $2.33\times <$ RAG), and $\mathbf{34.55\,\text{MiB}}$ ($256\text{K}$, $189$ tokens, $1.70\times <$ RAG; $829.9\times <$ Full BF16 KV), while maintaining $\max|\Delta_{\text{TOC}}| = 0.0$.
 \end{itemize}
 
-\paragraph{Multi-Seed 32K ($P=128$) Quality, Forensic Metric Disclosures \& Comparison with Raw-Text Chunk RAG.}
-To benchmark head-to-head against Raw-Text Chunk RAG at $32\text{K}$ ($P=128$ pages) on \texttt{Qwen3-1.7B} (\texttt{NVIDIA L4}), we evaluated three random seeds ($\text{seeds} \in \{42, 1337, 9999\}$, $N_{\text{total}}=60$ $32\text{K}$ NIAH episodes---$10$ Exact + $10$ Semantic per seed---and $N_{\text{total}}=132$ state-override episodes) with the following transparent methodological disclosures:
+\paragraph{Unified Multi-Seed Evaluation, Shared Non-Oracle Retrieval \& Editable RAG Comparison (Table~\ref{tab:unified_eval}).}
+To resolve methodological ambiguities in preliminary small-sample checks---where Raw-Text RAG shared \texttt{QueryToTOCRouter} indices over $N=10$ episodes per category/seed and raw teacher-forced token accuracy suffered a constant leading-whitespace mismatch at position~0 ($90.0\%$ vs.\ $90.3\%$)---we evaluate a unified checkpoint across three seeds ($\{42, 1337, 9999\}$, $N=180$ $32\text{K}$ NIAH and $N=198$ state-override episodes) using a shared non-oracle \textbf{Okapi BM25} retriever and leading-whitespace-stripped content-token accuracy alongside autoregressive EM and character F1:
 \begin{enumerate}
-    \item \textbf{32K ($P=128$) Batch Encoding, Constant-$k$ vs.\ Shared-TOC RAG, & Query TTFT:} Encoding all $128$ pages takes $\mathbf{45.28\,\text{ms}}$ ($\mathbf{0.354\,\text{ms/page}}$); end-to-end unencoded $32\text{K}$ ingestion plus first token takes $\mathbf{102.78\,\text{ms}}$ (versus $5{,}235.43\,\text{ms}$ for Full BF16 KV context). Under shared-TOC comparison, \texttt{Deep-2} RAG ($634$ active tokens) uses $\mathbf{71.72\,\text{MiB}}$ ($\mathbf{2.65\times}$ larger than LSLC's $\mathbf{27.11\,\text{MiB}}$) and \texttt{Deep-2+Skim-4} RAG ($1{,}658$ active tokens) uses $\mathbf{183.72\,\text{MiB}}$ ($\mathbf{6.78\times}$ larger, $159.44\,\text{ms}$ TTFT vs.\ LSLC's $\mathbf{54.62\text{--}57.50\,\text{ms}}$); true Constant-$k=2$ RAG (zero TOC tokens, $512$ raw tokens) consumes $\mathbf{56.14\,\text{MiB}}$ analytical ($\mathbf{2.07\times}$ larger than flat LSLC at $32\text{K}$).
-    \item \textbf{Explicit Retriever Disclosure & Leading-Space \texttt{token\_acc} Artifact:} In this v1 32K run, Raw-Text Chunk RAG was fed the \emph{exact same \texttt{route.deep\_idx} pages} selected by LSLC's learned \texttt{QueryToTOCRouter} (not an oracle and not a separate embedder: \texttt{QueryToTOCRouter} achieved $10/10 = \mathbf{100.0\%}$ top-2 recall on Exact NIAH and $4/10 = 40.0\%$ on Semantic NIAH $\Rightarrow 70.0\% \pm 0.0\%$ overall). LSLC reaches $\mathbf{98.15\% \pm 0.64\%}$ \texttt{SalienceGate} capture and $\mathbf{70.00\% \pm 17.32\%}$ ($95\%\text{ CI}: \pm 19.60\%$; per-seed $[60\%, 60\%, 90\%]$, $N=10$ Exact/seed) Exact NIAH EM vs.\ $100.0\%$ for RAG on those same routed pages. Note that teacher-forced \texttt{token\_acc} ($90.00\% \pm 0.00\%$ LSLC vs.\ $90.33\%$ RAG at $100\%$ EM) is a distorted metric here due to a leading-space mismatch on position~0 of \texttt{answer\_text = f" \{code\_val\}"} ($1/10$ tokens) alongside teacher forcing; accordingly, we treat autoregressive \textbf{Exact Match (EM)} as the primary metric and implement stripped \texttt{content\_tok\_acc}, free-running \texttt{gen\_char\_f1}, $N=60$/seed ($180$ total), and a shared non-oracle \textbf{Okapi BM25} retriever (\texttt{router\_out\_override}) in \texttt{scripts/colab\_run\_rebuttal\_v2.py}.
-    \item \textbf{State Overrides ($k=3$ & $k=5$), Cross-Run Variance & In-Place Editable RAG Scope:} On $3$-seed overrides, LSLC achieves $\mathbf{100.00\% \pm 0.00\%}$ EM on $k=3$ numeric overrides (rising to $100.0\%$ across all 3 seeds after aligning curriculum steps vs.\ $97.9\%$ in the earlier M2 run) and $\mathbf{91.67\% \pm 2.89\%}$ EM ($95\%\text{ CI}: \pm 3.27\%$) on $k=5$ symbolic overrides while keeping $\max|\Delta_{\text{TOC}}| = 0.0$. We explicitly note that $k=5$ improved from $80.0\%$ in \texttt{colab\_run\_hard\_stress.py} ($N=20$, cold \texttt{DeltaUpdater} after code/decoy training) to $91.67\%$ in \texttt{reviewer\_rebuttal\_summary.json} because \texttt{DeltaUpdater} was curriculum-warmed on $k=3$ numeric overrides first. Finally, v1 RAG state-override baselines ($0.0\%$ Immutable RAG, $52.08\%$ / $38.33\%$ Append-Errata RAG) do \emph{not} include a live In-Place LLM-Rewrite RAG baseline yet; superiority claims currently apply strictly relative to Immutable and Append-Errata RAG, while live In-Place LLM-Rewrite RAG accuracy and per-edit latency (\texttt{ms/edit}) vs.\ $O(1)$ \texttt{DeltaUpdater} are built into \texttt{scripts/colab\_run\_rebuttal\_v2.py}.
+    \item \textbf{Eliminating TOC Attention Dilution at $32\text{K}$:} Under shared BM25 retrieval ($97.2\%$ top-2 recall; $99.26\%$ \texttt{SalienceGate} capture), flat 1-level LSLC suffers severe Semantic NIAH interference ($2.2\%$ EM) from $122$ unpruned TOC tokens crowding the frozen LLM context. Switching to the 2-level hierarchical TOC shrinks the active prefix from $218$ to $133$ tokens and lifts Semantic NIAH from $2.2\%$ to $\mathbf{91.1\% \pm 5.1\%}$ EM (nearly matching Raw-Text RAG's $94.4\%$ at $3.25\times$ smaller VRAM) while raising Exact NIAH EM to $\mathbf{71.1\% \pm 6.9\%}$ ($\mathbf{93.0\%}$ content-token accuracy).
+    \item \textbf{Editable RAG Speed-vs.-Accuracy Frontier ($8.5\,\text{ms}$ vs.\ $800\text{--}14{,}631\,\text{ms/edit}$):} Across $k=3$ numeric overrides, \texttt{DeltaUpdater} achieves $\mathbf{100.0\% \pm 0.0\%}$ EM in $\mathbf{8.59\,\text{ms/edit}}$---outperforming Immutable RAG ($0.0\%$), Append-Errata RAG ($55.6\%$), and even a targeted 11-token In-Place LLM-Rewrite RAG baseline ($45.8\%$, $790.9\,\text{ms/edit}$). Across deeper $k=5$ symbolic overrides, LLM-Rewrite RAG reaches $88.9\%$ EM at the cost of $808.6\,\text{ms/edit}$ ($96\times$ slower than LSLC, or $1{,}738\times$ slower at $14.63\,\text{s/edit}$ for full $256$-token page rewrites), whereas LSLC achieves $70.0\% \pm 15.3\%$ EM ($93.4\%$ content-token accuracy) on the unified FP16 checkpoint ($80.0\%$--$91.7\%$ on BF16). Finally, two clear limitations remain for future work: (a) specializing the learned router strictly at $P=128$ causes $P=4$ recall collapse ($0.0\%$ without BM25 or multi-scale co-training) and sequential router tuning shifts un-replayed $\ell=0$ static retention, motivating multi-scale joint replay; and (b) pre-gate \texttt{RMSNorm} and periodic single-page reconsolidation are needed to eliminate remaining $k=5$ drift.
 \end{enumerate}
 
 \section{Conclusion}
 
-We presented the architecture, byte-level systems accounting, and empirical evaluation of \textbf{Layered Spatial Latent Caching (LSLC)} across \texttt{Qwen3-1.7B}, \texttt{Qwen3-4B}, and 4-bit \texttt{Qwen3-8B}. Organizing context as a modular $[L=3, C=128, H=4, W=4]$ spatial-layer book with an $8\,\text{byte/token}$ \texttt{SparseExactBank}, volatility-ordered prefix caching, convex $\ell=2$ \texttt{DeltaUpdater} edits ($\max|\Delta_{\text{TOC}}|=0.0$), and a 2-level Chapter$\rightarrow$Page TOC above $100\text{K}$ tokens yields $2.07\times$--$6.78\times$ smaller $32\text{K}$ VRAM than Raw-Text Chunk RAG ($132\times$--$215\times$ below Full BF16 KV context) alongside $100.0\%$ $k=3$ and $80.0\%$--$91.7\%$ $k=5$ in-place state overrides without conflicting errata. Completing the queued unified-checkpoint GPU validation (\texttt{colab\_run\_rebuttal\_v2.py}: shared non-oracle Okapi BM25 at $N=180$, live In-Place LLM-Rewrite RAG with per-edit \texttt{ms/edit} costs, and RULER/LongBench suites) marks the immediate next step.
+We presented the architecture, byte-level systems accounting, and empirical evaluation of \textbf{Layered Spatial Latent Caching (LSLC)} across \texttt{Qwen3-1.7B}, \texttt{Qwen3-4B}, and 4-bit \texttt{Qwen3-8B}. Combining a $[L=3, C=128, H=4, W=4]$ spatial-layer book with an $8\,\text{byte/token}$ \texttt{SparseExactBank}, volatility-ordered Two-Bank prefix caching ($\max|\Delta_{\text{TOC}}|=0.0$), convex $\ell=2$ \texttt{DeltaUpdater} overrides, and a 2-level Chapter$\rightarrow$Page hierarchy above $\sim 100\text{K}$ tokens yields $1.70\times$--$3.25\times$ smaller active+store VRAM than Constant-$k=2$ Raw-Text RAG across $32\text{K}$--$256\text{K}$ ($201\times$--$830\times$ below Full BF16 KV), $91.1\%$ $32\text{K}$ Semantic NIAH EM under shared BM25, and $8.4$--$8.6\,\text{ms/edit}$ in-place state revisions ($92\times$--$1{,}738\times$ faster than LLM chunk rewrites). Scaling multi-scale router co-training, pre-gate normalization, and Mode~B cross-attention adapters onto long-context suites such as RULER and LongBench marks the direct next step.
 
 \begin{thebibliography}{99}
 
@@ -273,36 +425,6 @@ We presented the architecture, byte-level systems accounting, and empirical eval
 A.~Yang et al.
 \newblock \textit{Qwen3 Technical Report}.
 \newblock arXiv preprint arXiv:2505.09388, 2025.
-
-\bibitem{deepseek2025ocr}
-DeepSeek-AI.
-\newblock \textit{DeepSeek-OCR: Contexts Optical Compression}.
-\newblock arXiv preprint arXiv:2510.18234, 2025.
-
-\bibitem{glyph2025}
-J.~Cheng et al.
-\newblock \textit{Glyph: Scaling Context Windows via Visual-Text Compression}.
-\newblock arXiv preprint arXiv:2510.17800, 2025.
-
-\bibitem{li2026lclm}
-A.~Li, S.~McLeish, H.~Chen, T.~Goldstein, S.~Lotfi, M.~Goldblum, P.~Izmailov, et al.
-\newblock \textit{End-to-End Context Compression at Scale}.
-\newblock arXiv preprint arXiv:2606.09659, 2026.
-
-\bibitem{abaskohi2026sekv}
-A.~Abaskohi, G.~Carenini, P.~West, and Y.~He.
-\newblock \textit{SeKV: Resolution-Adaptive KV Cache with Hierarchical Semantic Memory for Long-Context LLM Inference}.
-\newblock arXiv preprint arXiv:2606.31145, 2026.
-
-\bibitem{ge2024icae}
-T.~Ge, J.~Hu, L.~Wang, X.~Wang, S.-Q.~Chen, and F.~Wei.
-\newblock \textit{In-context Autoencoder for Context Compression in a Large Language Model}.
-\newblock International Conference on Learning Representations (ICLR), 2024.
-
-\bibitem{chevalier2023autocompressors}
-A.~Chevalier, A.~Wettig, A.~Ajith, and D.~Chen.
-\newblock \textit{Adapting Language Models to Compress Contexts}.
-\newblock Empirical Methods in Natural Language Processing (EMNLP), arXiv:2305.14788, 2023.
 
 \bibitem{zhang2023h2o}
 Z.~Zhang, Y.~Sheng, T.~Zhou, T.~Chen, L.~Zheng, R.~Cai, Z.~Song, Y.~Tian, C.~R{\'e}, C.~Barrett, Z.~Wang, and B.~Chen.
@@ -314,30 +436,35 @@ G.~Xiao, Y.~Tian, B.~Chen, S.~Han, and M.~Lewis.
 \newblock \textit{Efficient Streaming Language Models with Attention Sinks}.
 \newblock International Conference on Learning Representations (ICLR), 2024.
 
-\bibitem{behrouz2025titans}
-A.~Behrouz, P.~Zhong, and V.~Mirrokni.
-\newblock \textit{Titans: Learning to Memorize at Test Time}.
-\newblock arXiv preprint arXiv:2501.00663, 2025.
+\bibitem{deepseek2025ocr}
+DeepSeek-AI.
+\newblock \textit{DeepSeek-OCR: Contexts Optical Compression}.
+\newblock arXiv preprint arXiv:2510.18234, 2025.
 
-\bibitem{su2024roformer}
-J.~Su, M.~Ahmed, Y.~Lu, S.~Pan, W.~Bo, and Y.~Liu.
-\newblock \textit{RoFormer: Enhanced Transformer with Rotary Position Embedding}.
-\newblock Neurocomputing, 2024.
+\bibitem{glyph2025}
+J.~Cheng et al.
+\newblock \textit{Glyph: Scaling Context Windows via Visual-Text Compression}.
+\newblock arXiv preprint arXiv:2510.17800, 2025.
 
-\bibitem{jaegle2021perceiver}
-A.~Jaegle, F.~Gimeno, A.~Brock, O.~Vinyals, A.~Zisserman, and J.~Carreira.
-\newblock \textit{Perceiver: General Perception with Iterative Attention}.
-\newblock International Conference on Machine Learning (ICML), 2021.
+\bibitem{ge2024icae}
+T.~Ge, J.~Hu, L.~Wang, X.~Wang, S.-Q.~Chen, and F.~Wei.
+\newblock \textit{In-context Autoencoder for Context Compression in a Large Language Model}.
+\newblock International Conference on Learning Representations (ICLR), 2024.
 
-\bibitem{li2026notes}
-B.~Li.
-\newblock \textit{Models Take Notes at Prefill: KV Cache Can Be Editable and Composable}.
-\newblock arXiv preprint arXiv:2606.17107, 2026.
+\bibitem{chevalier2023autocompressors}
+A.~Chevalier, A.~Wettig, A.~Ajith, and D.~Chen.
+\newblock \textit{Adapting Language Models to Compress Contexts}.
+\newblock Empirical Methods in Natural Language Processing (EMNLP), arXiv:2305.14788, 2023.
 
-\bibitem{fallahpour2026memorilla}
-A.~Fallahpour, P.~Idehpour, V.~Kothapalli, N.~Mounier, S.~Wu, S.~Pardis, and J.~Leskovec.
-\newblock \textit{Memorilla: Latent Semantic Memory for LLMs}.
-\newblock arXiv preprint arXiv:2610.21375, 2026.
+\bibitem{li2026lclm}
+A.~Li, S.~McLeish, H.~Chen, T.~Goldstein, S.~Lotfi, M.~Goldblum, P.~Izmailov, et al.
+\newblock \textit{End-to-End Context Compression at Scale}.
+\newblock arXiv preprint arXiv:2606.09659, 2026.
+
+\bibitem{abaskohi2026sekv}
+A.~Abaskohi, G.~Carenini, P.~West, and Y.~He.
+\newblock \textit{SeKV: Resolution-Adaptive KV Cache with Hierarchical Semantic Memory for Long-Context LLM Inference}.
+\newblock arXiv preprint arXiv:2606.31145, 2026.
 
 \bibitem{wang2026groupkv}
 J.~Wang, Z.~Hu, K.~Zhou, X.~Zhou, and F.~Liu.
@@ -348,6 +475,31 @@ J.~Wang, Z.~Hu, K.~Zhou, X.~Zhou, and F.~Liu.
 Z.~Pan, C.~Wu, X.~Qiang, Z.~Hu, Z.~Yu, and Y.~Ding.
 \newblock \textit{LeanSparse: Memory-Efficient Serving for Native Sparse-Attention LLMs}.
 \newblock arXiv preprint arXiv:2611.04671, 2026.
+
+\bibitem{fallahpour2026memorilla}
+A.~Fallahpour, P.~Idehpour, V.~Kothapalli, N.~Mounier, S.~Wu, S.~Pardis, and J.~Leskovec.
+\newblock \textit{Memorilla: Latent Semantic Memory for LLMs}.
+\newblock arXiv preprint arXiv:2610.21375, 2026.
+
+\bibitem{li2026notes}
+B.~Li.
+\newblock \textit{Models Take Notes at Prefill: KV Cache Can Be Editable and Composable}.
+\newblock arXiv preprint arXiv:2606.17107, 2026.
+
+\bibitem{su2024roformer}
+J.~Su, M.~Ahmed, Y.~Lu, S.~Pan, W.~Bo, and Y.~Liu.
+\newblock \textit{RoFormer: Enhanced Transformer with Rotary Position Embedding}.
+\newblock Neurocomputing, 2024.
+
+\bibitem{behrouz2025titans}
+A.~Behrouz, P.~Zhong, and V.~Mirrokni.
+\newblock \textit{Titans: Learning to Memorize at Test Time}.
+\newblock arXiv preprint arXiv:2501.00663, 2025.
+
+\bibitem{jaegle2021perceiver}
+A.~Jaegle, F.~Gimeno, A.~Brock, O.~Vinyals, A.~Zisserman, and J.~Carreira.
+\newblock \textit{Perceiver: General Perception with Iterative Attention}.
+\newblock International Conference on Machine Learning (ICML), 2021.
 
 \bibitem{zai2026glm54}
 Z.ai (Zhipu AI) Team.

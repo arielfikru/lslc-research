@@ -1,0 +1,799 @@
+{
+  "model": "Qwen/Qwen3-1.7B",
+  "gpu": "Tesla T4",
+  "vram_gb": 14.56,
+  "corpus": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "training": {
+    "base": {
+      "steps": 220,
+      "elapsed_sec": 806.65,
+      "peak_vram_gb": 6.695,
+      "final_loss": 5.426,
+      "final_ntp": 0.0068,
+      "final_rec": 3.0722,
+      "final_mat": 0.1243,
+      "final_sal": 2.0168,
+      "final_route": 1.2891,
+      "final_gate": 0.0
+    },
+    "delta_k3": {
+      "steps": 120,
+      "elapsed_sec": 196.9,
+      "peak_vram_gb": 4.15,
+      "final_loss": 12.5479,
+      "final_ntp": 8.9868,
+      "final_rec": 4.4282,
+      "final_mat": 0.0,
+      "final_sal": 0.0,
+      "final_route": 1.0312,
+      "final_gate": 0.2575
+    },
+    "delta_k5": {
+      "steps": 110,
+      "elapsed_sec": 189.17,
+      "peak_vram_gb": 4.179,
+      "final_loss": 4.7974,
+      "final_ntp": 0.6981,
+      "final_rec": 4.502,
+      "final_mat": 0.0,
+      "final_sal": 0.0,
+      "final_route": 0.2119,
+      "final_gate": 0.242
+    },
+    "router_128p": {
+      "steps": 100,
+      "elapsed_sec": 14.56,
+      "final_route_ce": 6.8622
+    },
+    "trainable_params": 40420550
+  },
+  "memory_and_latency_scaling": {
+    "32k": {
+      "context_tokens": 32768,
+      "num_pages": 128,
+      "encode_total_ms": 158.13,
+      "encode_per_page_ms": 1.235,
+      "full_fp16_kv_mib": 3584.0,
+      "rag_const_k2": {
+        "active_prefix_tokens": 512,
+        "active_seq_tokens_with_q": 528,
+        "net_vram_mib": 57.89,
+        "query_ttft_ms": 859.38
+      },
+      "lslc_flat_toc": {
+        "active_prefix_tokens": 218,
+        "net_vram_mib": 27.11,
+        "ratio_vs_full_kv": 132.21,
+        "ratio_vs_rag_const_k2": 2.14,
+        "cold_query_ttft_ms": 380.1,
+        "warm_toc_ttft_ms": 184.39
+      },
+      "lslc_hier_toc_c16": {
+        "active_prefix_tokens": 133,
+        "net_vram_mib": 17.81,
+        "ratio_vs_full_kv": 201.21,
+        "ratio_vs_rag_const_k2": 3.25,
+        "cold_query_ttft_ms": 289.98,
+        "warm_toc_ttft_ms": 181.19,
+        "max_toc_prefix_diff_on_edit": 0.0
+      }
+    },
+    "128k": {
+      "context_tokens": 131072,
+      "num_pages": 512,
+      "encode_total_ms": 634.32,
+      "encode_per_page_ms": 1.239,
+      "full_fp16_kv_mib": 14336.0,
+      "rag_const_k2": {
+        "active_prefix_tokens": 512,
+        "active_seq_tokens_with_q": 528,
+        "net_vram_mib": 58.31,
+        "query_ttft_ms": 860.65
+      },
+      "lslc_flat_toc": {
+        "active_prefix_tokens": 602,
+        "net_vram_mib": 73.66,
+        "ratio_vs_full_kv": 194.63,
+        "ratio_vs_rag_const_k2": 0.79,
+        "cold_query_ttft_ms": 1047.83,
+        "warm_toc_ttft_ms": 197.01
+      },
+      "lslc_hier_toc_c16": {
+        "active_prefix_tokens": 157,
+        "net_vram_mib": 24.98,
+        "ratio_vs_full_kv": 573.8,
+        "ratio_vs_rag_const_k2": 2.33,
+        "cold_query_ttft_ms": 373.6,
+        "warm_toc_ttft_ms": 182.38,
+        "max_toc_prefix_diff_on_edit": 0.0
+      }
+    },
+    "256k": {
+      "context_tokens": 262144,
+      "num_pages": 1024,
+      "encode_total_ms": 1258.39,
+      "encode_per_page_ms": 1.229,
+      "full_fp16_kv_mib": 28672.0,
+      "rag_const_k2": {
+        "active_prefix_tokens": 512,
+        "active_seq_tokens_with_q": 528,
+        "net_vram_mib": 58.88,
+        "query_ttft_ms": 863.08
+      },
+      "lslc_flat_toc": {
+        "active_prefix_tokens": 1114,
+        "net_vram_mib": 135.72,
+        "ratio_vs_full_kv": 211.26,
+        "ratio_vs_rag_const_k2": 0.43,
+        "cold_query_ttft_ms": 2058.91,
+        "warm_toc_ttft_ms": 212.89
+      },
+      "lslc_hier_toc_c16": {
+        "active_prefix_tokens": 189,
+        "net_vram_mib": 34.55,
+        "ratio_vs_full_kv": 829.94,
+        "ratio_vs_rag_const_k2": 1.7,
+        "cold_query_ttft_ms": 555.0,
+        "warm_toc_ttft_ms": 184.54,
+        "max_toc_prefix_diff_on_edit": 0.0
+      }
+    },
+    "analytical_flat_vs_const_k2_rag_crossover": {
+      "crossover_pages": 384.3,
+      "crossover_tokens": 98371,
+      "note": "Exact page count P* where 1-level Flat LSLC active-KV + store overtakes Constant-k=2 RAG (eliminated by 2-level Hierarchical TOC)."
+    }
+  },
+  "niah_32k_multi_seed": {
+    "num_pages": 128,
+    "context_tokens": 32768,
+    "seeds": [
+      42,
+      1337,
+      9999
+    ],
+    "episodes_per_seed": 60,
+    "total_episodes": 180,
+    "salience_capture_rate_32k": {
+      "mean": 0.9926,
+      "std": 0.0,
+      "ci95": 0.0
+    },
+    "retriever_recall": {
+      "bm25_exact_top1": {
+        "mean": 0.9444,
+        "std": 0.0385,
+        "ci95": 0.0436
+      },
+      "bm25_exact_top2": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "bm25_semantic_top1": {
+        "mean": 0.8222,
+        "std": 0.0385,
+        "ci95": 0.0436
+      },
+      "bm25_semantic_top2": {
+        "mean": 0.9444,
+        "std": 0.0192,
+        "ci95": 0.0218
+      },
+      "bm25_overall_top1": {
+        "mean": 0.8833,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "bm25_overall_top2": {
+        "mean": 0.9722,
+        "std": 0.0096,
+        "ci95": 0.0109
+      },
+      "learned_router_exact_top1": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "learned_router_exact_top2": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "learned_router_semantic_top1": {
+        "mean": 0.2,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "learned_router_semantic_top2": {
+        "mean": 0.4,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "learned_router_overall_top1": {
+        "mean": 0.6,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "learned_router_overall_top2": {
+        "mean": 0.7,
+        "std": 0.0,
+        "ci95": 0.0
+      }
+    },
+    "systems": {
+      "lslc_learned_router_flat": {
+        "exact_em": {
+          "mean": 0.6,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "exact_content_tok_acc": {
+          "mean": 0.8889,
+          "std": 0.0064,
+          "ci95": 0.0073
+        },
+        "exact_gen_char_f1": {
+          "mean": 0.5646,
+          "std": 0.0029,
+          "ci95": 0.0032
+        },
+        "semantic_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_content_tok_acc": {
+          "mean": 0.5185,
+          "std": 0.0126,
+          "ci95": 0.0143
+        },
+        "semantic_gen_char_f1": {
+          "mean": 0.2365,
+          "std": 0.0191,
+          "ci95": 0.0216
+        }
+      },
+      "lslc_shared_bm25_flat": {
+        "exact_em": {
+          "mean": 0.6222,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "exact_content_tok_acc": {
+          "mean": 0.9123,
+          "std": 0.0113,
+          "ci95": 0.0128
+        },
+        "exact_gen_char_f1": {
+          "mean": 0.5539,
+          "std": 0.0071,
+          "ci95": 0.0081
+        },
+        "semantic_em": {
+          "mean": 0.0222,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "semantic_content_tok_acc": {
+          "mean": 0.5543,
+          "std": 0.0124,
+          "ci95": 0.0141
+        },
+        "semantic_gen_char_f1": {
+          "mean": 0.2362,
+          "std": 0.0159,
+          "ci95": 0.018
+        }
+      },
+      "lslc_shared_bm25_hier": {
+        "exact_em": {
+          "mean": 0.7111,
+          "std": 0.0694,
+          "ci95": 0.0785
+        },
+        "exact_content_tok_acc": {
+          "mean": 0.9296,
+          "std": 0.017,
+          "ci95": 0.0192
+        },
+        "exact_gen_char_f1": {
+          "mean": 0.5893,
+          "std": 0.01,
+          "ci95": 0.0113
+        },
+        "semantic_em": {
+          "mean": 0.9111,
+          "std": 0.0509,
+          "ci95": 0.0576
+        },
+        "semantic_content_tok_acc": {
+          "mean": 0.8319,
+          "std": 0.0099,
+          "ci95": 0.0112
+        },
+        "semantic_gen_char_f1": {
+          "mean": 0.2901,
+          "std": 0.011,
+          "ci95": 0.0124
+        }
+      },
+      "raw_rag_shared_bm25": {
+        "exact_em": {
+          "mean": 0.9444,
+          "std": 0.0385,
+          "ci95": 0.0436
+        },
+        "exact_content_tok_acc": {
+          "mean": 1.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_gen_char_f1": {
+          "mean": 0.1235,
+          "std": 0.0065,
+          "ci95": 0.0074
+        },
+        "semantic_em": {
+          "mean": 0.9444,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "semantic_content_tok_acc": {
+          "mean": 0.8474,
+          "std": 0.0113,
+          "ci95": 0.0128
+        },
+        "semantic_gen_char_f1": {
+          "mean": 0.4413,
+          "std": 0.0068,
+          "ci95": 0.0076
+        }
+      }
+    }
+  },
+  "state_override_rebuttal": {
+    "k3_numeric_overrides": {
+      "num_edits": 3,
+      "seeds": [
+        42,
+        1337,
+        9999
+      ],
+      "total_episodes": 108,
+      "lslc_max_toc_prefix_diff": 0.0,
+      "edit_cost": {
+        "lslc_ms_per_edit": {
+          "mean": 8.5724,
+          "std": 0.199,
+          "ci95": 0.2252
+        },
+        "rag_llm_rewrite_block_ms_per_edit": {
+          "mean": 790.8937,
+          "std": 3.5875,
+          "ci95": 4.0596
+        },
+        "rag_llm_rewrite_block_decode_tokens": {
+          "mean": 11.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "rag_append_errata_ms_per_edit": {
+          "mean": 0.5807,
+          "std": 0.0071,
+          "ci95": 0.0081
+        },
+        "rag_immutable_ms_per_edit": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        }
+      },
+      "systems": {
+        "raw_rag_immutable": {
+          "override_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_content_tok_acc": {
+            "mean": 0.3287,
+            "std": 0.0424,
+            "ci95": 0.048
+          },
+          "override_gen_char_f1": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "raw_rag_append_errata": {
+          "override_em": {
+            "mean": 0.5556,
+            "std": 0.0636,
+            "ci95": 0.072
+          },
+          "override_content_tok_acc": {
+            "mean": 0.8611,
+            "std": 0.0139,
+            "ci95": 0.0157
+          },
+          "override_gen_char_f1": {
+            "mean": 0.0648,
+            "std": 0.016,
+            "ci95": 0.0181
+          },
+          "static_retention_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "raw_rag_in_place_llm_rewrite": {
+          "override_em": {
+            "mean": 0.4583,
+            "std": 0.1502,
+            "ci95": 0.17
+          },
+          "override_content_tok_acc": {
+            "mean": 0.9722,
+            "std": 0.0241,
+            "ci95": 0.0272
+          },
+          "override_gen_char_f1": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_em": {
+            "mean": 1.0,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        },
+        "lslc_in_place_delta": {
+          "override_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_content_tok_acc": {
+            "mean": 0.1435,
+            "std": 0.035,
+            "ci95": 0.0396
+          },
+          "override_gen_char_f1": {
+            "mean": 0.1574,
+            "std": 0.0607,
+            "ci95": 0.0687
+          },
+          "static_retention_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          }
+        }
+      }
+    },
+    "k5_symbolic_overrides": {
+      "num_edits": 5,
+      "seeds": [
+        42,
+        1337,
+        9999
+      ],
+      "total_episodes": 90,
+      "lslc_max_toc_prefix_diff": 0.0,
+      "edit_cost": {
+        "lslc_ms_per_edit": {
+          "mean": 8.4517,
+          "std": 0.1197,
+          "ci95": 0.1354
+        },
+        "rag_llm_rewrite_block_ms_per_edit": {
+          "mean": 808.6373,
+          "std": 2.2626,
+          "ci95": 2.5604
+        },
+        "rag_llm_rewrite_block_decode_tokens": {
+          "mean": 11.38,
+          "std": 0.04,
+          "ci95": 0.0453
+        },
+        "rag_append_errata_ms_per_edit": {
+          "mean": 0.5885,
+          "std": 0.0182,
+          "ci95": 0.0206
+        },
+        "rag_immutable_ms_per_edit": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        }
+      },
+      "systems": {
+        "raw_rag_immutable": {
+          "override_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_content_tok_acc": {
+            "mean": 0.1286,
+            "std": 0.029,
+            "ci95": 0.0328
+          },
+          "override_gen_char_f1": {
+            "mean": 0.4003,
+            "std": 0.03,
+            "ci95": 0.034
+          }
+        },
+        "raw_rag_append_errata": {
+          "override_em": {
+            "mean": 0.4667,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_content_tok_acc": {
+            "mean": 0.7505,
+            "std": 0.0016,
+            "ci95": 0.0018
+          },
+          "override_gen_char_f1": {
+            "mean": 0.3988,
+            "std": 0.0319,
+            "ci95": 0.0361
+          }
+        },
+        "raw_rag_in_place_llm_rewrite": {
+          "override_em": {
+            "mean": 0.8889,
+            "std": 0.0385,
+            "ci95": 0.0436
+          },
+          "override_content_tok_acc": {
+            "mean": 0.7551,
+            "std": 0.0072,
+            "ci95": 0.0081
+          },
+          "override_gen_char_f1": {
+            "mean": 0.4149,
+            "std": 0.0369,
+            "ci95": 0.0418
+          }
+        },
+        "lslc_in_place_delta": {
+          "override_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "override_content_tok_acc": {
+            "mean": 0.2594,
+            "std": 0.0198,
+            "ci95": 0.0224
+          },
+          "override_gen_char_f1": {
+            "mean": 0.1202,
+            "std": 0.0186,
+            "ci95": 0.021
+          }
+        }
+      }
+    },
+    "full_page_256tok_llm_rewrite_latency": {
+      "trials": 5,
+      "prompt_tokens": 301,
+      "generated_tokens": {
+        "mean": 256.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "latency_ms_per_edit": {
+        "mean": 14630.8638,
+        "std": 225.4478,
+        "ci95": 197.6137
+      }
+    },
+    "lslc_shared_bm25_diagnostic": {
+      "k3_learned": {
+        "top2_recall": 0.0,
+        "override_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "override_content_tok_acc": {
+          "mean": 0.0833,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "override_gen_char_f1": {
+          "mean": 0.25,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "static_retention_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "ms_per_edit": {
+          "mean": 10.0249,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "samples": [
+          {
+            "target_page": 0,
+            "deep_idx": [
+              2,
+              3
+            ],
+            "is_ov": false,
+            "target": "dual signoff",
+            "gen": " 10000000000000000000000"
+          },
+          {
+            "target_page": 1,
+            "deep_idx": [
+              2,
+              3
+            ],
+            "is_ov": true,
+            "target": "60M",
+            "gen": " 18901933945 @-@66 \n 18901"
+          }
+        ]
+      },
+      "k3_bm25": {
+        "top2_recall": 1.0,
+        "override_em": {
+          "mean": 1.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "override_content_tok_acc": {
+          "mean": 1.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "override_gen_char_f1": {
+          "mean": 0.6667,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "static_retention_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "ms_per_edit": {
+          "mean": 8.588,
+          "std": 0.1567,
+          "ci95": 0.1773
+        },
+        "samples": [
+          {
+            "target_page": 0,
+            "deep_idx": [
+              3,
+              0
+            ],
+            "is_ov": false,
+            "target": "dual signoff",
+            "gen": " 20000000000000000000000"
+          },
+          {
+            "target_page": 1,
+            "deep_idx": [
+              3,
+              1
+            ],
+            "is_ov": true,
+            "target": "60M",
+            "gen": " 60M . \nQuestion: What is the current updated budget allocation? Answer: 60M . \n"
+          }
+        ]
+      },
+      "k5_learned": {
+        "top2_recall": 0.0,
+        "override_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "override_content_tok_acc": {
+          "mean": 0.205,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "override_gen_char_f1": {
+          "mean": 0.1321,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "static_retention_em": null,
+        "ms_per_edit": {
+          "mean": 8.333,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "samples": [
+          {
+            "target_page": 1,
+            "deep_idx": [
+              2,
+              3
+            ],
+            "is_ov": true,
+            "target": "rollback-lockdown",
+            "gen": " 100% ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !"
+          },
+          {
+            "target_page": 1,
+            "deep_idx": [
+              2,
+              3
+            ],
+            "is_ov": true,
+            "target": "canary-staging",
+            "gen": " 40000000000000000000000"
+          }
+        ]
+      },
+      "k5_bm25": {
+        "top2_recall": 1.0,
+        "override_em": {
+          "mean": 0.7,
+          "std": 0.1528,
+          "ci95": 0.1729
+        },
+        "override_content_tok_acc": {
+          "mean": 0.9335,
+          "std": 0.0358,
+          "ci95": 0.0406
+        },
+        "override_gen_char_f1": {
+          "mean": 0.5709,
+          "std": 0.0587,
+          "ci95": 0.0664
+        },
+        "static_retention_em": null,
+        "ms_per_edit": {
+          "mean": 8.4167,
+          "std": 0.2422,
+          "ci95": 0.2741
+        },
+        "samples": [
+          {
+            "target_page": 1,
+            "deep_idx": [
+              3,
+              1
+            ],
+            "is_ov": true,
+            "target": "rollback-lockdown",
+            "gen": " rollback-lockdown . \nQuestion: What is the current updated deployment state ? A"
+          },
+          {
+            "target_page": 1,
+            "deep_idx": [
+              3,
+              1
+            ],
+            "is_ov": true,
+            "target": "canary-staging",
+            "gen": " canary-staging . \nQuestion: What is the current deployment status ? Answer: nig"
+          }
+        ]
+      }
+    }
+  }
+}

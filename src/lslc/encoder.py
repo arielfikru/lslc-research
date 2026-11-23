@@ -107,9 +107,10 @@ class SpatialLayerSelfAttentionBlock(nn.Module):
         attn = F.scaled_dot_product_attention(q, k, v, dropout_p=self.drop.p if self.training else 0.0)
         x = x + self.drop(self.out_proj(attn.transpose(1, 2).contiguous().view(bsz, slots, dim)))
 
-        # 2D spatial residual mixing per layer
-        c_in = self.norm_conv(x).view(bsz * self.num_layers, self.grid_h, self.grid_w, dim).permute(0, 3, 1, 2)
-        c_out = self.pw_conv(F.gelu(self.dw_conv(c_in)))
+        # 2D spatial residual mixing per layer (run in module weight dtype to avoid FP16 cuDNN depthwise engine errors on T4)
+        c_in = self.norm_conv(x).view(bsz * self.num_layers, self.grid_h, self.grid_w, dim).permute(0, 3, 1, 2).contiguous()
+        with torch.amp.autocast(device_type=c_in.device.type, enabled=False):
+            c_out = self.pw_conv(F.gelu(self.dw_conv(c_in.to(self.dw_conv.weight.dtype)))).to(x.dtype)
         c_out = c_out.permute(0, 2, 3, 1).contiguous().view(bsz, slots, dim)
         x = x + c_out
 

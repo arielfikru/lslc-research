@@ -1,10 +1,7 @@
 ---
 license: mit
 library_name: pytorch
-base_model:
-  - Qwen/Qwen3-1.7B
-  - Qwen/Qwen3-4B
-  - Qwen/Qwen3-8B
+base_model: Qwen/Qwen3-1.7B
 tags:
   - kv-cache
   - context-compression
@@ -29,26 +26,19 @@ All base LLM weights (`Qwen/Qwen3-1.7B`, `Qwen/Qwen3-4B`, `Qwen/Qwen3-8B`) remai
 
 ---
 
-## Verified Benchmark Summary vs. Raw-Text RAG & Full KV Context (NVIDIA L4, `bfloat16`)
+## Verified Benchmark Summary vs. Raw-Text RAG & Full KV Context (Live CUDA)
 
-| Regime / Metric | **Constant-$k=2$ Raw RAG** / (+Skim-4) | StreamingLLM / H2O-20% | **LSLC 3D + Exact Bank + Delta** | Full 1D KV Context (BF16) |
-| :--- | :---: | :---: | :---: | :---: |
-| **32K (`P=128`) Net VRAM (`1.7B`)** | `56.1 MiB` (const $k=2$) / `71.7–183.7 MiB` (+TOC/Skim) | `14.0` / `716.8 MiB` | **`27.11 MiB` (`2.1×–6.8×` < RAG; `132.3×` < Full)** | `3,585.8 MiB` |
-| **32K (`P=128`) Query TTFT (`1.7B`)** | `62.6` (`d2`) / `159.4 ms` (`d2s4`) | `54.8` / `1,050.0 ms` | **`57.5 ms` Cold \| `54.6–58.0 ms` Warm** | `5,235.4 ms` |
-| **256K (`P=1,024`) Net VRAM (`1.7B`)** | `57.1 MiB` (const $k=2$, analytical) / `284.4 MiB` (+TOC/Skim) | — | **`135.72 MiB` (1-lvl Flat) / `~32.9 MiB` (2-lvl Hier.)** | `28,672.0 MiB` (OOM) |
-| **Semantic NIAH (`1K–4K` EM)** | `100.0%` | `0.0%–53.3%` | **`100.0%`** | `93.3%–100.0%` |
-| **Exact NIAH (`1K` 9-tok Code EM)** | `93.3%` | `0.0%` | **`66.7%`** (`0.0%` without `SparseExactBank`) | `93.3%` |
-| **EC-1: 8-Page Python Codebase (EM / Tok)** | — | `0.0%` | **`90.0% / 96.0%` (`1.7B`) \| `80.0% / 96.5%` (`8B`)** | — |
-| **EC-2: 4-Key Adversarial Decoys (EM / Tok)** | — | `0.0%` | **`85.0% / 96.0%` (`1.7B`) \| `80.0% / 95.0%` (`8B`)** | — |
-| **$k=3$ State Overrides (3 Seeds `{42,1337,9999}`)** | `0.0%` (Imm.) / `52.1% ± 15.7%` (Append) | N/A | **`100.0% ± 0.0%` EM ($\max|\Delta_{\text{TOC}}|=0.0$)** | `50.0%` |
-| **$k=5$ Symbolic Overrides (3 Seeds `{42,1337,9999}`)** | `0.0%` (Imm.) / `38.3% ± 7.6%` (Append) | N/A | **`91.7% ± 2.9%` (`k=3`-warmed) \| `80.0%` (cold `1.7B`)** | — |
-| **EC-5: Multi-Step Context Reasoning** | — | — | **`66.7%` (`1.7B`) \| `100.0%` (`8B`, `100%` retention)** | `88.9%` (`1.7B`) / `100%` (`8B`) |
+| Regime / Metric | **Constant-$k=2$ Raw RAG** (+In-Place Rewrite) | **LSLC 3D + Exact Bank + Delta** | Full 1D KV Context (BF16) |
+| :--- | :---: | :---: | :---: |
+| **32K (`P=128`) Net VRAM (`1.7B`)** | `57.89 MiB` (const $k=2$) / `71.7–183.7 MiB` (+TOC) | **`17.81 MiB` (2-Lvl Hier., `3.25×` < RAG) \| `27.11 MiB` (1-Lvl)** | `3,585.8 MiB` |
+| **128K / 256K Net VRAM (`1.7B`)** | `58.31 MiB` / `58.88 MiB` (const $k=2$) | **`24.98 MiB` (`2.33×` < RAG) / `34.55 MiB` (`1.70×` < RAG, 2-Lvl)** | `14.0` / `28.0 GiB` (OOM) |
+| **32K Shared-BM25 NIAH (`N=180`)** | `94.4%` Exact / `94.4%` Semantic EM | **`71.1%` Exact (`93.0%` content-tok) / `91.1%` Semantic EM** | — |
+| **EC-1 & EC-2 Codebase / Decoys** | — | **`90.0%` & `85.0%` EM (`1.7B`) \| `80.0%` EM (`8B`)** | — |
+| **$k=3$ Numeric Overrides (`N=108`)** | `0.0%` (Imm) / `55.6%` (App) / `45.8%` (LLM-RW, `791 ms`) | **`100.0% ± 0.0%` EM (`8.59 ms/edit`, $\max|\Delta_{\text{TOC}}|=0.0$)** | `50.0%` |
+| **$k=5$ Symbolic Overrides (`N=90`)** | `0.0%` (Imm) / `46.7%` (App) / `88.9%` (LLM-RW, `809 ms`) | **`70.0%` (`93.4%` tok, T4) / `80.0%–91.7%` (L4) @ `8.42 ms/edit`** | — |
+| **EC-5: Multi-Step Context Reasoning** | — | **`66.7%` (`1.7B`) \| `100.0%` (`8B`, `100%` retention)** | `88.9%` (`1.7B`) / `100%` (`8B`) |
 
-> **Methodological Notes (Forensic Audit Transparency):**
-> 1. In v1 `32K` comparison ([`reviewer_rebuttal_summary.json`](../evals/m2_colab_l4/reviewer_rebuttal_summary.json), $N=10$ Exact + $N=10$ Semantic per seed), `Raw-Text Chunk RAG` received the same `route.deep_idx` indices produced by LSLC's `QueryToTOCRouter` (`100%` top-2 recall on Exact NIAH; `40%` on Semantic NIAH).
-> 2. Teacher-forced `token_acc = 90.0% ± 0.0%` reflects a 1-token leading-whitespace offset (`f" {code_val}"` at position 0), so autoregressive **Exact Match (EM)** is the primary metric.
-> 3. Above $P^* \approx 384\text{--}392$ pages ($\approx 98.4\text{K--}100.4\text{K}$ tokens), 1-level Flat LSLC exceeds Constant-$k=2$ Raw-Text RAG (`56.6–57.1 MiB`); the 2-level Chapter$\rightarrow$Page hierarchy in `src/lslc/projector.py` restores strict memory dominance across `128K–256K`.
-> 4. State-override comparisons above cover Immutable and Append-Errata RAG; live In-Place LLM-Rewrite RAG accuracy/latency (`ms/edit`) and Shared Okapi BM25 retrieval (`N=180`) are implemented in `scripts/colab_run_rebuttal_v2.py`.
+> Full multi-seed JSON traces, including targeted (`791–809 ms/edit`) vs. full 256-token page (`14,631 ms/edit`) LLM-rewrite RAG latencies and shared Okapi BM25 recall (`97.22%`), are archived in [`evals/m2_colab_l4/rebuttal_v2_summary.json`](https://github.com/arielfikru/lslc-research/blob/main/evals/m2_colab_l4/rebuttal_v2_summary.json). Note that this unified checkpoint fine-tuned `QueryToTOCRouter` at `P=128`, so `P=4` state-override evaluation pairs LSLC with BM25 (`router_out_override`) cleanly at `100%` top-2 recall.
 
 ---
 
@@ -82,7 +72,7 @@ python scripts/demo_hf_inference.py --checkpoint hf_hub_release/lslc_qwen3_1.7b_
 
 ```bibtex
 @article{fikru2026lslc,
-  title={Layered Spatial Latent Caching (LSLC): In-Place Editable Compressed Context Memory with Volatility-Ordered Prefix Caching and 128-Byte/Page Exact Footnotes},
+  title={Layered Spatial Latent Caching (LSLC): In-Place Editable Compressed Context Memory vs. Raw-Text RAG with Volatility-Ordered Prefix Caching},
   author={Fikru, Ariel},
   year={2026},
   month={November}

@@ -18,7 +18,7 @@ pip install -e ".[quant,dev]"
 
 ## 2. Instant Local Verification (CPU or Laptop GPU, 0 Cloud Cost)
 
-1. **Run the 10-test architectural & tensor-shape suite:**
+1. **Run the 12-test architectural & tensor-shape suite:**
    ```bash
    python -m unittest -v tests/test_lslc_shapes.py
    ```
@@ -27,6 +27,7 @@ pip install -e ".[quant,dev]"
    - `FactorizedRoPE3D` rotary invariance and `PageRoPE1D` modularity
    - `SparseExactBank` strict `8 bytes/token` discrete storage (`128 B/page`)
    - `DeltaUpdater` convex override on $\ell=2$ with strict $\max|\Delta_{\text{TOC}}| = 0.0$ across $\ell \in \{0, 1\}$
+   - 2-level Chapter$\rightarrow$Page hierarchical TOC active-token cap and external retriever `router_out_override`
    - Non-zero gradient flow across all 5 trainable LSLC modules under a frozen LLM
 
 2. **Run the self-contained Living-Book inference & delta-override demo:**
@@ -41,16 +42,17 @@ pip install -e ".[quant,dev]"
 
 ---
 
-## 3. Reproducing the GPU Benchmarks (Single NVIDIA L4 22.03 GiB or A100)
+## 3. Reproducing the GPU Benchmarks (Single NVIDIA L4 22.03 GiB or Tesla T4 14.56 GiB)
 
-All empirical JSON outputs from our NVIDIA L4 runs are pre-archived in [`evals/m2_colab_l4/`](evals/m2_colab_l4/):
+All empirical JSON outputs from our NVIDIA L4 (`bfloat16`) and Tesla T4 (`float16`) runs are pre-archived in [`evals/m2_colab_l4/`](evals/m2_colab_l4/):
 
 | Script | What It Reproduces | Archived Verified Output |
 | :--- | :--- | :--- |
-| `python scripts/colab_run_m3.py` | **Primary `Qwen/Qwen3-1.7B` Benchmark:** Tracks `0A` (Full BF16 KV), `0B` (INT4 KV), `0C` (StreamingLLM-128), `0D` (H2O-20%), `0E` (1D Flat Latent `12 KiB/p`), `1` (LSLC Dense Only), `2` (LSLC + `SparseExactBank`), `3` (16-Page `4K` Book), `4` (`DeltaUpdater` $k=3$), and live CUDA `4K/32K` VRAM & TTFT profiling. | [`evals/m2_colab_l4/m3_summary.json`](evals/m2_colab_l4/m3_summary.json) |
-| `python scripts/colab_run_m4.py` | **Equal-Precision `Qwen/Qwen3-4B` Scaling Validation:** Tracks `0A–0D`, `1`, `2`, `4`, and live CUDA `4K/32K` VRAM & TTFT profiling (`144 KiB/tok` FP16 KV). | [`evals/m2_colab_l4/m4_qwen3_4b_summary.json`](evals/m2_colab_l4/m4_qwen3_4b_summary.json) |
-| `python scripts/colab_run_hard_stress.py` | **5-Regime Adversarial Stress Suite (`Qwen3-1.7B` BF16 & `Qwen3-8B` 4-bit NF4):** (EC-1) 8-page multi-file Python codebases; (EC-2) 4-key adversarial decoys; (EC-3) deep $k=5$ symbolic state overrides; (EC-4) live CUDA `128K` (`P=512`) & `256K` (`P=1,024`) profiling; (EC-5) multi-step context reasoning. | [`evals/m2_colab_l4/hard_stress_summary.json`](evals/m2_colab_l4/hard_stress_summary.json) |
-| `python scripts/colab_run_reviewer_rebuttal.py` | **Multi-Seed (`seeds={42,1337,9999}`) Rebuttal Suite:** Head-to-head `LSLC In-Place DeltaUpdater` vs. `Raw-Text Chunk RAG (Immutable & Append-Errata)` on $k=3$ numeric and $k=5$ symbolic overrides + `32K` (`P=128`) NIAH, router recall, and 128-page batch encoding latency. | [`evals/m2_colab_l4/reviewer_rebuttal_summary.json`](evals/m2_colab_l4/reviewer_rebuttal_summary.json) |
+| `python scripts/colab_run_m3.py` | **Primary `Qwen/Qwen3-1.7B` Benchmark (L4):** Tracks `0A` (Full BF16 KV), `0B` (INT4 KV), `0C` (StreamingLLM-128), `0D` (H2O-20%), `0E` (1D Flat Latent `12 KiB/p`), `1` (LSLC Dense Only), `2` (LSLC + `SparseExactBank`), `3` (16-Page `4K` Book), `4` (`DeltaUpdater` $k=3$), and live CUDA `4K/32K` VRAM & TTFT profiling. | [`evals/m2_colab_l4/m3_summary.json`](evals/m2_colab_l4/m3_summary.json) |
+| `python scripts/colab_run_m4.py` | **Equal-Precision `Qwen/Qwen3-4B` Scaling Validation (L4):** Tracks `0A–0D`, `1`, `2`, `4`, and live CUDA `4K/32K` VRAM & TTFT profiling (`144 KiB/tok` FP16 KV). | [`evals/m2_colab_l4/m4_qwen3_4b_summary.json`](evals/m2_colab_l4/m4_qwen3_4b_summary.json) |
+| `python scripts/colab_run_hard_stress.py` | **5-Regime Adversarial Stress Suite (`Qwen3-1.7B` BF16 & `Qwen3-8B` 4-bit NF4, L4):** (EC-1) 8-page multi-file Python codebases; (EC-2) 4-key adversarial decoys; (EC-3) deep $k=5$ symbolic state overrides; (EC-4) live CUDA `128K` (`P=512`) & `256K` (`P=1,024`) profiling; (EC-5) multi-step context reasoning. | [`evals/m2_colab_l4/hard_stress_summary.json`](evals/m2_colab_l4/hard_stress_summary.json) |
+| `python scripts/colab_run_reviewer_rebuttal.py` | **3-Seed L4 BF16 Override & Batch-Encode Suite (`seeds={42,1337,9999}`):** Head-to-head `LSLC In-Place DeltaUpdater` vs. `Raw-Text Chunk RAG (Immutable & Append-Errata)` on $k=3$ numeric and $k=5$ symbolic overrides + `32K` NIAH and `128`-page encode latency. | [`evals/m2_colab_l4/reviewer_rebuttal_summary.json`](evals/m2_colab_l4/reviewer_rebuttal_summary.json) |
+| `python scripts/colab_run_rebuttal_v2.py` | **Unified 3-Seed 2-Level Hierarchy & Editable-RAG Benchmark (T4 FP16):** Live CUDA `32K/128K/256K` 2-level hierarchy vs. Constant-$k=2$ RAG, $N=180$ shared-BM25 `32K` NIAH, and 4-way $k=3/k=5$ overrides with targeted & full-page In-Place LLM-Rewrite RAG latency. | [`evals/m2_colab_l4/rebuttal_v2_summary.json`](evals/m2_colab_l4/rebuttal_v2_summary.json) |
 
 ---
 

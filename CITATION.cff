@@ -6,6 +6,8 @@ authors:
   - given-names: Ariel
     family-names: Fikru
 repository-code: "https://github.com/arielfikru/lslc-research"
+url: "https://doi.org/10.5281/zenodo.24473281"
+doi: "10.5281/zenodo.24473281"
 license: MIT
 date-released: 2026-11-23
 keywords:

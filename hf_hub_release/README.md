@@ -75,6 +75,8 @@ python scripts/demo_hf_inference.py --checkpoint hf_hub_release/lslc_qwen3_1.7b_
   title={Layered Spatial Latent Caching (LSLC): In-Place Editable Compressed Context Memory vs. Raw-Text RAG with Volatility-Ordered Prefix Caching},
   author={Fikru, Ariel},
   year={2026},
-  month={November}
+  month={November},
+  doi={10.5281/zenodo.24473281},
+  url={https://doi.org/10.5281/zenodo.24473281}
 }
 ```

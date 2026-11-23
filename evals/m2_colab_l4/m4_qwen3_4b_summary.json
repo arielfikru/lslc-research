@@ -1,0 +1,209 @@
+{
+  "gpu": "NVIDIA L4",
+  "vram_gb": 22.03,
+  "model": "Qwen/Qwen3-4B",
+  "d_llm": 2560,
+  "num_llm_layers": 36,
+  "kv_kib_per_token": 144.0,
+  "trainable_params": 53523654,
+  "corpus": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "track0a_full_kv": {
+    "ppl": 11.6739,
+    "exact_niah_em": 1.0,
+    "exact_niah_tok_acc": 0.9467,
+    "semantic_niah_em": 0.9333,
+    "semantic_niah_tok_acc": 0.8815,
+    "delta_oracle": {
+      "delta_edit_em": 0.8125,
+      "delta_edit_tok_acc": 0.7344,
+      "static_retention_em": 1.0,
+      "static_retention_tok_acc": 0.6667
+    }
+  },
+  "track0b_int4_kv": {
+    "ppl": 11.6739,
+    "exact_niah_em": 1.0,
+    "exact_niah_tok_acc": 0.9467,
+    "semantic_niah_em": 0.9333,
+    "semantic_niah_tok_acc": 0.8815,
+    "vram_4k_mib": 144.0,
+    "vram_32k_mib": 1152.0
+  },
+  "track0c_streaming_128": {
+    "ppl": 13.6437,
+    "exact_niah_em": 0.0,
+    "exact_niah_tok_acc": 0.1667,
+    "semantic_niah_em": 0.0667,
+    "semantic_niah_tok_acc": 0.2537
+  },
+  "track0d_h2o_20pct": {
+    "ppl": 14.266,
+    "exact_niah_em": 0.0,
+    "exact_niah_tok_acc": 0.3533,
+    "semantic_niah_em": 0.0,
+    "semantic_niah_tok_acc": 0.2704,
+    "vram_4k_mib": 115.2,
+    "vram_32k_mib": 921.6
+  },
+  "track1_dense_only": {
+    "train": {
+      "steps": 200,
+      "elapsed_sec": 217.15,
+      "peak_vram_gb": 10.51,
+      "final_loss": 6.9358,
+      "final_ntp": 2.5206,
+      "final_rec": 3.8073,
+      "final_mat": 3.1789,
+      "final_sal": 0.0,
+      "final_route": 0.0302,
+      "final_gate": 0.0
+    },
+    "ppl": 12.8757,
+    "exact_niah_em": 0.0,
+    "exact_niah_tok_acc": 0.2733,
+    "semantic_niah_em": 1.0,
+    "semantic_niah_tok_acc": 1.0
+  },
+  "track2_sparse_exact": {
+    "train": {
+      "steps": 250,
+      "elapsed_sec": 308.52,
+      "peak_vram_gb": 10.818,
+      "final_loss": 6.1869,
+      "final_ntp": 0.0038,
+      "final_rec": 3.6852,
+      "final_mat": 1.7883,
+      "final_sal": 1.2923,
+      "final_route": 1.0938,
+      "final_gate": 0.0
+    },
+    "ppl": 14.2428,
+    "exact_niah_em": 0.6667,
+    "exact_niah_tok_acc": 0.7933,
+    "semantic_niah_em": 1.0,
+    "semantic_niah_tok_acc": 1.0,
+    "salience_needle_capture_rate": 1.0,
+    "matryoshka_zoom": {
+      "toc_only": {
+        "ppl": 15.7807,
+        "exact_niah_em": 0.0,
+        "exact_niah_tok_acc": 0.2933,
+        "semantic_niah_em": 1.0,
+        "semantic_niah_tok_acc": 1.0
+      },
+      "skim_only": {
+        "ppl": 18.7218,
+        "exact_niah_em": 0.0,
+        "exact_niah_tok_acc": 0.2667,
+        "semantic_niah_em": 1.0,
+        "semantic_niah_tok_acc": 1.0
+      },
+      "deep_only": {
+        "ppl": 13.5112,
+        "exact_niah_em": 0.0,
+        "exact_niah_tok_acc": 0.2667,
+        "semantic_niah_em": 0.5333,
+        "semantic_niah_tok_acc": 0.7259
+      }
+    }
+  },
+  "track3_multipage_4k": {
+    "num_pages": 16,
+    "context_tokens": 4096,
+    "router_top1_acc": 0.1,
+    "router_top2_deep_recall": 0.1,
+    "exact_niah_em": 0.2,
+    "exact_niah_tok_acc": 0.43,
+    "semantic_niah_em": 1.0,
+    "semantic_niah_tok_acc": 1.0,
+    "salience_needle_capture_rate": 1.0
+  },
+  "track4_delta_probe": {
+    "train": {
+      "steps": 150,
+      "elapsed_sec": 124.0,
+      "peak_vram_gb": 9.051,
+      "final_loss": 8.6406,
+      "final_ntp": 5.3569,
+      "final_rec": 5.6584,
+      "final_mat": 0.0,
+      "final_sal": 0.0,
+      "final_route": 0.1245,
+      "final_gate": 0.2006
+    },
+    "delta_edit_em": 1.0,
+    "delta_edit_tok_acc": 1.0,
+    "static_retention_em": 0.0,
+    "static_retention_tok_acc": 0.0,
+    "mean_gate": 0.20332,
+    "max_prefix_invariance_diff": 0.0
+  },
+  "live_cuda_profile": [
+    {
+      "context_len": 4096,
+      "active_prefix_tokens": 100,
+      "full_kv_mib": 578.25,
+      "lslc_book_mib": 0.188,
+      "lslc_bank_mib": 0.002,
+      "lslc_active_kv_mib": 16.31,
+      "lslc_net_mib": 16.5,
+      "measured_ratio_vs_fp16": 35.04,
+      "full_ttft_ms": 972.38,
+      "lslc_cold_ttft_ms": 79.67,
+      "lslc_warm_ttft_ms": 66.71,
+      "analytical": {
+        "num_tokens": 4096,
+        "pages": 16,
+        "k_toc": 12,
+        "k_skim": 2,
+        "k_deep": 2,
+        "active_dense_tokens": 68,
+        "active_exact_tokens": 32,
+        "active_total_tokens": 100,
+        "kv_kib_per_token": 144.0,
+        "book_mib": 0.1875,
+        "exact_bank_mib": 0.001953125,
+        "active_kv_mib": 14.0625,
+        "lslc_net_mib": 14.251953125,
+        "full_fp16_kv_mib": 576.0,
+        "int4_kv_mib": 144.0,
+        "h2o_20pct_mib": 115.19999980926514,
+        "ratio_vs_fp16": 40.41551322461285,
+        "ratio_vs_int4": 10.103878306153213
+      }
+    },
+    {
+      "context_len": 32768,
+      "active_prefix_tokens": 218,
+      "full_kv_mib": 4610.25,
+      "lslc_book_mib": 1.5,
+      "lslc_bank_mib": 0.0156,
+      "lslc_active_kv_mib": 32.91,
+      "lslc_net_mib": 34.42,
+      "measured_ratio_vs_fp16": 133.93,
+      "full_ttft_ms": 12725.77,
+      "lslc_cold_ttft_ms": 111.83,
+      "lslc_warm_ttft_ms": 84.3,
+      "analytical": {
+        "num_tokens": 32768,
+        "pages": 128,
+        "k_toc": 122,
+        "k_skim": 4,
+        "k_deep": 2,
+        "active_dense_tokens": 186,
+        "active_exact_tokens": 32,
+        "active_total_tokens": 218,
+        "kv_kib_per_token": 144.0,
+        "book_mib": 1.5,
+        "exact_bank_mib": 0.015625,
+        "active_kv_mib": 30.65625,
+        "lslc_net_mib": 32.171875,
+        "full_fp16_kv_mib": 4608.0,
+        "int4_kv_mib": 1152.0,
+        "h2o_20pct_mib": 921.6000003814697,
+        "ratio_vs_fp16": 143.23069451189897,
+        "ratio_vs_int4": 35.807673627974744
+      }
+    }
+  ]
+}

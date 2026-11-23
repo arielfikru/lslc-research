@@ -1,0 +1,127 @@
+{
+  "model": "Qwen/Qwen3-1.7B",
+  "gpu": "NVIDIA L4",
+  "systems_and_encode_32k": {
+    "num_pages": 128,
+    "total_tokens": 32768,
+    "encode_128_pages_total_ms": 45.28,
+    "encode_per_page_ms": 0.354,
+    "lslc_active_tokens": 218,
+    "lslc_net_vram_mib": 27.11,
+    "lslc_cold_query_ttft_ms": 57.5,
+    "lslc_warm_toc_ttft_ms": 54.62,
+    "rag_deep2_active_tokens": 634,
+    "rag_deep2_net_vram_mib": 71.72,
+    "rag_deep2_query_ttft_ms": 62.62,
+    "rag_deep2_skim4_active_tokens": 1658,
+    "rag_deep2_skim4_net_vram_mib": 183.72,
+    "rag_deep2_skim4_query_ttft_ms": 159.44
+  },
+  "niah_32k_multi_seed": {
+    "num_pages": 128,
+    "context_tokens": 32768,
+    "seeds": [
+      42,
+      1337,
+      9999
+    ],
+    "total_episodes": 60,
+    "salience_capture_rate_32k": {
+      "mean": 0.9815,
+      "std": 0.0064,
+      "ci95": 0.0073
+    },
+    "router_top1_recall_32k": {
+      "mean": 0.6,
+      "std": 0.0,
+      "ci95": 0.0
+    },
+    "router_top2_recall_32k": {
+      "mean": 0.7,
+      "std": 0.0,
+      "ci95": 0.0
+    },
+    "lslc_32k_exact_niah_em": {
+      "mean": 0.7,
+      "std": 0.1732,
+      "ci95": 0.196
+    },
+    "lslc_32k_exact_niah_tok_acc": {
+      "mean": 0.9,
+      "std": 0.0,
+      "ci95": 0.0
+    },
+    "lslc_32k_semantic_niah_em": {
+      "mean": 0.0,
+      "std": 0.0,
+      "ci95": 0.0
+    },
+    "raw_rag_32k_exact_niah_em": {
+      "mean": 1.0,
+      "std": 0.0,
+      "ci95": 0.0
+    },
+    "raw_rag_32k_exact_niah_tok_acc": {
+      "mean": 0.9033,
+      "std": 0.0058,
+      "ci95": 0.0065
+    },
+    "raw_rag_32k_semantic_niah_em": {
+      "mean": 0.7,
+      "std": 0.0,
+      "ci95": 0.0
+    }
+  },
+  "delta_edit_vs_raw_rag_multi_seed": {
+    "seeds": [
+      42,
+      1337,
+      9999
+    ],
+    "k3_numeric_overrides": {
+      "lslc_in_place_delta_em": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "lslc_in_place_delta_tok_acc": {
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "raw_rag_immutable_em": {
+        "mean": 0.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "raw_rag_append_errata_em": {
+        "mean": 0.5208,
+        "std": 0.1573,
+        "ci95": 0.178
+      }
+    },
+    "k5_symbolic_overrides": {
+      "lslc_in_place_delta_em": {
+        "mean": 0.9167,
+        "std": 0.0289,
+        "ci95": 0.0327
+      },
+      "lslc_in_place_delta_tok_acc": {
+        "mean": 0.9733,
+        "std": 0.019,
+        "ci95": 0.0216
+      },
+      "raw_rag_immutable_em": {
+        "mean": 0.0,
+        "std": 0.0,
+        "ci95": 0.0
+      },
+      "raw_rag_append_errata_em": {
+        "mean": 0.3833,
+        "std": 0.0764,
+        "ci95": 0.0864
+      }
+    },
+    "lslc_toc_prefix_invariance_diff": 0.0
+  }
+}

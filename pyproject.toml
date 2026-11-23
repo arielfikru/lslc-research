@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lslc"
+version = "0.1.0"
+description = "Layered Spatial Latent Caching (LSLC): In-Place Editable Compressed Context Memory with Volatility-Ordered Prefix Caching and 128-Byte/Page Exact Footnotes"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Ariel Fikru"}
+]
+keywords = ["llm", "kv-cache", "context-compression", "latent-memory", "editable-cache", "qwen3", "gqa"]
+dependencies = [
+    "torch>=2.2.0",
+    "transformers>=4.51.0",
+    "datasets>=2.19.0",
+    "accelerate>=0.30.0",
+    "safetensors>=0.4.3",
+    "huggingface_hub>=0.23.0",
+]
+
+[project.optional-dependencies]
+quant = ["bitsandbytes>=0.43.0"]
+dev = ["pytest>=8.0.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

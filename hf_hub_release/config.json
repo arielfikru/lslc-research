@@ -1,0 +1,31 @@
+{
+  "architectures": [
+    "LayeredSpatialLatentCache"
+  ],
+  "model_type": "lslc_adapter",
+  "base_model_name_or_path": "Qwen/Qwen3-1.7B",
+  "base_model_frozen": true,
+  "d_llm": 2048,
+  "num_llm_layers": 28,
+  "num_kv_heads": 8,
+  "head_dim": 128,
+  "kv_bytes_per_token_fp16": 114688,
+  "page_size": 256,
+  "num_layers": 3,
+  "latent_channels": 128,
+  "grid_h": 4,
+  "grid_w": 4,
+  "d_enc": 512,
+  "enc_heads": 8,
+  "enc_layers": 2,
+  "exact_ratio": 0.0625,
+  "exact_tokens_per_page": 16,
+  "exact_bytes_per_token": 8,
+  "k_deep": 2,
+  "k_skim_4k": 2,
+  "k_skim_32k": 4,
+  "rope_3d_split": [16, 24, 24],
+  "trainable_parameters": 40420550,
+  "torch_dtype": "bfloat16",
+  "license": "mit"
+}

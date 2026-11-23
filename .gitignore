@@ -1,0 +1,37 @@
+# Python & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# PyTorch & Checkpoints (large binary weights tracked via Hugging Face Hub)
+*.pt
+*.pth
+*.bin
+*.safetensors
+!hf_hub_release/config.json
+!hf_hub_release/README.md
+
+# LaTeX build artifacts (keep .tex and final .pdf)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+
+# OS & Editor
+.DS_Store
+.idea/
+.vscode/
+*.swp

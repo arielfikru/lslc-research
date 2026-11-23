@@ -1,0 +1,190 @@
+{
+  "gpu": "NVIDIA L4",
+  "vram_gb": 22.03,
+  "runs": {
+    "Qwen3-1.7B": {
+      "model": "Qwen/Qwen3-1.7B",
+      "load_in_4bit": false,
+      "d_llm": 2048,
+      "num_llm_layers": 28,
+      "kv_kib_per_token_fp16": 112.0,
+      "trainable_lslc_params": 40420550,
+      "train_stats": {
+        "steps": 220,
+        "elapsed_sec": 228.72,
+        "peak_vram_gb": 5.362,
+        "final_loss": 5.4209,
+        "final_ntp": 0.033,
+        "final_rec": 2.2077,
+        "final_mat": 3.5284,
+        "final_sal": 1.2572,
+        "final_route": 0.2471,
+        "final_gate": 0.0
+      },
+      "edge_case_1_agentic_codebase_8p": {
+        "exact_niah_em": 0.9,
+        "exact_niah_tok_acc": 0.96,
+        "semantic_niah_em": 0.0,
+        "semantic_niah_tok_acc": 0.0,
+        "salience_needle_capture_rate": 0.8182
+      },
+      "edge_case_2_adversarial_decoy_keys": {
+        "exact_niah_em": 0.85,
+        "exact_niah_tok_acc": 0.96,
+        "semantic_niah_em": 0.0,
+        "semantic_niah_tok_acc": 0.0,
+        "salience_needle_capture_rate": 0.9889
+      },
+      "edge_case_3_k5_symbolic_override": {
+        "train": {
+          "steps": 110,
+          "elapsed_sec": 87.33,
+          "peak_vram_gb": 4.099,
+          "final_loss": 5.9821,
+          "final_ntp": 0.0193,
+          "final_rec": 5.6797,
+          "final_mat": 0.0,
+          "final_sal": 0.0,
+          "final_route": 0.1006,
+          "final_gate": 0.2567
+        },
+        "delta_edit_em": 0.8,
+        "delta_edit_tok_acc": 0.9375,
+        "static_retention_em": 0.0,
+        "static_retention_tok_acc": 0.0,
+        "mean_gate": 0.25341,
+        "max_prefix_invariance_diff": 0.0
+      },
+      "edge_case_4_ultra_long_128k_256k": [
+        {
+          "context_len": 131072,
+          "pages": 512,
+          "active_prefix_tokens": 602,
+          "full_fp16_kv_analytical_mib": 14336.0,
+          "full_fp16_status_on_single_l4": "OOM (>14-36 GiB KV)",
+          "lslc_book_mib": 6.0,
+          "lslc_bank_mib": 0.0625,
+          "lslc_active_kv_mib": 67.59,
+          "lslc_net_mib": 73.66,
+          "compression_ratio_vs_fp16": 194.63,
+          "lslc_chunked_encode_ms": 111.8,
+          "lslc_warm_ttft_ms": 57.96
+        },
+        {
+          "context_len": 262144,
+          "pages": 1024,
+          "active_prefix_tokens": 1114,
+          "full_fp16_kv_analytical_mib": 28672.0,
+          "full_fp16_status_on_single_l4": "OOM (>14-36 GiB KV)",
+          "lslc_book_mib": 12.0,
+          "lslc_bank_mib": 0.125,
+          "lslc_active_kv_mib": 123.59,
+          "lslc_net_mib": 135.72,
+          "compression_ratio_vs_fp16": 211.26,
+          "lslc_chunked_encode_ms": 213.38,
+          "lslc_warm_ttft_ms": 97.74
+        }
+      ],
+      "edge_case_5_intelligence_and_reasoning_retention": {
+        "context_reasoning_full_kv_acc": 0.8889,
+        "context_reasoning_lslc_acc": 0.6667,
+        "context_reasoning_retention_ratio": 0.75,
+        "intrinsic_iq_raw_llm_acc": 0.6667,
+        "intrinsic_iq_with_lslc_book_acc": 0.8333,
+        "intrinsic_iq_retention_ratio": 1.2499
+      }
+    },
+    "Qwen3-8B-NF4": {
+      "model": "Qwen/Qwen3-8B",
+      "load_in_4bit": true,
+      "d_llm": 4096,
+      "num_llm_layers": 36,
+      "kv_kib_per_token_fp16": 144.0,
+      "trainable_lslc_params": 108561606,
+      "train_stats": {
+        "steps": 200,
+        "elapsed_sec": 417.01,
+        "peak_vram_gb": 10.269,
+        "final_loss": 5.4913,
+        "final_ntp": 0.0187,
+        "final_rec": 3.46,
+        "final_mat": 2.1099,
+        "final_sal": 0.9886,
+        "final_route": 1.2422,
+        "final_gate": 0.0
+      },
+      "edge_case_1_agentic_codebase_8p": {
+        "exact_niah_em": 0.8,
+        "exact_niah_tok_acc": 0.965,
+        "semantic_niah_em": 0.0,
+        "semantic_niah_tok_acc": 0.0,
+        "salience_needle_capture_rate": 0.8182
+      },
+      "edge_case_2_adversarial_decoy_keys": {
+        "exact_niah_em": 0.8,
+        "exact_niah_tok_acc": 0.95,
+        "semantic_niah_em": 0.0,
+        "semantic_niah_tok_acc": 0.0,
+        "salience_needle_capture_rate": 0.9889
+      },
+      "edge_case_3_k5_symbolic_override": {
+        "train": {
+          "steps": 100,
+          "elapsed_sec": 132.28,
+          "peak_vram_gb": 7.677,
+          "final_loss": 6.2606,
+          "final_ntp": 0.0155,
+          "final_rec": 6.3926,
+          "final_mat": 0.0,
+          "final_sal": 0.0,
+          "final_route": 0.083,
+          "final_gate": 0.2379
+        },
+        "delta_edit_em": 0.55,
+        "delta_edit_tok_acc": 0.9089,
+        "static_retention_em": 0.0,
+        "static_retention_tok_acc": 0.0,
+        "mean_gate": 0.24456,
+        "max_prefix_invariance_diff": 0.0
+      },
+      "edge_case_4_ultra_long_128k_256k": [
+        {
+          "context_len": 131072,
+          "pages": 512,
+          "active_prefix_tokens": 602,
+          "full_fp16_kv_analytical_mib": 18432.0,
+          "full_fp16_status_on_single_l4": "OOM (>14-36 GiB KV)",
+          "lslc_book_mib": 6.0,
+          "lslc_bank_mib": 0.0625,
+          "lslc_active_kv_mib": 86.91,
+          "lslc_net_mib": 92.97,
+          "compression_ratio_vs_fp16": 198.26,
+          "lslc_chunked_encode_ms": 166.0,
+          "lslc_warm_ttft_ms": 307.43
+        },
+        {
+          "context_len": 262144,
+          "pages": 1024,
+          "active_prefix_tokens": 1114,
+          "full_fp16_kv_analytical_mib": 36864.0,
+          "full_fp16_status_on_single_l4": "OOM (>14-36 GiB KV)",
+          "lslc_book_mib": 12.0,
+          "lslc_bank_mib": 0.125,
+          "lslc_active_kv_mib": 158.91,
+          "lslc_net_mib": 171.03,
+          "compression_ratio_vs_fp16": 215.54,
+          "lslc_chunked_encode_ms": 338.87,
+          "lslc_warm_ttft_ms": 453.23
+        }
+      ],
+      "edge_case_5_intelligence_and_reasoning_retention": {
+        "context_reasoning_full_kv_acc": 1.0,
+        "context_reasoning_lslc_acc": 1.0,
+        "context_reasoning_retention_ratio": 1.0,
+        "intrinsic_iq_raw_llm_acc": 1.0,
+        "intrinsic_iq_with_lslc_book_acc": 0.8333,
+        "intrinsic_iq_retention_ratio": 0.8333
+      }
+    }
+  }
+}

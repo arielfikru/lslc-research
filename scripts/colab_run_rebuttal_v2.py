@@ -365,10 +365,9 @@ def train_unified_checkpoint(
             q_emb = embed_fn(q_ids).mean(dim=1)
 
         opt.zero_grad(set_to_none=True)
-        with torch.autocast(device_type="cuda", dtype=amp_dtype):
-            toc_tokens = wrapper.lslc.projector.project_toc(z_book)
-            route_out = wrapper.lslc.router(q_emb, toc_tokens, k_deep=2, k_skim=4)
-            loss = F.cross_entropy(route_out.logits, target_p)
+        toc_tokens = wrapper.lslc.projector.project_toc(z_book.float())
+        route_out = wrapper.lslc.router(q_emb.float(), toc_tokens, k_deep=2, k_skim=4)
+        loss = F.cross_entropy(route_out.logits, target_p)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(
             list(wrapper.lslc.router.parameters()) + list(wrapper.lslc.projector.toc_proj.parameters()),

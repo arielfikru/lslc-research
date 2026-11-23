@@ -1,4 +1,4 @@
-# Why Your LLM’s KV Cache Needs to Be an Editable Book, Not a 10 km Stone Scroll
+# Why In-Place Editable Context Memory Beats Raw-Text RAG—And Only Needs 27 MiB at 32K
 
 * **Category:** Guides / Engineering
 * **Published:** Nov 23, 2026
@@ -6,19 +6,20 @@
 
 ---
 
-This is the wall every long-context deployment hits right after solving model weight memory: you quantize an 8B or 4B model so it loads comfortably on a single GPU, you open the context window to 32K or 128K tokens for multi-turn coding agents, and within twenty turns your latency climbs past ten seconds while your VRAM fills with stale Key-Value (KV) states. Worse, the moment a user says *"wait—change the budget cap from 10M to 60M and move the staging endpoint to Frankfurt"*, you cannot edit turn 3 in place. In a standard causal KV cache, everything downstream of an edit goes stale: you either re-prefill the history or append conflicting errata that confuse the model.
+This is the wall every long-context deployment hits right after solving model weight memory: you quantize an 8B or 4B model so it loads comfortably on a single GPU, you open the context window to 32K or 128K tokens for multi-turn coding agents, and within twenty turns both Full KV-cache and Raw-Text Chunk RAG run into trouble. Full KV eats gigabytes and stalls prefill; standard Raw-Text Chunk RAG trims context by retrieving top-$k$ chunks, but the moment a user says *"wait—change the budget cap from 10M to 60M and move the staging endpoint to Frankfurt"*, you cannot revise chunk 3 in place. Immutable chunks serve stale values, appended errata confuse the model, and LLM-based chunk rewrites incur full decoding latency on every edit.
 
-So this guide derives what it takes to turn a flat, append-only 1D KV cache into an **editable, multi-resolution living book**—an architecture we call **Layered Spatial Latent Caching (LSLC)**. There are only three things in a compressed book's memory budget at inference time, and two of them cost pennies. The third—the active KV cache of the projected tokens you actually hand to the LLM—is the one that decides whether your compression ratio is real or marketing fiction. Every number below is derived from first principles and verified on a single NVIDIA L4 GPU (`22.03 GiB`) across frozen `Qwen3-1.7B`, `Qwen3-4B`, and `Qwen3-8B` backbones.
+So this guide derives what it takes to turn an append-only history into an **editable, multi-resolution living book**—**Layered Spatial Latent Caching (LSLC)**—benchmarked directly against **Raw-Text Chunk RAG** (with Full BF16 KV as the uncompressed upper-bound context). There are only three things in a compressed book's memory budget at inference time, and two of them cost pennies. The third—the active KV cache of the projected tokens you actually hand to the LLM—decides both when you beat Constant-$k$ RAG and when a 2-level hierarchical TOC becomes mandatory. Every measured number below is verified on a single NVIDIA L4 GPU (`22.03 GiB`) across frozen `Qwen3-1.7B`, `Qwen3-4B`, and `Qwen3-8B` backbones.
 
 ---
 
 ## TL;DR
 
-* Even with Grouped-Query Attention (GQA), a standard FP16/BF16 KV cache costs **112 KiB per token** on `Qwen3-1.7B` and **144 KiB per token** on `Qwen3-4B` and `Qwen3-8B`. At 32K tokens that is **3.50 to 4.50 GiB** per stream; at 256K tokens it is **28 to 36 GiB**, which crashes a 24 GB card before you serve a second user.
+* Even with Grouped-Query Attention (GQA), a standard FP16/BF16 KV cache costs **112 KiB per token** on `Qwen3-1.7B` and **144 KiB per token** on `Qwen3-4B` and `Qwen3-8B` (the uncompressed Full-KV ceiling: **3.50 to 4.50 GiB** at 32K; **28 to 36 GiB** at 256K).
 * Most latent context compressors (`LCLM`, `Memorilla`) are **read-only** and lose exact arbitrary strings (UUIDs, ports, `snake_case` code symbols), while recent editable KV methods (*Models Take Notes at Prefill*) operate on **uncompressed** KV caches.
 * **LSLC** compiles each 256-token page into a `[L=3, C=128, H=4, W=4]` 2D spatial-layer latent sheet (**12 KiB per page**, or **48 bytes per raw token**) plus a 16-slot **Sparse Exact-Recall Footnote Bank** (**8 bytes per token**, or **128 bytes per page**).
-* Counting *both* the persistent book and the active LLM KV cache of the 218 routed tokens (`122 TOC + 16 Skim + 48 Deep + 32 Exact`), a 32K context drops from **3,585.8 MiB to 27.11 MiB (132.3×)** on `Qwen3-1.7B` and from **4,610.3 MiB to 34.42 MiB (133.9×)** on `Qwen3-4B`, cutting query Time-to-First-Token (TTFT) from **5.24–12.73 seconds** to **58–84 ms**.
-* The real prize is **in-place editability without breaking prefix cache**: ordering prefix tokens by volatility (`[TOC | Skim | l=0 Static | l=1 Entity | l=2 Sticky-Note | Exact]`) lets an in-place convex `DeltaUpdater` overwrite $\ell=2$ across $k=3$ sequential turn revisions at **97.9%–100.0% Exact Match** (versus **0.0%** on immutable Raw-Text RAG and **52.1%** on append-errata RAG) with zero TOC prefix drift ($\max|\Delta_{\text{TOC}}| = 0.0$).
+* **Head-to-head vs. Raw-Text Chunk RAG at 32K (`P=128`, `Qwen3-1.7B`):** LSLC consumes **27.11 MiB** total VRAM (218 active tokens, **54.6–58.0 ms** TTFT) vs. **56.1 MiB** for Constant-$k=2$ RAG (zero TOC tokens, 512 raw tokens analytical) and **71.72–183.72 MiB** for shared-TOC `Deep-2` / `Deep-2+Skim-4` Raw RAG (**634–1,658** active tokens, **62.6–159.4 ms** TTFT)—or **132.3×** below the Full BF16 KV ceiling (`3,585.8 MiB`, `5.24 s` TTFT).
+* **The ~100K Constant-$k$ RAG Crossover & 2-Level TOC:** Above **$P^* \approx 384\text{--}392$ pages ($\approx 98.4\text{K--}100.4\text{K}$ tokens)**, a *flat* 1-level TOC overtakes Constant-$k=2$ Raw RAG (`73.66 MiB` vs. `56.6 MiB` at `128K`). Our **2-Level Chapter$\rightarrow$Page Hierarchy** (`hierarchical_chapter_size=16` in `src/lslc/projector.py`, $\max|\Delta_{\text{TOC}}| = 0.0$) eliminates that crossover (`≤ 23.3 MiB` analytical at `128K`, `≤ 32.9 MiB` at `256K`).
+* **In-Place Editability (`DeltaUpdater`):** Ordering prefix tokens by volatility (`[TOC | Skim | l=0 Static | l=1 Entity | l=2 Sticky-Note | Exact]`) lets `DeltaUpdater` overwrite $\ell=2$ across $k=3$ numeric overrides at **100.0% ± 0.0% EM** (3 seeds) and $k=5$ symbolic overrides at **80.0% (`cold`)–91.7% (`k=3`-warmed) EM**—versus **0.0%** on Immutable RAG and **38.3%–52.1%** on Append-Errata RAG—with zero TOC prefix drift ($\max|\Delta_{\text{TOC}}| = 0.0$). Live In-Place LLM-Rewrite RAG cost/accuracy and shared non-oracle Okapi BM25 retrieval (`N=180`) are implemented in `scripts/colab_run_rebuttal_v2.py`.
 
 ---
 
@@ -80,27 +81,26 @@ $$
 
 Here is how the numbers compare across all four context scales on a single 22.03 GiB NVIDIA L4 GPU:
 
-| Context ($N$) | Backbone | Full BF16 KV | Ideal INT4 KV | Raw-Text RAG ($k=2$ Deep + $4$ Skim) | LSLC Net Total (Live CUDA) | Measured Ratio / Warm TTFT |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **4K** ($P=16$) | `Qwen3-1.7B` | 449.8 MiB | 112.0 MiB | 177.8 MiB | **12.88 MiB** | **34.9×** / **55.6 ms** |
-| **4K** ($P=16$) | `Qwen3-4B` | 578.3 MiB | 144.0 MiB | 228.5 MiB | **16.50 MiB** | **35.0×** / **66.7 ms** |
-| **32K** ($P=128$) | `Qwen3-1.7B` | 3,585.8 MiB | 896.0 MiB | 185.0 MiB | **27.11 MiB** | **132.3×** / **58.0 ms** |
-| **32K** ($P=128$) | `Qwen3-4B` | 4,610.3 MiB | 1,152.0 MiB | 237.8 MiB | **34.42 MiB** | **133.9×** / **84.3 ms** |
-| **128K** ($P=512$) | `Qwen3-1.7B` | 14,336.0 MiB (OOM) | 3,584.0 MiB | 227.6 MiB | **73.66 MiB** | **194.6×** / **58.0 ms** |
-| **256K** ($P=1,024$) | `Qwen3-1.7B` | 28,672.0 MiB (OOM) | 7,168.0 MiB | 284.4 MiB | **135.72 MiB** | **211.3×** / **97.7 ms** |
-| **256K** ($P=1,024$) | `Qwen3-8B` (NF4) | 36,864.0 MiB (OOM) | 9,216.0 MiB | 365.5 MiB | **171.03 MiB** | **215.5×** / **453.2 ms** |
+| Context ($N$) | Backbone | Constant-$k=2$ Raw RAG / (+TOC/Skim) | LSLC Net Total (Live 1-Lvl / 2-Lvl Hier. Analyt.) | Full BF16 KV Ceiling | Warm LSLC TTFT |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **4K** ($P=16$) | `Qwen3-1.7B` | 56.0 MiB (const) / 177.8 MiB (+Skim) | **12.88 MiB** (`4.3×` < RAG) | 449.8 MiB | **55.6 ms** |
+| **32K** ($P=128$) | `Qwen3-1.7B` | 56.1 MiB (const) / 71.7–183.7 MiB | **27.11 MiB** (1-Lvl) / **≤16.2 MiB** (2-Lvl) | 3,585.8 MiB | **54.6–58.0 ms** |
+| **32K** ($P=128$) | `Qwen3-4B` | 72.1 MiB (const) / 92.2–237.8 MiB | **34.42 MiB** (1-Lvl) / **≤20.6 MiB** (2-Lvl) | 4,610.3 MiB | **84.3 ms** |
+| **128K** ($P=512$) | `Qwen3-1.7B` | 56.6 MiB (const) / 227.6 MiB | 73.66 MiB (1-Lvl Flat) / **≤23.3 MiB** (2-Lvl) | 14,336.0 MiB (OOM) | **58.0 ms** |
+| **256K** ($P=1,024$) | `Qwen3-1.7B` | 57.1 MiB (const) / 284.4 MiB | 135.72 MiB (1-Lvl Flat) / **≤32.9 MiB** (2-Lvl) | 28,672.0 MiB (OOM) | **97.7 ms** |
+| **256K** ($P=1,024$) | `Qwen3-8B` (NF4) | 73.1 MiB (const) / 365.5 MiB | 171.03 MiB (1-Lvl Flat) / **≤41.7 MiB** (2-Lvl) | 36,864.0 MiB (OOM) | **453.2 ms** |
 
 ---
 
 ## Why editability—not compression alone—is the real prize
 
-If your only goal were throwing away 99% of the KV cache on static text, `StreamingLLM` already does that with zero training by keeping 4 attention sinks and a 124-token sliding window—at the cost of going completely blind (`0.0%` Exact NIAH) to anything that scrolled out of the window. And if your only goal were retrieving two static pages verbatim, **Raw-Text Chunk RAG** (storing 1 KiB of raw `int32` token IDs per page plus a 1-token TOC embedding, then re-prefilling the top-2 raw pages on demand) can retrieve unedited text at the cost of $7\times$ higher active KV footprint (`1,658` active tokens vs. `218`).
+If your only goal were throwing away 99% of the KV cache on static text, `StreamingLLM` already does that with zero training by keeping 4 attention sinks and a 124-token sliding window—at the cost of going completely blind (`0.0%` Exact NIAH) to anything that scrolled out of the window. And if your only goal were retrieving two static pages verbatim, **Constant-$k=2$ Raw-Text Chunk RAG** (zero TOC tokens in LLM KV; strictly 512 retrieved raw tokens) stays flat near `56.1–57.1 MiB` on `Qwen3-1.7B` (while shared-TOC `Deep-2+Skim-4` RAG uses `183.72 MiB` at `32K`).
 
-Where every existing baseline breaks down is **live state revision**. Suppose page 2 records `budget = 25M` (or `deployment_state = canary-staging`), and across turns 4, 7, and 11 the user overrides that constraint three times in a row (`55M -> 70M -> 90M`).
+Where both read-only latent compressors and Raw-Text RAG break down is **live state revision**. Suppose page 2 records `budget = 25M` (or `deployment_state = canary-staging`), and across turns 4, 7, and 11 the user overrides that constraint three to five times in a row (`55M -> 70M -> 90M`).
 
 * **Immutable Raw-Text RAG (`0.0%` EM):** Re-reads the original page (`25M`) and misses 100% of revisions.
-* **Append-Errata RAG / Full KV Append (`50.0%–52.1%` EM):** Appends all three revision turns onto the retrieved chunk. Now the prompt contains four conflicting numbers (`25M`, `55M`, `70M`, `90M`), causing a 1.7B model to guess an outdated value nearly half the time while invalidating downstream prefix caches on every edit.
-* **LSLC In-Place Convex `DeltaUpdater` (`97.9%–100.0%` EM):** Separates each page into three semantic strata—Static rules ($\ell=0$), Entity state ($\ell=1$), and Dynamic sticky-note working memory ($\ell=2$)—and orders the soft-prompt prefix monotonically by volatility:
+* **Append-Errata RAG / Full KV Append (`38.3%–52.1%` EM):** Appends revision turns onto the retrieved chunk. Now the prompt contains conflicting stale and current values (`25M`, `55M`, `70M`, `90M`), dropping EM to `52.1%` (`k=3`) and `38.3%` (`k=5`) while invalidating downstream prefix caches. *(Scope note: v1 baselines cover Immutable and Append-Errata RAG only; live In-Place LLM-Rewrite RAG accuracy and per-edit latency `ms/edit` are implemented in `scripts/colab_run_rebuttal_v2.py`.)*
+* **LSLC In-Place Convex `DeltaUpdater` (`100.0%` on `k=3`; `80.0%–91.7%` on `k=5`):** Separates each page into three semantic strata—Static rules ($\ell=0$), Entity state ($\ell=1$), and Dynamic sticky-note working memory ($\ell=2$)—and orders the soft-prompt prefix monotonically by volatility:
 
 $$
 \mathcal{S}_{\text{LLM}} = \big[\underbrace{\text{TOC}_{1..P}}_{\text{100\% invariant}} \;\big|\; \text{Skim} \;\big|\; \text{Deep}_{\ell=0} \;\big|\; \text{Deep}_{\ell=1} \;\big|\; \underbrace{\text{Deep}_{\ell=2} \;\big|\; \mathcal{I}_{\text{deep}}}_{\text{patched in-place}} \;\big|\; X_{\text{turn}}\big]
@@ -112,7 +112,7 @@ $$
 \mathbf{Z}_{p, 2}^{\text{new}} = (1 - \mathbf{G}_p) \odot \mathbf{Z}_{p, 2}^{\text{old}} + \mathbf{G}_p \odot \Delta\mathbf{Z}_{p, 2}
 $$
 
-Because $\text{TOC}_{1..P}$ pools exclusively over $\ell \in \{0, 1\}$, the entire global TOC prefix remains bit-identical ($\max|\Delta_{\text{TOC}}| = 0.0$ by construction), and stale values are overwritten in latent space rather than left around to distract attention.
+Because $\text{TOC}_{1..P}$ pools exclusively over $\ell \in \{0, 1\}$, the entire global TOC prefix remains bit-identical ($\max|\Delta_{\text{TOC}}| = 0.0$ by construction), and stale values are overwritten in latent space rather than left around to distract attention. *(Forensic note: in `reviewer_rebuttal_summary.json`, $k=3$ reaches `100.0% ± 0.0%` across 3 seeds vs. `97.9%` in an earlier M2 sweep, and $k=5$ symbolic EM improves from `80.0%` in `hard_stress_summary.json` where `DeltaUpdater` was trained cold after code/decoy tasks to `91.67% ± 2.89%` when curriculum-warmed after `k=3`. For 32K NIAH, Raw-Text RAG shared the exact same `route.deep_idx` from `QueryToTOCRouter` across $N=10$ Exact + $10$ Semantic episodes/seed, and teacher-forced `token_acc = 90.00%` reflects a leading-space mismatch at position 0 of `f" {code_val}"`; autoregressive EM is therefore the primary metric, with `content_tok_acc`, `gen_char_f1`, `N=180`, and shared non-oracle Okapi BM25 queued in `colab_run_rebuttal_v2.py`.)*
 
 | Benchmark / Stress Regime | Full 1D KV (BF16) | StreamingLLM / H2O-20% | 1D Flat Latent (12 KiB/p) | Raw-Text RAG (+Append Errata) | **LSLC 3D + Exact Bank + Delta** |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -121,27 +121,21 @@ Because $\text{TOC}_{1..P}$ pools exclusively over $\ell \in \{0, 1\}$, the enti
 | **Exact NIAH** (`1K` 9-tok Code EM / Tok $\uparrow$) | 93.3% / 90.0% | 0.0% / 16.0% | 0.0% / 29.3% | 93.3% / 90.0% | **66.7% / 90.7%** (`0.0%` w/o Bank) |
 | **EC-1: Agentic Python Codebase** (`8p` EM / Tok $\uparrow$) | — | 0.0% | — | — | **90.0% / 96.0%** (`1.7B`) \| **80.0% / 96.5%** (`8B`) |
 | **EC-2: 4-Key Adversarial Decoys** (EM / Tok $\uparrow$) | — | 0.0% | — | — | **85.0% / 96.0%** (`1.7B`) \| **80.0% / 95.0%** (`8B`) |
-| **Track 4: $k=3$ State Overrides** (3-Seed EM $\uparrow$) | 50.0% (`1.7B`) | N/A | 0.0% ($\Delta=1.097$) | 0.0% (Imm.) / 52.1% ± 15.7% (App.) | **97.9% ± 3.6%** (**100.0%** seed 9999, $\Delta_{\text{TOC}}=0.0$) |
-| **EC-3: Deep $k=5$ Symbolic Overrides** (EM / Tok $\uparrow$) | — | N/A | — | 0.0% (Imm.) / 38.3% (App.) | **80.0% / 93.8%** (`1.7B`) \| **55.0% / 90.9%** (`8B` NF4) |
+| **$k=3$ State Overrides** (3-Seed EM $\uparrow$) | 50.0% (`1.7B`) | N/A | 0.0% ($\Delta=1.097$) | 0.0% (Imm.) / 52.1% ± 15.7% (App.) | **100.0% ± 0.0%** ($\max|\Delta_{\text{TOC}}|=0.0$) |
+| **EC-3: Deep $k=5$ Symbolic Overrides** (EM / Tok $\uparrow$) | — | N/A | — | 0.0% (Imm.) / 38.3% (App.) | **80.0% (cold)–91.7% (warmed)** (`1.7B`) \| **55.0% / 90.9%** (`8B` NF4) |
 | **EC-5: Multi-Step Context Reasoning** (Acc $\uparrow$) | 88.9% (`1.7B`) / 100% (`8B`) | — | — | — | **66.7%** (`1.7B`) \| **100.0%** (`8B`, 100% ret.) |
 
 ---
 
-## The 231× asymptote and how to reach 1M tokens
+## The ~100K Constant-$k$ RAG crossover and 2-level hierarchy
 
-Look closely at the compression ratios in our live CUDA table: `34.9×` at 4K, `132.3×` at 32K, `194.6×` at 128K, and `211.3×` at 256K. Why does the curve flatten near `215×` instead of climbing forever?
-
-Because a flat 1-level TOC emits **one active KV token per page** ($M_{\text{KV/tok}} = 112\text{ KiB}$ on `1.7B` or $144\text{ KiB}$ on `4B/8B`) on top of the $12.125\text{ KiB/page}$ book-plus-footnote storage. Taking the limit as $P \to \infty$ gives the exact closed-form ceiling of a 1-level TOC:
+Look closely at the VRAM table above: flat 1-level LSLC climbs from `12.88 MiB` (4K) to `27.11 MiB` (32K), `73.66 MiB` (128K), and `135.72 MiB` (256K), whereas **Constant-$k=2$ Raw-Text Chunk RAG** (retrieving 512 raw tokens with zero TOC tokens in LLM KV) stays near `56.1–57.1 MiB` on `Qwen3-1.7B`. Why? Because a flat 1-level TOC adds $1$ active KV token per page ($112\text{ KiB}$ on `1.7B`), creating an exact crossover at:
 
 $$
-\lim_{P \to \infty} \frac{256 \cdot M_{\text{KV/tok}}}{12.125\text{ KiB} + M_{\text{KV/tok}}} = \frac{28{,}672\text{ KiB}}{124.125\text{ KiB}} = \mathbf{231.0\times} \; (\texttt{Qwen3-1.7B}) \quad \text{and} \quad \mathbf{236.2\times} \; (\texttt{Qwen3-4B / 8B})
+P^* = \frac{(512 - 90)\cdot M_{\text{KV/tok}}}{12{,}416 + M_{\text{KV/tok}} - 1{,}152} \;\Longrightarrow\; \mathbf{384.3\text{ pages} \;(\approx 98.4\text{K})} \text{ on } \texttt{Qwen3-1.7B}, \quad \mathbf{392.1\text{ pages} \;(\approx 100.4\text{K})} \text{ on } \texttt{4B/8B}.
 $$
 
-To break through that asymptote at **512K (`P = 2,048` pages)** and **1M tokens (`P = 4,096` pages)**—and to keep the router from diluting softmax probability across 4,096 flat candidates—you add a **2-Level Chapter-to-Page Hierarchy** grouping every $M = 32$ pages (`8,192` tokens) into one Chapter:
-
-* At **1M tokens (`4,096` pages)**, there are only **128 Chapters**—the exact same routing width as a 32K book.
-* The router picks top-$k_{\text{chap}} = 2$ Chapters (`126` remaining Chapter-TOC tokens), opens Page-TOC only inside those 2 chapters (`58` sub-TOC tokens), and routes `4` Skim pages (`16` tokens) plus `2` Deep pages (`48` latent + `32` exact tokens), locking active LLM context at **280 tokens total**.
-* Total net VRAM at **1,048,576 tokens** (`48.50 MiB` book+bank + `280` active KV tokens) lands at **79.13 MiB (`1,449.5×`)** on `Qwen3-1.7B` and **87.88 MiB (`1,677.3×`)** on `Qwen3-4B` and `Qwen3-8B`—under **90 MiB of VRAM for a million tokens**.
+Above $\sim 100\text{K}$ tokens, a 2-level hierarchy is therefore **mandatory** to stay below Constant-$k$ RAG (and to break the $231.0\times$ / $236.2\times$ 1-level Full-KV ceiling). Grouping every $16$ pages into a Chapter via `BookPrefixAssembler(..., hierarchical_chapter_size=16)` in `src/lslc/projector.py` (with verified $\max|\Delta_{\text{TOC}}| = 0.0$) caps analytical active prefix tokens at $\le 134$ (32K), $\le 158$ (128K), and $\le 190$ (256K)—holding `Qwen3-1.7B` analytical net VRAM at **$\le 16.2\text{ MiB}$** (32K), **$\le 23.3\text{ MiB}$** (128K), and **$\le 32.9\text{ MiB}$** (256K), strictly under Constant-$k=2$ RAG through `256K`.
 
 ---
 
@@ -158,7 +152,7 @@ To break through that asymptote at **512K (`P = 2,048` pages)** and **1M tokens 
 ## Frequently asked questions
 
 ### Isn't LSLC just RAG with extra steps?
-No. In standard Raw-Text Chunk RAG, the LLM is completely blind to unretrieved pages, must re-prefill 512 to 1,536 raw tokens on every query ($7\times$ larger active KV cache), and cannot edit state in place—when $k=3$ sequential revisions arrive, immutable RAG scores `0.0%` and append-errata RAG drops to `52.1%` because stale and updated values co-exist in the raw text. LSLC keeps all $P$ pages simultaneously visible in self-attention via a differentiable Matryoshka pyramid (`1×1 TOC`, `2×2 Skim`, `4×4 Deep`) and overwrites $\ell=2$ in place at `97.9%–100.0%` EM.
+No. Standard Constant-$k=2$ Raw-Text Chunk RAG is completely blind to unretrieved pages, re-prefills 512 raw tokens per query (`~56.1–57.1 MiB` on `Qwen3-1.7B`; up to `183.72 MiB` when skim pages are included), and fails on in-place state revisions (`0.0%` immutable; `38.3%–52.1%` with appended errata). LSLC keeps all $P$ pages simultaneously visible in self-attention via a differentiable Matryoshka pyramid (switching automatically to a 2-level Chapter$\rightarrow$Page hierarchy above `~100K` tokens to stay below Constant-$k$ RAG through `256K`) and overwrites $\ell=2$ in place at `100.0%` $k=3$ EM (`80.0%` cold / `91.7%` warmed $k=5$ EM). Note that v1 baselines do not yet time LLM-rewrite RAG per edit or decouple Okapi BM25 retrieval; both are implemented in `scripts/colab_run_rebuttal_v2.py`.
 
 ### Why does a 12 KiB continuous page fail on exact IDs when 256 token IDs only cost 1 KiB?
 Because 256 `int32` token IDs (`1 KiB`) are discrete lookup pointers into a vocabulary table, whereas a `[3, 128, 4, 4]` FP16 latent (`12 KiB`) must project into continuous $d_{\text{llm}}$-dimensional hidden states (`2,048` to `4,096` floats per soft token). Expecting a continuous soft-prompt projection trained in 300 steps to act as a bit-exact hash table for arbitrary 9-token codes is an optimization and representation-alignment bottleneck, not a Shannon bit-capacity limit. Adding `128 bytes/page` of discrete footnote pointers solves the discrete copy task while letting the 3D latent book handle discourse and code completion.

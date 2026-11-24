@@ -96,18 +96,39 @@ def _char_f1(gen_text: str, answer_str: str) -> float:
     return (2.0 * common) / float(len(p_s) + len(g_s))
 
 
+def _norm_answer(text: str) -> str:
+    s = text.strip().lower()
+    s = re.sub(r"^[\s.,:;!?'\"`\-]+|[\s.,:;!?'\"`\-]+$", "", s)
+    s = re.sub(r"\s+", " ", s)
+    return s
+
+
 def compute_answer_metrics(
     ans_logits: torch.Tensor,
     a_ids: torch.Tensor,
     gen_text: str,
     answer_str: str,
     tokenizer,
-) -> tuple[float, float, float]:
+    return_strict_and_extracted: bool = False,
+):
+    """Compute teacher-forced content-token accuracy and normalized EM metrics.
+
+    Note: Full v2.1.0 multi-seed evaluation (Tables 4-6 in the paper, separating format-strict EM,
+    canonical first-sentence extracted EM, and substring EM alongside paraphrased NL overrides,
+    direct regex text-patching, 128K NIAH, and iso-budget 1D-vs-3D ablation) is implemented in
+    `scripts/colab_run_v2_complete.py` (`compute_answer_metrics_v2`).
+    """
     logits_c, a_c = _strip_leading_ws_answer(ans_logits, a_ids, tokenizer)
     content_tok_acc = float((logits_c.argmax(dim=-1) == a_c).float().mean().item())
-    em = 1.0 if answer_str.lower() in gen_text.lower() else 0.0
+    gold_norm = _norm_answer(answer_str)
+    trimmed = gen_text.lstrip()
+    first_clause = _norm_answer(re.split(r"[\n.;]", trimmed)[0]) if trimmed else ""
+    strict_em = 1.0 if first_clause == gold_norm else 0.0
+    substr_em = 1.0 if gold_norm in _norm_answer(gen_text) else 0.0
     char_f1 = _char_f1(gen_text, answer_str)
-    return em, content_tok_acc, char_f1
+    if return_strict_and_extracted:
+        return strict_em, substr_em, content_tok_acc, char_f1
+    return substr_em, content_tok_acc, char_f1
 
 
 class BM25PageRetriever:

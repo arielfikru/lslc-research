@@ -5,11 +5,13 @@ type: software
 authors:
   - given-names: Ariel
     family-names: Fikru
+  - given-names: Muhammadalif
+    family-names: Ramadhan
 repository-code: "https://github.com/arielfikru/lslc-research"
 url: "https://doi.org/10.5281/zenodo.24473281"
 doi: "10.5281/zenodo.24473281"
 license: MIT
-version: "2.0.0"
+version: "2.1.0"
 date-released: 2026-11-24
 keywords:
   - kv-cache

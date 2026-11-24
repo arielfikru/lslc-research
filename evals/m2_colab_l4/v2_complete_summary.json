@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "2.1.0",
   "model": "Qwen/Qwen3-1.7B",
   "gpu": "NVIDIA L4",
   "vram_gb": 22.03,
@@ -58,7 +58,8 @@
         9999
       ],
       "total_episodes": 108,
-      "lslc_max_toc_prefix_diff": 0.0625,
+      "lslc_max_toc_only_diff": 0.0,
+      "lslc_max_toc_prefix_diff": 0.06640625,
       "lslc_e2e_gpu_router_top2_recall": {
         "mean": 1.0,
         "std": 0.0,
@@ -71,24 +72,24 @@
       },
       "edit_cost": {
         "lslc_ms_per_edit": {
-          "mean": 8.6165,
-          "std": 0.0426,
-          "ci95": 0.0482
+          "mean": 8.8528,
+          "std": 1.0122,
+          "ci95": 1.1454
         },
         "rag_direct_text_patch_ms_per_edit": {
-          "mean": 1.4115,
-          "std": 0.0066,
-          "ci95": 0.0075
+          "mean": 1.196,
+          "std": 0.0378,
+          "ci95": 0.0428
         },
         "rag_append_errata_ms_per_edit": {
-          "mean": 0.52,
-          "std": 0.0067,
-          "ci95": 0.0076
+          "mean": 0.4759,
+          "std": 0.0087,
+          "ci95": 0.0099
         },
         "rag_llm_rewrite_block_ms_per_edit": {
-          "mean": 497.803,
-          "std": 3.7339,
-          "ci95": 4.2253
+          "mean": 487.0168,
+          "std": 1.2408,
+          "ci95": 1.4041
         },
         "rag_llm_rewrite_block_decode_tokens": {
           "mean": 11.0,
@@ -108,6 +109,11 @@
             "std": 0.0,
             "ci95": 0.0
           },
+          "override_extracted_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
           "override_substr_em": {
             "mean": 0.0,
             "std": 0.0,
@@ -119,12 +125,17 @@
             "ci95": 0.0396
           },
           "override_char_f1": {
-            "mean": 0.0315,
-            "std": 0.0046,
-            "ci95": 0.0052
+            "mean": 0.1855,
+            "std": 0.0104,
+            "ci95": 0.0117
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -145,6 +156,11 @@
             "std": 0.0481,
             "ci95": 0.0544
           },
+          "override_extracted_em": {
+            "mean": 0.5278,
+            "std": 0.0636,
+            "ci95": 0.072
+          },
           "override_substr_em": {
             "mean": 0.5278,
             "std": 0.0636,
@@ -156,12 +172,17 @@
             "ci95": 0.024
           },
           "override_char_f1": {
-            "mean": 0.1577,
-            "std": 0.0305,
-            "ci95": 0.0345
+            "mean": 0.787,
+            "std": 0.0401,
+            "ci95": 0.0454
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -182,6 +203,11 @@
             "std": 0.0,
             "ci95": 0.0
           },
+          "override_extracted_em": {
+            "mean": 0.3333,
+            "std": 0.0722,
+            "ci95": 0.0817
+          },
           "override_substr_em": {
             "mean": 0.3333,
             "std": 0.0722,
@@ -193,12 +219,17 @@
             "ci95": 0.0726
           },
           "override_char_f1": {
-            "mean": 0.0768,
-            "std": 0.0143,
-            "ci95": 0.0162
+            "mean": 0.5463,
+            "std": 0.0925,
+            "ci95": 0.1046
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -219,6 +250,11 @@
             "std": 0.0,
             "ci95": 0.0
           },
+          "override_extracted_em": {
+            "mean": 0.4722,
+            "std": 0.0962,
+            "ci95": 0.1089
+          },
           "override_substr_em": {
             "mean": 0.4722,
             "std": 0.0962,
@@ -230,12 +266,17 @@
             "ci95": 0.0272
           },
           "override_char_f1": {
-            "mean": 0.0852,
-            "std": 0.0174,
-            "ci95": 0.0197
+            "mean": 0.6296,
+            "std": 0.1283,
+            "ci95": 0.1452
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -253,13 +294,18 @@
         "lslc_e2e_gpu_router_delta": {
           "override_strict_em": {
             "mean": 0.9444,
-            "std": 0.0636,
-            "ci95": 0.072
+            "std": 0.0241,
+            "ci95": 0.0272
+          },
+          "override_extracted_em": {
+            "mean": 0.9444,
+            "std": 0.0241,
+            "ci95": 0.0272
           },
           "override_substr_em": {
-            "mean": 0.9583,
-            "std": 0.0417,
-            "ci95": 0.0472
+            "mean": 0.9444,
+            "std": 0.0241,
+            "ci95": 0.0272
           },
           "override_tf_content_tok_acc": {
             "mean": 1.0,
@@ -267,11 +313,16 @@
             "ci95": 0.0
           },
           "override_char_f1": {
-            "mean": 0.9491,
-            "std": 0.0561,
-            "ci95": 0.0635
+            "mean": 0.9444,
+            "std": 0.0241,
+            "ci95": 0.0272
           },
           "static_retention_strict_em": {
+            "mean": 0.9722,
+            "std": 0.0481,
+            "ci95": 0.0544
+          },
+          "static_retention_extracted_em": {
             "mean": 0.9722,
             "std": 0.0481,
             "ci95": 0.0544
@@ -289,9 +340,14 @@
         },
         "lslc_shared_bm25_delta": {
           "override_strict_em": {
-            "mean": 0.8889,
-            "std": 0.0867,
-            "ci95": 0.0982
+            "mean": 0.9583,
+            "std": 0.0417,
+            "ci95": 0.0472
+          },
+          "override_extracted_em": {
+            "mean": 0.9583,
+            "std": 0.0417,
+            "ci95": 0.0472
           },
           "override_substr_em": {
             "mean": 0.9583,
@@ -304,11 +360,16 @@
             "ci95": 0.0454
           },
           "override_char_f1": {
-            "mean": 0.9074,
-            "std": 0.0566,
-            "ci95": 0.0641
+            "mean": 0.9583,
+            "std": 0.0417,
+            "ci95": 0.0472
           },
           "static_retention_strict_em": {
+            "mean": 0.9722,
+            "std": 0.0481,
+            "ci95": 0.0544
+          },
+          "static_retention_extracted_em": {
             "mean": 0.9722,
             "std": 0.0481,
             "ci95": 0.0544
@@ -335,7 +396,8 @@
         9999
       ],
       "total_episodes": 90,
-      "lslc_max_toc_prefix_diff": 0.0625,
+      "lslc_max_toc_only_diff": 0.0,
+      "lslc_max_toc_prefix_diff": 0.06640625,
       "lslc_e2e_gpu_router_top2_recall": {
         "mean": 0.9667,
         "std": 0.0333,
@@ -348,24 +410,24 @@
       },
       "edit_cost": {
         "lslc_ms_per_edit": {
-          "mean": 8.6965,
-          "std": 0.1199,
-          "ci95": 0.1357
+          "mean": 8.2505,
+          "std": 0.0599,
+          "ci95": 0.0677
         },
         "rag_direct_text_patch_ms_per_edit": {
-          "mean": 1.328,
-          "std": 0.0044,
-          "ci95": 0.005
+          "mean": 1.1486,
+          "std": 0.0274,
+          "ci95": 0.031
         },
         "rag_append_errata_ms_per_edit": {
-          "mean": 0.5208,
-          "std": 0.0031,
-          "ci95": 0.0035
+          "mean": 0.4695,
+          "std": 0.0058,
+          "ci95": 0.0066
         },
         "rag_llm_rewrite_block_ms_per_edit": {
-          "mean": 516.3968,
-          "std": 2.531,
-          "ci95": 2.8641
+          "mean": 504.7184,
+          "std": 2.7829,
+          "ci95": 3.1491
         },
         "rag_llm_rewrite_block_decode_tokens": {
           "mean": 11.38,
@@ -385,6 +447,11 @@
             "std": 0.0,
             "ci95": 0.0
           },
+          "override_extracted_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
           "override_substr_em": {
             "mean": 0.0,
             "std": 0.0,
@@ -396,12 +463,17 @@
             "ci95": 0.0404
           },
           "override_char_f1": {
-            "mean": 0.3824,
-            "std": 0.0129,
-            "ci95": 0.0146
+            "mean": 0.4476,
+            "std": 0.0105,
+            "ci95": 0.0119
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -422,10 +494,15 @@
             "std": 0.0,
             "ci95": 0.0
           },
+          "override_extracted_em": {
+            "mean": 0.4333,
+            "std": 0.0577,
+            "ci95": 0.0653
+          },
           "override_substr_em": {
-            "mean": 0.4167,
-            "std": 0.0764,
-            "ci95": 0.0864
+            "mean": 0.4333,
+            "std": 0.0577,
+            "ci95": 0.0653
           },
           "override_tf_content_tok_acc": {
             "mean": 0.7542,
@@ -433,12 +510,17 @@
             "ci95": 0.0085
           },
           "override_char_f1": {
-            "mean": 0.3872,
-            "std": 0.0147,
-            "ci95": 0.0167
+            "mean": 0.6728,
+            "std": 0.0452,
+            "ci95": 0.0512
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -459,10 +541,15 @@
             "std": 0.0289,
             "ci95": 0.0327
           },
+          "override_extracted_em": {
+            "mean": 0.9,
+            "std": 0.05,
+            "ci95": 0.0566
+          },
           "override_substr_em": {
-            "mean": 0.8667,
-            "std": 0.0764,
-            "ci95": 0.0864
+            "mean": 0.9,
+            "std": 0.05,
+            "ci95": 0.0566
           },
           "override_tf_content_tok_acc": {
             "mean": 0.7625,
@@ -470,12 +557,17 @@
             "ci95": 0.0155
           },
           "override_char_f1": {
-            "mean": 0.4431,
-            "std": 0.0266,
-            "ci95": 0.0301
+            "mean": 0.9333,
+            "std": 0.0327,
+            "ci95": 0.037
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -496,6 +588,11 @@
             "std": 0.0289,
             "ci95": 0.0327
           },
+          "override_extracted_em": {
+            "mean": 0.9,
+            "std": 0.05,
+            "ci95": 0.0566
+          },
           "override_substr_em": {
             "mean": 0.9,
             "std": 0.05,
@@ -507,12 +604,17 @@
             "ci95": 0.0163
           },
           "override_char_f1": {
-            "mean": 0.4465,
-            "std": 0.0248,
-            "ci95": 0.028
+            "mean": 0.9362,
+            "std": 0.0485,
+            "ci95": 0.0548
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -533,6 +635,11 @@
             "std": 0.1041,
             "ci95": 0.1178
           },
+          "override_extracted_em": {
+            "mean": 0.4,
+            "std": 0.0866,
+            "ci95": 0.098
+          },
           "override_substr_em": {
             "mean": 0.4,
             "std": 0.0866,
@@ -544,11 +651,16 @@
             "ci95": 0.0252
           },
           "override_char_f1": {
-            "mean": 0.5633,
-            "std": 0.0631,
-            "ci95": 0.0715
+            "mean": 0.5393,
+            "std": 0.0757,
+            "ci95": 0.0857
           },
           "static_retention_strict_em": {
+            "mean": 0.8667,
+            "std": 0.0577,
+            "ci95": 0.0653
+          },
+          "static_retention_extracted_em": {
             "mean": 0.8667,
             "std": 0.0577,
             "ci95": 0.0653
@@ -566,26 +678,36 @@
         },
         "lslc_shared_bm25_delta": {
           "override_strict_em": {
-            "mean": 0.4333,
-            "std": 0.0289,
-            "ci95": 0.0327
+            "mean": 0.45,
+            "std": 0.05,
+            "ci95": 0.0566
+          },
+          "override_extracted_em": {
+            "mean": 0.4833,
+            "std": 0.0577,
+            "ci95": 0.0653
           },
           "override_substr_em": {
-            "mean": 0.4667,
-            "std": 0.0289,
-            "ci95": 0.0327
+            "mean": 0.4833,
+            "std": 0.0577,
+            "ci95": 0.0653
           },
           "override_tf_content_tok_acc": {
-            "mean": 0.8657,
-            "std": 0.0176,
-            "ci95": 0.0199
+            "mean": 0.874,
+            "std": 0.0199,
+            "ci95": 0.0225
           },
           "override_char_f1": {
-            "mean": 0.6069,
-            "std": 0.0364,
-            "ci95": 0.0412
+            "mean": 0.6174,
+            "std": 0.0297,
+            "ci95": 0.0336
           },
           "static_retention_strict_em": {
+            "mean": 0.9,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
             "mean": 0.9,
             "std": 0.0,
             "ci95": 0.0
@@ -612,6 +734,7 @@
         9999
       ],
       "total_episodes": 90,
+      "lslc_max_toc_only_diff": 0.0,
       "lslc_max_toc_prefix_diff": 0.0625,
       "lslc_e2e_gpu_router_top2_recall": {
         "mean": 0.8111,
@@ -625,24 +748,24 @@
       },
       "edit_cost": {
         "lslc_ms_per_edit": {
-          "mean": 8.6425,
-          "std": 0.2014,
-          "ci95": 0.2279
+          "mean": 8.346,
+          "std": 0.0388,
+          "ci95": 0.0439
         },
         "rag_direct_text_patch_ms_per_edit": {
-          "mean": 0.0031,
-          "std": 0.0,
-          "ci95": 0.0
+          "mean": 0.003,
+          "std": 0.0001,
+          "ci95": 0.0001
         },
         "rag_append_errata_ms_per_edit": {
-          "mean": 0.5487,
-          "std": 0.0035,
-          "ci95": 0.004
+          "mean": 0.5019,
+          "std": 0.004,
+          "ci95": 0.0045
         },
         "rag_llm_rewrite_block_ms_per_edit": {
-          "mean": 496.4336,
-          "std": 2.9757,
-          "ci95": 3.3674
+          "mean": 489.1622,
+          "std": 1.4522,
+          "ci95": 1.6434
         },
         "rag_llm_rewrite_block_decode_tokens": {
           "mean": 11.0,
@@ -662,6 +785,11 @@
             "std": 0.0,
             "ci95": 0.0
           },
+          "override_extracted_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
           "override_substr_em": {
             "mean": 0.0,
             "std": 0.0,
@@ -673,12 +801,17 @@
             "ci95": 0.0606
           },
           "override_char_f1": {
-            "mean": 0.0274,
-            "std": 0.0078,
-            "ci95": 0.0088
+            "mean": 0.1508,
+            "std": 0.059,
+            "ci95": 0.0668
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -699,6 +832,11 @@
             "std": 0.0289,
             "ci95": 0.0327
           },
+          "override_extracted_em": {
+            "mean": 0.4,
+            "std": 0.0866,
+            "ci95": 0.098
+          },
           "override_substr_em": {
             "mean": 0.4,
             "std": 0.0866,
@@ -710,12 +848,17 @@
             "ci95": 0.0288
           },
           "override_char_f1": {
-            "mean": 0.1163,
-            "std": 0.0234,
-            "ci95": 0.0264
+            "mean": 0.6833,
+            "std": 0.0167,
+            "ci95": 0.0189
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -736,6 +879,11 @@
             "std": 0.0,
             "ci95": 0.0
           },
+          "override_extracted_em": {
+            "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
           "override_substr_em": {
             "mean": 0.0,
             "std": 0.0,
@@ -747,12 +895,17 @@
             "ci95": 0.0606
           },
           "override_char_f1": {
-            "mean": 0.0274,
-            "std": 0.0078,
-            "ci95": 0.0088
+            "mean": 0.1508,
+            "std": 0.059,
+            "ci95": 0.0668
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -773,6 +926,11 @@
             "std": 0.0,
             "ci95": 0.0
           },
+          "override_extracted_em": {
+            "mean": 0.3,
+            "std": 0.1323,
+            "ci95": 0.1497
+          },
           "override_substr_em": {
             "mean": 0.3,
             "std": 0.1323,
@@ -784,12 +942,17 @@
             "ci95": 0.0327
           },
           "override_char_f1": {
-            "mean": 0.0728,
-            "std": 0.0048,
-            "ci95": 0.0055
+            "mean": 0.5133,
+            "std": 0.0617,
+            "ci95": 0.0699
           },
           "static_retention_strict_em": {
             "mean": 0.0,
+            "std": 0.0,
+            "ci95": 0.0
+          },
+          "static_retention_extracted_em": {
+            "mean": 1.0,
             "std": 0.0,
             "ci95": 0.0
           },
@@ -806,12 +969,17 @@
         },
         "lslc_e2e_gpu_router_delta": {
           "override_strict_em": {
-            "mean": 0.0833,
-            "std": 0.0764,
-            "ci95": 0.0864
+            "mean": 0.3,
+            "std": 0.05,
+            "ci95": 0.0566
+          },
+          "override_extracted_em": {
+            "mean": 0.3,
+            "std": 0.05,
+            "ci95": 0.0566
           },
           "override_substr_em": {
-            "mean": 0.35,
+            "mean": 0.3,
             "std": 0.05,
             "ci95": 0.0566
           },
@@ -821,11 +989,16 @@
             "ci95": 0.093
           },
           "override_char_f1": {
-            "mean": 0.1772,
-            "std": 0.06,
-            "ci95": 0.0679
+            "mean": 0.3265,
+            "std": 0.0558,
+            "ci95": 0.0631
           },
           "static_retention_strict_em": {
+            "mean": 0.9333,
+            "std": 0.0577,
+            "ci95": 0.0653
+          },
+          "static_retention_extracted_em": {
             "mean": 0.9333,
             "std": 0.0577,
             "ci95": 0.0653
@@ -836,33 +1009,43 @@
             "ci95": 0.0653
           },
           "static_retention_tf_tok_acc": {
-            "mean": 0.9667,
-            "std": 0.0333,
-            "ci95": 0.0377
+            "mean": 0.9778,
+            "std": 0.0192,
+            "ci95": 0.0218
           }
         },
         "lslc_shared_bm25_delta": {
           "override_strict_em": {
-            "mean": 0.1,
-            "std": 0.0866,
-            "ci95": 0.098
+            "mean": 0.3333,
+            "std": 0.1258,
+            "ci95": 0.1424
+          },
+          "override_extracted_em": {
+            "mean": 0.35,
+            "std": 0.15,
+            "ci95": 0.1697
           },
           "override_substr_em": {
-            "mean": 0.4,
-            "std": 0.0866,
-            "ci95": 0.098
+            "mean": 0.3833,
+            "std": 0.1258,
+            "ci95": 0.1424
           },
           "override_tf_content_tok_acc": {
             "mean": 0.6778,
-            "std": 0.077,
-            "ci95": 0.0871
+            "std": 0.0631,
+            "ci95": 0.0714
           },
           "override_char_f1": {
-            "mean": 0.1596,
-            "std": 0.0722,
-            "ci95": 0.0817
+            "mean": 0.3609,
+            "std": 0.1353,
+            "ci95": 0.1531
           },
           "static_retention_strict_em": {
+            "mean": 0.9667,
+            "std": 0.0577,
+            "ci95": 0.0653
+          },
+          "static_retention_extracted_em": {
             "mean": 0.9667,
             "std": 0.0577,
             "ci95": 0.0653
@@ -889,9 +1072,9 @@
         "ci95": 0.0
       },
       "latency_ms_per_edit": {
-        "mean": 11250.8713,
-        "std": 34.5925,
-        "ci95": 30.3217
+        "mean": 11296.9826,
+        "std": 61.8786,
+        "ci95": 54.239
       }
     }
   },
@@ -912,6 +1095,72 @@
       "ci95": 0.0024
     },
     "bm25_cpu_host_ram_kib": 269.79,
+    "paired_diff_hier_minus_trunc_flat": {
+      "seed_level": {
+        "exact_strict_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_extracted_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_substr_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_strict_em": {
+          "mean": 0.0111,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "semantic_extracted_em": {
+          "mean": 0.0222,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "semantic_substr_em": {
+          "mean": 0.0111,
+          "std": 0.0192,
+          "ci95": 0.0218
+        }
+      },
+      "episode_level": {
+        "exact_strict_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_extracted_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_substr_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_strict_em": {
+          "mean": 0.0111,
+          "std": 0.1833,
+          "ci95": 0.0379
+        },
+        "semantic_extracted_em": {
+          "mean": 0.0222,
+          "std": 0.2108,
+          "ci95": 0.0436
+        },
+        "semantic_substr_em": {
+          "mean": 0.0111,
+          "std": 0.1054,
+          "ci95": 0.0218
+        }
+      }
+    },
     "retriever_recall": {
       "bm25_exact_top1": {
         "mean": 0.9444,
@@ -982,10 +1231,15 @@
           "std": 0.0,
           "ci95": 0.0
         },
+        "exact_extracted_em": {
+          "mean": 0.9333,
+          "std": 0.0667,
+          "ci95": 0.0754
+        },
         "exact_substr_em": {
-          "mean": 0.2778,
-          "std": 0.0509,
-          "ci95": 0.0576
+          "mean": 0.9333,
+          "std": 0.0667,
+          "ci95": 0.0754
         },
         "exact_tf_content_tok_acc": {
           "mean": 1.0,
@@ -993,12 +1247,17 @@
           "ci95": 0.0
         },
         "exact_char_f1": {
-          "mean": 0.4122,
-          "std": 0.023,
-          "ci95": 0.026
+          "mean": 0.936,
+          "std": 0.0641,
+          "ci95": 0.0725
         },
         "semantic_strict_em": {
           "mean": 0.0111,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "semantic_extracted_em": {
+          "mean": 0.4222,
           "std": 0.0192,
           "ci95": 0.0218
         },
@@ -1013,17 +1272,22 @@
           "ci95": 0.0135
         },
         "semantic_char_f1": {
-          "mean": 0.9223,
-          "std": 0.0078,
-          "ci95": 0.0088
+          "mean": 0.9392,
+          "std": 0.0032,
+          "ci95": 0.0037
         }
       },
       "lslc_e2e_gpu_router_flat": {
         "active_prefix_tokens": 218,
         "exact_strict_em": {
-          "mean": 0.3111,
-          "std": 0.0839,
-          "ci95": 0.0949
+          "mean": 0.5778,
+          "std": 0.0385,
+          "ci95": 0.0436
+        },
+        "exact_extracted_em": {
+          "mean": 0.5778,
+          "std": 0.0385,
+          "ci95": 0.0436
         },
         "exact_substr_em": {
           "mean": 0.5778,
@@ -1031,42 +1295,52 @@
           "ci95": 0.0436
         },
         "exact_tf_content_tok_acc": {
-          "mean": 0.7556,
-          "std": 0.0606,
-          "ci95": 0.0686
+          "mean": 0.7519,
+          "std": 0.056,
+          "ci95": 0.0634
         },
         "exact_char_f1": {
-          "mean": 0.7358,
-          "std": 0.0278,
-          "ci95": 0.0314
+          "mean": 0.7591,
+          "std": 0.0166,
+          "ci95": 0.0188
         },
         "semantic_strict_em": {
           "mean": 0.0444,
           "std": 0.0385,
           "ci95": 0.0436
         },
+        "semantic_extracted_em": {
+          "mean": 0.0444,
+          "std": 0.0385,
+          "ci95": 0.0436
+        },
         "semantic_substr_em": {
-          "mean": 0.4556,
-          "std": 0.0694,
-          "ci95": 0.0785
+          "mean": 0.4222,
+          "std": 0.0839,
+          "ci95": 0.0949
         },
         "semantic_tf_content_tok_acc": {
-          "mean": 0.7773,
-          "std": 0.0229,
-          "ci95": 0.026
+          "mean": 0.7708,
+          "std": 0.0318,
+          "ci95": 0.036
         },
         "semantic_char_f1": {
-          "mean": 0.7028,
-          "std": 0.0179,
-          "ci95": 0.0203
+          "mean": 0.6838,
+          "std": 0.02,
+          "ci95": 0.0226
         }
       },
       "lslc_e2e_gpu_router_hier": {
         "active_prefix_tokens": 131,
         "exact_strict_em": {
-          "mean": 0.3111,
-          "std": 0.0385,
-          "ci95": 0.0436
+          "mean": 0.6111,
+          "std": 0.0694,
+          "ci95": 0.0785
+        },
+        "exact_extracted_em": {
+          "mean": 0.6111,
+          "std": 0.0694,
+          "ci95": 0.0785
         },
         "exact_substr_em": {
           "mean": 0.6111,
@@ -1075,89 +1349,162 @@
         },
         "exact_tf_content_tok_acc": {
           "mean": 0.7469,
-          "std": 0.0617,
-          "ci95": 0.0698
+          "std": 0.0591,
+          "ci95": 0.0668
         },
         "exact_char_f1": {
-          "mean": 0.7663,
+          "mean": 0.7879,
           "std": 0.0436,
-          "ci95": 0.0493
+          "ci95": 0.0494
         },
         "semantic_strict_em": {
           "mean": 0.7444,
-          "std": 0.0839,
-          "ci95": 0.0949
+          "std": 0.1072,
+          "ci95": 0.1213
+        },
+        "semantic_extracted_em": {
+          "mean": 0.7778,
+          "std": 0.1072,
+          "ci95": 0.1213
         },
         "semantic_substr_em": {
-          "mean": 0.9778,
-          "std": 0.0385,
-          "ci95": 0.0436
+          "mean": 0.9889,
+          "std": 0.0192,
+          "ci95": 0.0218
         },
         "semantic_tf_content_tok_acc": {
-          "mean": 0.9664,
-          "std": 0.0159,
-          "ci95": 0.018
+          "mean": 0.9639,
+          "std": 0.0111,
+          "ci95": 0.0125
         },
         "semantic_char_f1": {
-          "mean": 0.8711,
-          "std": 0.016,
-          "ci95": 0.0181
+          "mean": 0.911,
+          "std": 0.0316,
+          "ci95": 0.0357
         }
       },
       "lslc_shared_bm25_flat": {
         "active_prefix_tokens": 218,
         "exact_strict_em": {
-          "mean": 0.3667,
-          "std": 0.1202,
-          "ci95": 0.136
+          "mean": 0.6556,
+          "std": 0.0385,
+          "ci95": 0.0436
+        },
+        "exact_extracted_em": {
+          "mean": 0.6556,
+          "std": 0.0385,
+          "ci95": 0.0436
         },
         "exact_substr_em": {
-          "mean": 0.6556,
-          "std": 0.0509,
-          "ci95": 0.0576
+          "mean": 0.6667,
+          "std": 0.0333,
+          "ci95": 0.0377
         },
         "exact_tf_content_tok_acc": {
-          "mean": 0.9469,
-          "std": 0.0086,
-          "ci95": 0.0097
+          "mean": 0.9457,
+          "std": 0.0107,
+          "ci95": 0.0121
         },
         "exact_char_f1": {
-          "mean": 0.7778,
-          "std": 0.0401,
-          "ci95": 0.0454
+          "mean": 0.7917,
+          "std": 0.044,
+          "ci95": 0.0498
         },
         "semantic_strict_em": {
           "mean": 0.0556,
           "std": 0.0509,
           "ci95": 0.0576
         },
+        "semantic_extracted_em": {
+          "mean": 0.0556,
+          "std": 0.0509,
+          "ci95": 0.0576
+        },
         "semantic_substr_em": {
-          "mean": 0.4,
-          "std": 0.0333,
-          "ci95": 0.0377
+          "mean": 0.3556,
+          "std": 0.0385,
+          "ci95": 0.0436
         },
         "semantic_tf_content_tok_acc": {
-          "mean": 0.7701,
-          "std": 0.0095,
-          "ci95": 0.0108
+          "mean": 0.7671,
+          "std": 0.0061,
+          "ci95": 0.0069
         },
         "semantic_char_f1": {
-          "mean": 0.7372,
-          "std": 0.0192,
-          "ci95": 0.0217
+          "mean": 0.7158,
+          "std": 0.0229,
+          "ci95": 0.0259
         }
       },
       "lslc_shared_bm25_trunc_flat_ctrl": {
         "active_prefix_tokens": 133,
         "exact_strict_em": {
-          "mean": 0.4444,
-          "std": 0.0509,
-          "ci95": 0.0576
+          "mean": 0.8,
+          "std": 0.1155,
+          "ci95": 0.1307
+        },
+        "exact_extracted_em": {
+          "mean": 0.8,
+          "std": 0.1155,
+          "ci95": 0.1307
         },
         "exact_substr_em": {
-          "mean": 0.8222,
-          "std": 0.1072,
-          "ci95": 0.1213
+          "mean": 0.8111,
+          "std": 0.0962,
+          "ci95": 0.1089
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.9679,
+          "std": 0.0235,
+          "ci95": 0.0266
+        },
+        "exact_char_f1": {
+          "mean": 0.8811,
+          "std": 0.048,
+          "ci95": 0.0544
+        },
+        "semantic_strict_em": {
+          "mean": 0.7222,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "semantic_extracted_em": {
+          "mean": 0.7556,
+          "std": 0.0385,
+          "ci95": 0.0436
+        },
+        "semantic_substr_em": {
+          "mean": 0.9889,
+          "std": 0.0192,
+          "ci95": 0.0218
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.96,
+          "std": 0.0136,
+          "ci95": 0.0154
+        },
+        "semantic_char_f1": {
+          "mean": 0.9019,
+          "std": 0.0026,
+          "ci95": 0.003
+        }
+      },
+      "lslc_shared_bm25_hier": {
+        "active_prefix_tokens": 133,
+        "exact_strict_em": {
+          "mean": 0.8,
+          "std": 0.1155,
+          "ci95": 0.1307
+        },
+        "exact_extracted_em": {
+          "mean": 0.8,
+          "std": 0.1155,
+          "ci95": 0.1307
+        },
+        "exact_substr_em": {
+          "mean": 0.8111,
+          "std": 0.0962,
+          "ci95": 0.1089
         },
         "exact_tf_content_tok_acc": {
           "mean": 0.9704,
@@ -1165,19 +1512,24 @@
           "ci95": 0.0255
         },
         "exact_char_f1": {
-          "mean": 0.8711,
-          "std": 0.0501,
-          "ci95": 0.0567
+          "mean": 0.8836,
+          "std": 0.0467,
+          "ci95": 0.0528
         },
         "semantic_strict_em": {
-          "mean": 0.7222,
+          "mean": 0.7333,
+          "std": 0.0333,
+          "ci95": 0.0377
+        },
+        "semantic_extracted_em": {
+          "mean": 0.7778,
           "std": 0.0509,
           "ci95": 0.0576
         },
         "semantic_substr_em": {
-          "mean": 0.9889,
-          "std": 0.0192,
-          "ci95": 0.0218
+          "mean": 1.0,
+          "std": 0.0,
+          "ci95": 0.0
         },
         "semantic_tf_content_tok_acc": {
           "mean": 0.9637,
@@ -1185,52 +1537,9 @@
           "ci95": 0.0154
         },
         "semantic_char_f1": {
-          "mean": 0.8584,
-          "std": 0.0127,
-          "ci95": 0.0144
-        }
-      },
-      "lslc_shared_bm25_hier": {
-        "active_prefix_tokens": 133,
-        "exact_strict_em": {
-          "mean": 0.4556,
-          "std": 0.0694,
-          "ci95": 0.0785
-        },
-        "exact_substr_em": {
-          "mean": 0.8222,
-          "std": 0.1072,
-          "ci95": 0.1213
-        },
-        "exact_tf_content_tok_acc": {
-          "mean": 0.9704,
-          "std": 0.0259,
-          "ci95": 0.0293
-        },
-        "exact_char_f1": {
-          "mean": 0.8682,
-          "std": 0.0523,
-          "ci95": 0.0592
-        },
-        "semantic_strict_em": {
-          "mean": 0.7444,
-          "std": 0.0509,
-          "ci95": 0.0576
-        },
-        "semantic_substr_em": {
-          "mean": 0.9889,
-          "std": 0.0192,
-          "ci95": 0.0218
-        },
-        "semantic_tf_content_tok_acc": {
-          "mean": 0.9637,
-          "std": 0.0136,
-          "ci95": 0.0154
-        },
-        "semantic_char_f1": {
-          "mean": 0.8648,
-          "std": 0.012,
-          "ci95": 0.0136
+          "mean": 0.9057,
+          "std": 0.004,
+          "ci95": 0.0045
         }
       }
     }
@@ -1252,6 +1561,72 @@
       "ci95": 0.0073
     },
     "bm25_cpu_host_ram_kib": 857.01,
+    "paired_diff_hier_minus_trunc_flat": {
+      "seed_level": {
+        "exact_strict_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_extracted_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_substr_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_strict_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_extracted_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_substr_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        }
+      },
+      "episode_level": {
+        "exact_strict_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_extracted_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "exact_substr_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_strict_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_extracted_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_substr_em": {
+          "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        }
+      }
+    },
     "retriever_recall": {
       "bm25_exact_top1": {
         "mean": 1.0,
@@ -1322,10 +1697,15 @@
           "std": 0.0577,
           "ci95": 0.0653
         },
+        "exact_extracted_em": {
+          "mean": 0.9,
+          "std": 0.1732,
+          "ci95": 0.196
+        },
         "exact_substr_em": {
-          "mean": 0.3,
-          "std": 0.1,
-          "ci95": 0.1132
+          "mean": 0.9,
+          "std": 0.1732,
+          "ci95": 0.196
         },
         "exact_tf_content_tok_acc": {
           "mean": 1.0,
@@ -1333,12 +1713,17 @@
           "ci95": 0.0
         },
         "exact_char_f1": {
-          "mean": 0.4326,
-          "std": 0.0581,
-          "ci95": 0.0657
+          "mean": 0.9092,
+          "std": 0.1573,
+          "ci95": 0.178
         },
         "semantic_strict_em": {
           "mean": 0.0,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_extracted_em": {
+          "mean": 0.5,
           "std": 0.0,
           "ci95": 0.0
         },
@@ -1353,7 +1738,7 @@
           "ci95": 0.0
         },
         "semantic_char_f1": {
-          "mean": 0.9488,
+          "mean": 0.9649,
           "std": 0.0,
           "ci95": 0.0
         }
@@ -1361,9 +1746,14 @@
       "lslc_e2e_gpu_router_flat": {
         "active_prefix_tokens": 602,
         "exact_strict_em": {
-          "mean": 0.2667,
-          "std": 0.1155,
-          "ci95": 0.1307
+          "mean": 0.4667,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "exact_extracted_em": {
+          "mean": 0.4667,
+          "std": 0.0577,
+          "ci95": 0.0653
         },
         "exact_substr_em": {
           "mean": 0.4667,
@@ -1371,19 +1761,24 @@
           "ci95": 0.0653
         },
         "exact_tf_content_tok_acc": {
-          "mean": 0.7074,
+          "mean": 0.7148,
           "std": 0.0064,
           "ci95": 0.0073
         },
         "exact_char_f1": {
-          "mean": 0.5802,
-          "std": 0.066,
-          "ci95": 0.0746
+          "mean": 0.6072,
+          "std": 0.0306,
+          "ci95": 0.0346
         },
         "semantic_strict_em": {
           "mean": 0.0,
           "std": 0.0,
           "ci95": 0.0
+        },
+        "semantic_extracted_em": {
+          "mean": 0.0333,
+          "std": 0.0577,
+          "ci95": 0.0653
         },
         "semantic_substr_em": {
           "mean": 0.1,
@@ -1396,15 +1791,20 @@
           "ci95": 0.0736
         },
         "semantic_char_f1": {
-          "mean": 0.719,
-          "std": 0.0645,
-          "ci95": 0.073
+          "mean": 0.7368,
+          "std": 0.02,
+          "ci95": 0.0226
         }
       },
       "lslc_e2e_gpu_router_hier": {
         "active_prefix_tokens": 158,
         "exact_strict_em": {
-          "mean": 0.3333,
+          "mean": 0.5667,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "exact_extracted_em": {
+          "mean": 0.5667,
           "std": 0.0577,
           "ci95": 0.0653
         },
@@ -1414,42 +1814,52 @@
           "ci95": 0.0653
         },
         "exact_tf_content_tok_acc": {
-          "mean": 0.7444,
-          "std": 0.0222,
-          "ci95": 0.0251
+          "mean": 0.7556,
+          "std": 0.0192,
+          "ci95": 0.0218
         },
         "exact_char_f1": {
-          "mean": 0.7766,
-          "std": 0.0219,
-          "ci95": 0.0247
+          "mean": 0.802,
+          "std": 0.009,
+          "ci95": 0.0102
         },
         "semantic_strict_em": {
-          "mean": 0.4667,
-          "std": 0.0577,
-          "ci95": 0.0653
+          "mean": 0.4,
+          "std": 0.1732,
+          "ci95": 0.196
+        },
+        "semantic_extracted_em": {
+          "mean": 0.4333,
+          "std": 0.2082,
+          "ci95": 0.2356
         },
         "semantic_substr_em": {
-          "mean": 0.7667,
-          "std": 0.1528,
-          "ci95": 0.1729
+          "mean": 0.7333,
+          "std": 0.1155,
+          "ci95": 0.1307
         },
         "semantic_tf_content_tok_acc": {
-          "mean": 0.9255,
-          "std": 0.0056,
-          "ci95": 0.0064
+          "mean": 0.9171,
+          "std": 0.0088,
+          "ci95": 0.01
         },
         "semantic_char_f1": {
-          "mean": 0.8035,
-          "std": 0.0439,
-          "ci95": 0.0497
+          "mean": 0.7705,
+          "std": 0.0577,
+          "ci95": 0.0652
         }
       },
       "lslc_shared_bm25_flat": {
         "active_prefix_tokens": 602,
         "exact_strict_em": {
-          "mean": 0.3333,
-          "std": 0.0577,
-          "ci95": 0.0653
+          "mean": 0.5667,
+          "std": 0.1528,
+          "ci95": 0.1729
+        },
+        "exact_extracted_em": {
+          "mean": 0.5667,
+          "std": 0.1528,
+          "ci95": 0.1729
         },
         "exact_substr_em": {
           "mean": 0.6,
@@ -1457,19 +1867,24 @@
           "ci95": 0.2263
         },
         "exact_tf_content_tok_acc": {
-          "mean": 0.9259,
-          "std": 0.0321,
-          "ci95": 0.0363
+          "mean": 0.9296,
+          "std": 0.0357,
+          "ci95": 0.0404
         },
         "exact_char_f1": {
-          "mean": 0.7656,
-          "std": 0.1117,
-          "ci95": 0.1264
+          "mean": 0.7712,
+          "std": 0.0979,
+          "ci95": 0.1108
         },
         "semantic_strict_em": {
           "mean": 0.0,
           "std": 0.0,
           "ci95": 0.0
+        },
+        "semantic_extracted_em": {
+          "mean": 0.1333,
+          "std": 0.0577,
+          "ci95": 0.0653
         },
         "semantic_substr_em": {
           "mean": 0.2,
@@ -1477,27 +1892,32 @@
           "ci95": 0.1132
         },
         "semantic_tf_content_tok_acc": {
-          "mean": 0.3227,
-          "std": 0.0775,
-          "ci95": 0.0877
+          "mean": 0.3231,
+          "std": 0.0658,
+          "ci95": 0.0744
         },
         "semantic_char_f1": {
-          "mean": 0.5686,
-          "std": 0.0424,
-          "ci95": 0.048
+          "mean": 0.5539,
+          "std": 0.0288,
+          "ci95": 0.0326
         }
       },
       "lslc_shared_bm25_trunc_flat_ctrl": {
         "active_prefix_tokens": 158,
         "exact_strict_em": {
-          "mean": 0.4,
+          "mean": 0.7,
+          "std": 0.1,
+          "ci95": 0.1132
+        },
+        "exact_extracted_em": {
+          "mean": 0.7,
           "std": 0.1,
           "ci95": 0.1132
         },
         "exact_substr_em": {
-          "mean": 0.7333,
-          "std": 0.1155,
-          "ci95": 0.1307
+          "mean": 0.7,
+          "std": 0.1,
+          "ci95": 0.1132
         },
         "exact_tf_content_tok_acc": {
           "mean": 0.9407,
@@ -1505,14 +1925,72 @@
           "ci95": 0.0363
         },
         "exact_char_f1": {
-          "mean": 0.8637,
-          "std": 0.0475,
-          "ci95": 0.0537
+          "mean": 0.8475,
+          "std": 0.0503,
+          "ci95": 0.0569
         },
         "semantic_strict_em": {
-          "mean": 0.2333,
+          "mean": 0.2667,
           "std": 0.0577,
           "ci95": 0.0653
+        },
+        "semantic_extracted_em": {
+          "mean": 0.3333,
+          "std": 0.1155,
+          "ci95": 0.1307
+        },
+        "semantic_substr_em": {
+          "mean": 0.7,
+          "std": 0.0,
+          "ci95": 0.0
+        },
+        "semantic_tf_content_tok_acc": {
+          "mean": 0.8921,
+          "std": 0.014,
+          "ci95": 0.0159
+        },
+        "semantic_char_f1": {
+          "mean": 0.8095,
+          "std": 0.0415,
+          "ci95": 0.0469
+        }
+      },
+      "lslc_shared_bm25_hier": {
+        "active_prefix_tokens": 158,
+        "exact_strict_em": {
+          "mean": 0.7,
+          "std": 0.1,
+          "ci95": 0.1132
+        },
+        "exact_extracted_em": {
+          "mean": 0.7,
+          "std": 0.1,
+          "ci95": 0.1132
+        },
+        "exact_substr_em": {
+          "mean": 0.7,
+          "std": 0.1,
+          "ci95": 0.1132
+        },
+        "exact_tf_content_tok_acc": {
+          "mean": 0.9407,
+          "std": 0.0321,
+          "ci95": 0.0363
+        },
+        "exact_char_f1": {
+          "mean": 0.8512,
+          "std": 0.0488,
+          "ci95": 0.0553
+        },
+        "semantic_strict_em": {
+          "mean": 0.2667,
+          "std": 0.0577,
+          "ci95": 0.0653
+        },
+        "semantic_extracted_em": {
+          "mean": 0.3333,
+          "std": 0.1155,
+          "ci95": 0.1307
         },
         "semantic_substr_em": {
           "mean": 0.7,
@@ -1525,52 +2003,9 @@
           "ci95": 0.0078
         },
         "semantic_char_f1": {
-          "mean": 0.8093,
-          "std": 0.0279,
-          "ci95": 0.0316
-        }
-      },
-      "lslc_shared_bm25_hier": {
-        "active_prefix_tokens": 158,
-        "exact_strict_em": {
-          "mean": 0.4333,
-          "std": 0.0577,
-          "ci95": 0.0653
-        },
-        "exact_substr_em": {
-          "mean": 0.7333,
-          "std": 0.1155,
-          "ci95": 0.1307
-        },
-        "exact_tf_content_tok_acc": {
-          "mean": 0.9407,
-          "std": 0.0321,
-          "ci95": 0.0363
-        },
-        "exact_char_f1": {
-          "mean": 0.8603,
-          "std": 0.0466,
-          "ci95": 0.0527
-        },
-        "semantic_strict_em": {
-          "mean": 0.2333,
-          "std": 0.0577,
-          "ci95": 0.0653
-        },
-        "semantic_substr_em": {
-          "mean": 0.7,
-          "std": 0.0,
-          "ci95": 0.0
-        },
-        "semantic_tf_content_tok_acc": {
-          "mean": 0.8926,
-          "std": 0.0136,
-          "ci95": 0.0154
-        },
-        "semantic_char_f1": {
           "mean": 0.8056,
-          "std": 0.0305,
-          "ci95": 0.0345
+          "std": 0.0326,
+          "ci95": 0.0369
         }
       }
     }

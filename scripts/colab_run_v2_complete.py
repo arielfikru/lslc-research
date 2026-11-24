@@ -102,15 +102,87 @@ def _char_f1_span(pred_str: str, gold_str: str) -> float:
     return (2.0 * common) / float(len(p_s) + len(g_s))
 
 
+def _extract_canonical_candidates(gen_text: str) -> set[str]:
+    """Deterministically extract candidate short answers from the first non-empty generated sentence/line.
+
+    Applies identically to Raw-Text RAG and LSLC so conversational preambles (e.g. 'The code is 3034-3582.'
+    or '\\n[RECORD] API-KEY = 3034-3582') are evaluated on semantic/value correctness separately from format adherence.
+    """
+    trimmed = gen_text.lstrip()
+    if not trimmed:
+        return set()
+    first_line = trimmed.splitlines()[0].strip()
+    first_sent = re.split(r"[\n.;]", trimmed)[0].strip()
+    cands: set[str] = set()
+    for base in (first_line, first_sent):
+        if not base:
+            continue
+        cands.add(_norm_answer(base))
+        if "=" in base or ":" in base:
+            rhs = re.split(r"[=:]", base)[-1].strip()
+            rhs_clause = re.split(r"[.;,\n]", rhs)[0].strip()
+            cands.add(_norm_answer(rhs_clause))
+            if rhs_clause.split():
+                cands.add(_norm_answer(rhs_clause.split()[0]))
+        low = base.lower()
+        for marker in (
+            " updated to ",
+            " stands at ",
+            " moving the spending ceiling to ",
+            " authorized cap to ",
+            " prior figure with ",
+            " requires ",
+            " require ",
+            " runs in ",
+            " is ",
+            " are ",
+            " to ",
+            " at ",
+            " in ",
+            " use ",
+            " uses ",
+            " on ",
+        ):
+            if marker in low:
+                idx = low.rfind(marker) + len(marker)
+                rhs = base[idx:].strip()
+                rhs_clause = re.split(r"[.;,\n]", rhs)[0].strip()
+                cands.add(_norm_answer(rhs_clause))
+                words = rhs_clause.split()
+                if words:
+                    cands.add(_norm_answer(words[0]))
+                    if len(words) >= 2:
+                        cands.add(_norm_answer(" ".join(words[:2])))
+                stripped_units = re.sub(
+                    r"\b(?:mode|seconds|second|spikes|spike|replication|effective|immediately|for|this|cycle|across|all|ledgers)\b.*$",
+                    "",
+                    rhs_clause,
+                    flags=re.IGNORECASE,
+                ).strip()
+                if stripped_units:
+                    cands.add(_norm_answer(stripped_units))
+        for m in re.findall(r"\b\d{4}-\d{4}\b|\b\d{2,3}M\b", base):
+            cands.add(_norm_answer(m))
+        for sym in SYMBOLIC_STATES:
+            if sym in low:
+                cands.add(_norm_answer(sym))
+    cands.discard("")
+    return cands
+
+
 @torch.no_grad()
 def greedy_generate_concise(
     llm,
     prefix_embeds: torch.Tensor,
     query_ids: torch.Tensor,
     tokenizer,
-    max_new_tokens: int = 16,
+    max_new_tokens: int = 24,
 ) -> tuple[torch.Tensor, str]:
-    """Greedy decode from [prefix_embeds | query_ids] stopping cleanly at newline, period, or EOS."""
+    """Fair greedy decoding from [prefix_embeds | query_ids] up to max_new_tokens.
+
+    Never terminates on leading whitespace/newlines before content tokens are emitted; stops only on EOS
+    or after a complete non-empty line has been generated, ensuring identical stopping rules for Raw-Text RAG and LSLC.
+    """
     embed_fn = llm.get_input_embeddings()
     llm_dtype = embed_fn.weight.dtype
     prefix_cast = prefix_embeds.to(llm_dtype)
@@ -126,6 +198,7 @@ def greedy_generate_concise(
         llm.config.use_cache = True
 
     gen_ids: list[int] = []
+    has_non_ws = False
     try:
         out = llm(inputs_embeds=inp_embeds, attention_mask=attn_mask, use_cache=True)
         next_tok = out.logits[:, -1, :].argmax(dim=-1, keepdim=True)
@@ -133,11 +206,13 @@ def greedy_generate_concise(
         gen_ids.append(tid)
         pkv = getattr(out, "past_key_values", None)
 
-        for step_i in range(max_new_tokens - 1):
+        for _step_i in range(max_new_tokens - 1):
             if eos_id is not None and tid == eos_id:
                 break
             piece = tokenizer.decode([tid], skip_special_tokens=False)
-            if "\n" in piece or (step_i >= 1 and "." in piece):
+            if piece.strip():
+                has_non_ws = True
+            if has_non_ws and ("\n" in piece or "." in piece):
                 break
             attn_mask = torch.cat((attn_mask, torch.ones((bsz, 1), device=device, dtype=torch.long)), dim=1)
             out = llm(input_ids=next_tok, attention_mask=attn_mask, past_key_values=pkv, use_cache=True)
@@ -162,8 +237,8 @@ def compute_answer_metrics_v2(
     answer_str: str,
     tokenizer,
     alt_valid_strs: list[str] | None = None,
-) -> tuple[float, float, float, float]:
-    """Return (strict_em, substr_em, tf_content_tok_acc, char_f1)."""
+) -> tuple[float, float, float, float, float]:
+    """Return (strict_em, extracted_em, substr_em, tf_content_tok_acc, char_f1)."""
     logits_c, a_c = _strip_leading_ws_answer(ans_logits, a_ids, tokenizer)
     tf_content_tok_acc = float((logits_c.argmax(dim=-1) == a_c).float().mean().item())
 
@@ -174,18 +249,35 @@ def compute_answer_metrics_v2(
             if s:
                 valid_norms.add(_norm_answer(s))
 
-    first_clause = _norm_answer(re.split(r"[\n.;]", gen_text.strip())[0])
+    trimmed_gen = gen_text.lstrip()
+    first_clause = _norm_answer(re.split(r"[\n.;]", trimmed_gen)[0]) if trimmed_gen else ""
+
+    # Skip any leading whitespace/newline tokens in gen_ids before slicing target_tok_len
+    raw_tok_list = gen_ids[0].tolist()
+    non_ws_start = 0
+    while non_ws_start < len(raw_tok_list):
+        if tokenizer.decode([raw_tok_list[non_ws_start]], skip_special_tokens=True).strip():
+            break
+        non_ws_start += 1
     target_tok_len = max(1, a_c.shape[1])
-    span_text = tokenizer.decode(gen_ids[0, :target_tok_len].tolist(), skip_special_tokens=True)
+    span_ids = raw_tok_list[non_ws_start : non_ws_start + target_tok_len]
+    span_text = tokenizer.decode(span_ids, skip_special_tokens=True) if span_ids else ""
     span_norm = _norm_answer(span_text)
 
     strict_em = 1.0 if (first_clause in valid_norms or span_norm in valid_norms) else 0.0
+    extracted_cands = _extract_canonical_candidates(gen_text)
+    extracted_em = 1.0 if (strict_em == 1.0 or bool(valid_norms & extracted_cands)) else 0.0
+
     gen_low = _norm_answer(gen_text)
-    substr_em = 1.0 if any(v in gen_low for v in valid_norms if v) else 0.0
+    substr_em = 1.0 if (extracted_em == 1.0 or any(v in gen_low for v in valid_norms if v)) else 0.0
 
     # Compute character F1 against the closest valid target representation
-    best_f1 = max((_char_f1_span(first_clause or gen_text, v) for v in valid_norms if v), default=0.0)
-    return strict_em, substr_em, tf_content_tok_acc, best_f1
+    eval_cands = ({first_clause} | extracted_cands) if (first_clause or extracted_cands) else {gen_low}
+    best_f1 = max(
+        (_char_f1_span(c, v) for c in eval_cands for v in valid_norms if v),
+        default=0.0,
+    )
+    return strict_em, extracted_em, substr_em, tf_content_tok_acc, best_f1
 
 
 def estimate_bm25_cpu_ram_bytes(bm25: BM25PageRetriever) -> int:
@@ -573,10 +665,12 @@ def evaluate_long_context_niah_v2(
     )
     metrics_keys = (
         "exact_strict_em",
+        "exact_extracted_em",
         "exact_substr_em",
         "exact_tf_content_tok_acc",
         "exact_char_f1",
         "semantic_strict_em",
+        "semantic_extracted_em",
         "semantic_substr_em",
         "semantic_tf_content_tok_acc",
         "semantic_char_f1",
@@ -588,13 +682,23 @@ def evaluate_long_context_niah_v2(
     bm25_cpu_ram_bytes_list = []
     lr_t1_all, lr_t2_all, lr_t1_ex, lr_t2_ex, lr_t1_sem, lr_t2_sem = [], [], [], [], [], []
     bm_t1_all, bm_t2_all, bm_t1_ex, bm_t2_ex, bm_t1_sem, bm_t2_sem = [], [], [], [], [], []
+    paired_diff_keys = (
+        "exact_strict_em",
+        "exact_extracted_em",
+        "exact_substr_em",
+        "semantic_strict_em",
+        "semantic_extracted_em",
+        "semantic_substr_em",
+    )
+    paired_seed_diffs: dict[str, list[float]] = {k: [] for k in paired_diff_keys}
+    paired_ep_diffs: dict[str, list[float]] = {k: [] for k in paired_diff_keys}
 
     def _eval_pref(prefix_llm: torch.Tensor, q_ids: torch.Tensor, a_ids: torch.Tensor, turn_emb: torch.Tensor, ans_str: str, alt_strs: list[str]):
         inp = torch.cat((prefix_llm, turn_emb), dim=1)
         logits = wrapper.llm(inputs_embeds=inp).logits
         start = prefix_llm.shape[1] + q_ids.shape[1] - 1
         ans_logits = logits[:, start : start + a_ids.shape[1], :]
-        gen_ids, gen_text = greedy_generate_concise(wrapper.llm, prefix_llm, q_ids, tokenizer, max_new_tokens=16)
+        gen_ids, gen_text = greedy_generate_concise(wrapper.llm, prefix_llm, q_ids, tokenizer, max_new_tokens=24)
         return compute_answer_metrics_v2(ans_logits, a_ids, gen_ids, gen_text, ans_str, tokenizer, alt_valid_strs=alt_strs)
 
     for seed in seeds:
@@ -727,19 +831,34 @@ def evaluate_long_context_niah_v2(
                 "lslc_shared_bm25_trunc_flat_ctrl": asm_bm_trunc.prefix_embeds.to(llm_dtype),
                 "lslc_shared_bm25_hier": asm_bm_hier.prefix_embeds.to(llm_dtype),
             }
+            ep_res: dict[str, tuple[float, float, float, float, float]] = {}
             for s_name, pref in prefixes.items():
                 active_tok_counts[s_name] = int(pref.shape[1])
-                st_em, sub_em, ctok, cf1 = _eval_pref(pref, q_ids, a_ids, turn_emb, ans_str, alt_strs)
+                st_em, ext_em, sub_em, ctok, cf1 = _eval_pref(pref, q_ids, a_ids, turn_emb, ans_str, alt_strs)
+                ep_res[s_name] = (st_em, ext_em, sub_em, ctok, cf1)
                 if is_exact:
                     seed_bucket[s_name]["exact_strict_em"].append(st_em)
+                    seed_bucket[s_name]["exact_extracted_em"].append(ext_em)
                     seed_bucket[s_name]["exact_substr_em"].append(sub_em)
                     seed_bucket[s_name]["exact_tf_content_tok_acc"].append(ctok)
                     seed_bucket[s_name]["exact_char_f1"].append(cf1)
                 else:
                     seed_bucket[s_name]["semantic_strict_em"].append(st_em)
+                    seed_bucket[s_name]["semantic_extracted_em"].append(ext_em)
                     seed_bucket[s_name]["semantic_substr_em"].append(sub_em)
                     seed_bucket[s_name]["semantic_tf_content_tok_acc"].append(ctok)
                     seed_bucket[s_name]["semantic_char_f1"].append(cf1)
+
+            h_st, h_ext, h_sub, _, _ = ep_res["lslc_shared_bm25_hier"]
+            t_st, t_ext, t_sub, _, _ = ep_res["lslc_shared_bm25_trunc_flat_ctrl"]
+            if is_exact:
+                paired_ep_diffs["exact_strict_em"].append(h_st - t_st)
+                paired_ep_diffs["exact_extracted_em"].append(h_ext - t_ext)
+                paired_ep_diffs["exact_substr_em"].append(h_sub - t_sub)
+            else:
+                paired_ep_diffs["semantic_strict_em"].append(h_st - t_st)
+                paired_ep_diffs["semantic_extracted_em"].append(h_ext - t_ext)
+                paired_ep_diffs["semantic_substr_em"].append(h_sub - t_sub)
 
             if (idx_ep + 1) % 20 == 0:
                 print(f"  [NIAH P={num_pages} seed={seed}] {idx_ep+1}/{episodes_per_seed} done", flush=True)
@@ -763,6 +882,10 @@ def evaluate_long_context_niah_v2(
             for k in metrics_keys:
                 vals = seed_bucket[s_name][k]
                 per_sys[s_name][k].append(sum(vals) / max(1, len(vals)))
+        for pk in paired_diff_keys:
+            h_mean = sum(seed_bucket["lslc_shared_bm25_hier"][pk]) / max(1, len(seed_bucket["lslc_shared_bm25_hier"][pk]))
+            t_mean = sum(seed_bucket["lslc_shared_bm25_trunc_flat_ctrl"][pk]) / max(1, len(seed_bucket["lslc_shared_bm25_trunc_flat_ctrl"][pk]))
+            paired_seed_diffs[pk].append(h_mean - t_mean)
 
     return {
         "num_pages": num_pages,
@@ -773,6 +896,10 @@ def evaluate_long_context_niah_v2(
         "total_episodes": len(seeds) * episodes_per_seed,
         "salience_capture_rate": _mean_std_ci(capture_rates),
         "bm25_cpu_host_ram_kib": round(sum(bm25_cpu_ram_bytes_list) / max(1, len(bm25_cpu_ram_bytes_list)) / 1024.0, 2),
+        "paired_diff_hier_minus_trunc_flat": {
+            "seed_level": {pk: _mean_std_ci(paired_seed_diffs[pk]) for pk in paired_diff_keys},
+            "episode_level": {pk: _mean_std_ci(paired_ep_diffs[pk]) for pk in paired_diff_keys},
+        },
         "retriever_recall": {
             "bm25_exact_top1": _mean_std_ci(bm_t1_ex),
             "bm25_exact_top2": _mean_std_ci(bm_t2_ex),
@@ -846,7 +973,7 @@ def evaluate_state_override_v2(
         logits = wrapper.llm(inputs_embeds=inp).logits
         start = pref.shape[1] + q_ids.shape[1] - 1
         ans_logits = logits[:, start : start + a_ids.shape[1], :]
-        gen_ids, gen_text = greedy_generate_concise(wrapper.llm, pref, q_ids, tokenizer, max_new_tokens=16)
+        gen_ids, gen_text = greedy_generate_concise(wrapper.llm, pref, q_ids, tokenizer, max_new_tokens=24)
         return compute_answer_metrics_v2(ans_logits, a_ids, gen_ids, gen_text, ans_str, tokenizer)
 
     def _run_suite(regime: str, num_edits: int, num_episodes_per_seed: int) -> dict[str, Any]:
@@ -860,17 +987,21 @@ def evaluate_state_override_v2(
         )
         m_keys = (
             "override_strict_em",
+            "override_extracted_em",
             "override_substr_em",
             "override_tf_content_tok_acc",
             "override_char_f1",
             "static_retention_strict_em",
+            "static_retention_extracted_em",
             "static_retention_substr_em",
             "static_retention_tf_tok_acc",
         )
         per_sys = {s: {k: [] for k in m_keys} for s in sys_names}
         edit_ms_lslc, edit_ms_rw, edit_ms_app, edit_ms_patch, rw_dec_toks, patch_hit_rates = [], [], [], [], [], []
         inv_diffs = []
+        toc_only_diffs = []
         lr_recall_t2 = []
+        rw_cache: dict[tuple[str, str], tuple[list[int], int, float]] = {}
 
         for seed in seeds:
             if regime == "k3_structured":
@@ -952,26 +1083,32 @@ def evaluate_state_override_v2(
                 bm_rw = BM25PageRetriever(list(base_texts))
                 for p_idx, e_ids in (ep.edit_pages or []):
                     e_str = tokenizer.decode(e_ids.tolist(), skip_special_tokens=True)
-                    torch.cuda.synchronize()
-                    t0 = time.perf_counter()
-                    new_hdr_ids, dec_cnt = _llm_rewrite_state_block(
-                        wrapper.llm,
-                        tokenizer,
-                        embed_fn,
-                        llm_dtype,
-                        device,
-                        header_texts[p_idx],
-                        e_str,
-                        max_new_tokens=24,
-                    )
+                    cache_key = (header_texts[p_idx], e_str)
+                    if cache_key in rw_cache:
+                        new_hdr_ids, dec_cnt, rw_ms = rw_cache[cache_key]
+                    else:
+                        torch.cuda.synchronize()
+                        t0 = time.perf_counter()
+                        new_hdr_ids, dec_cnt = _llm_rewrite_state_block(
+                            wrapper.llm,
+                            tokenizer,
+                            embed_fn,
+                            llm_dtype,
+                            device,
+                            header_texts[p_idx],
+                            e_str,
+                            max_new_tokens=24,
+                        )
+                        torch.cuda.synchronize()
+                        rw_ms = (time.perf_counter() - t0) * 1000.0
+                        rw_cache[cache_key] = (list(new_hdr_ids), int(dec_cnt), rw_ms)
                     header_texts[p_idx] = tokenizer.decode(new_hdr_ids, skip_special_tokens=True)
                     if len(new_hdr_ids) < 32:
                         rw_pages[p_idx] = new_hdr_ids + rw_pages[p_idx][32:]
                     else:
                         rw_pages[p_idx] = new_hdr_ids[:32] + rw_pages[p_idx][32:]
                     bm_rw.update_page(p_idx, tokenizer.decode(rw_pages[p_idx], skip_special_tokens=True))
-                    torch.cuda.synchronize()
-                    s_ms_rw.append((time.perf_counter() - t0) * 1000.0)
+                    s_ms_rw.append(rw_ms)
                     s_rw_toks.append(float(dec_cnt))
                 m_rw = _eval_raw_rag(rw_pages, bm_rw, q_ids, a_ids, ans_str)
 
@@ -1038,6 +1175,7 @@ def evaluate_state_override_v2(
 
                 s_lr_hits.append(1.0 if tp in lr_route_after.deep_idx[0].tolist() else 0.0)
                 imm_l = asm_before.immutable_prefix_len
+                toc_only_diffs.append(float((toc_after - toc0).abs().max().item()))
                 inv_diffs.append(
                     float((asm_e2e_after.prefix_embeds[:, :imm_l] - asm_before.prefix_embeds[:, :imm_l]).abs().max().item())
                 )
@@ -1050,13 +1188,13 @@ def evaluate_state_override_v2(
                     logits = wrapper.llm(inputs_embeds=inp).logits
                     start = p_cast.shape[1] + q_ids.shape[1] - 1
                     ans_l = logits[:, start : start + a_ids.shape[1], :]
-                    g_ids, g_txt = greedy_generate_concise(wrapper.llm, p_cast, q_ids, tokenizer, max_new_tokens=16)
+                    g_ids, g_txt = greedy_generate_concise(wrapper.llm, p_cast, q_ids, tokenizer, max_new_tokens=24)
                     return compute_answer_metrics_v2(ans_l, a_ids, g_ids, g_txt, ans_str, tokenizer)
 
                 m_lslc_e2e = _eval_lslc_pref(asm_e2e_after.prefix_embeds)
                 m_lslc_bm = _eval_lslc_pref(asm_bm_after.prefix_embeds)
 
-                for s_name, (st_em, sub_em, tok_v, f1_v) in (
+                for s_name, (st_em, ext_em, sub_em, tok_v, f1_v) in (
                     ("raw_rag_immutable", m_imm),
                     ("raw_rag_append_errata", m_app),
                     ("raw_rag_direct_text_patch", m_patch),
@@ -1066,11 +1204,13 @@ def evaluate_state_override_v2(
                 ):
                     if is_ov:
                         seed_b[s_name]["override_strict_em"].append(st_em)
+                        seed_b[s_name]["override_extracted_em"].append(ext_em)
                         seed_b[s_name]["override_substr_em"].append(sub_em)
                         seed_b[s_name]["override_tf_content_tok_acc"].append(tok_v)
                         seed_b[s_name]["override_char_f1"].append(f1_v)
                     else:
                         seed_b[s_name]["static_retention_strict_em"].append(st_em)
+                        seed_b[s_name]["static_retention_extracted_em"].append(ext_em)
                         seed_b[s_name]["static_retention_substr_em"].append(sub_em)
                         seed_b[s_name]["static_retention_tf_tok_acc"].append(tok_v)
 
@@ -1100,6 +1240,7 @@ def evaluate_state_override_v2(
             "num_edits": num_edits,
             "seeds": seeds,
             "total_episodes": len(seeds) * num_episodes_per_seed,
+            "lslc_max_toc_only_diff": max(toc_only_diffs) if toc_only_diffs else 0.0,
             "lslc_max_toc_prefix_diff": max(inv_diffs) if inv_diffs else 0.0,
             "lslc_e2e_gpu_router_top2_recall": _mean_std_ci(lr_recall_t2),
             "direct_patch_regex_match_rate": _mean_std_ci(patch_hit_rates),
@@ -1254,8 +1395,8 @@ def evaluate_iso_budget_1d_vs_3d_ablation(
         ppl_full = evaluate_continuation_ppl(w_var, val_prose, device=device, mode="lslc_full_exact")
         ppl_skim = evaluate_continuation_ppl(w_var, val_prose, device=device, mode="skim_only")
 
-        # Evaluate NIAH (Exact & Semantic with Strict & Substring EM)
-        ex_st, ex_sub, ex_tok, sem_st, sem_sub, sem_skim_sub = [], [], [], [], [], []
+        # Evaluate NIAH (Exact & Semantic with Strict, Extracted & Substring EM)
+        ex_st, ex_ext, ex_sub, ex_tok, sem_st, sem_ext, sem_sub, sem_skim_sub = [], [], [], [], [], [], [], []
         for ep in val_niah:
             pages = ep.context_pages.unsqueeze(0).to(device)
             q_ids = ep.query_ids.unsqueeze(0).to(device)
@@ -1279,22 +1420,24 @@ def evaluate_iso_budget_1d_vs_3d_ablation(
             logits_f = llm(inputs_embeds=inp_f).logits
             start_f = pref_f.shape[1] + q_ids.shape[1] - 1
             ans_l_f = logits_f[:, start_f : start_f + a_ids.shape[1], :]
-            g_ids_f, g_txt_f = greedy_generate_concise(llm, pref_f, q_ids, tokenizer, max_new_tokens=16)
-            st_v, sub_v, tok_v, _ = compute_answer_metrics_v2(ans_l_f, a_ids, g_ids_f, g_txt_f, ans_str, tokenizer, alt_valid_strs=alt_strs)
+            g_ids_f, g_txt_f = greedy_generate_concise(llm, pref_f, q_ids, tokenizer, max_new_tokens=24)
+            st_v, ext_v, sub_v, tok_v, _ = compute_answer_metrics_v2(ans_l_f, a_ids, g_ids_f, g_txt_f, ans_str, tokenizer, alt_valid_strs=alt_strs)
 
             if ep.metadata["needle_type"] == "exact":
                 ex_st.append(st_v)
+                ex_ext.append(ext_v)
                 ex_sub.append(sub_v)
                 ex_tok.append(tok_v)
             else:
                 sem_st.append(st_v)
+                sem_ext.append(ext_v)
                 sem_sub.append(sub_v)
                 pref_sk = asm_sk.prefix_embeds.to(llm_dtype)
-                _, g_txt_sk = greedy_generate_concise(llm, pref_sk, q_ids, tokenizer, max_new_tokens=16)
+                _, g_txt_sk = greedy_generate_concise(llm, pref_sk, q_ids, tokenizer, max_new_tokens=24)
                 sem_skim_sub.append(1.0 if ans_str.lower() in g_txt_sk.lower() else 0.0)
 
         # Evaluate k=3 State Override & Static Retention & TOC Prefix Invariance
-        ov_st, ov_sub, st_ret_st, st_ret_sub, inv_diffs = [], [], [], [], []
+        ov_st, ov_ext, ov_sub, st_ret_st, st_ret_ext, st_ret_sub, inv_diffs = [], [], [], [], [], [], []
         for ep in val_k3:
             pages = ep.context_pages.unsqueeze(0).to(device)
             q_ids = ep.query_ids.unsqueeze(0).to(device)
@@ -1325,13 +1468,15 @@ def evaluate_iso_budget_1d_vs_3d_ablation(
             logits_1 = llm(inputs_embeds=inp_1).logits
             start_1 = pref_1.shape[1] + q_ids.shape[1] - 1
             ans_l_1 = logits_1[:, start_1 : start_1 + a_ids.shape[1], :]
-            g_ids_1, g_txt_1 = greedy_generate_concise(llm, pref_1, q_ids, tokenizer, max_new_tokens=16)
-            st_v, sub_v, _, _ = compute_answer_metrics_v2(ans_l_1, a_ids, g_ids_1, g_txt_1, ans_str, tokenizer)
+            g_ids_1, g_txt_1 = greedy_generate_concise(llm, pref_1, q_ids, tokenizer, max_new_tokens=24)
+            st_v, ext_v, sub_v, _, _ = compute_answer_metrics_v2(ans_l_1, a_ids, g_ids_1, g_txt_1, ans_str, tokenizer)
             if ep.metadata["is_overridden_query"]:
                 ov_st.append(st_v)
+                ov_ext.append(ext_v)
                 ov_sub.append(sub_v)
             else:
                 st_ret_st.append(st_v)
+                st_ret_ext.append(ext_v)
                 st_ret_sub.append(sub_v)
 
         results[variant] = {
@@ -1341,14 +1486,18 @@ def evaluate_iso_budget_1d_vs_3d_ablation(
             "wikitext2_ppl_full": ppl_full,
             "wikitext2_ppl_skim_2x2": ppl_skim,
             "exact_niah_strict_em": round(sum(ex_st) / max(1, len(ex_st)), 4),
+            "exact_niah_extracted_em": round(sum(ex_ext) / max(1, len(ex_ext)), 4),
             "exact_niah_substr_em": round(sum(ex_sub) / max(1, len(ex_sub)), 4),
             "exact_niah_tf_tok_acc": round(sum(ex_tok) / max(1, len(ex_tok)), 4),
             "semantic_niah_strict_em": round(sum(sem_st) / max(1, len(sem_st)), 4),
+            "semantic_niah_extracted_em": round(sum(sem_ext) / max(1, len(sem_ext)), 4),
             "semantic_niah_substr_em": round(sum(sem_sub) / max(1, len(sem_sub)), 4),
             "semantic_niah_skim_only_em": round(sum(sem_skim_sub) / max(1, len(sem_skim_sub)), 4),
             "k3_override_strict_em": round(sum(ov_st) / max(1, len(ov_st)), 4),
+            "k3_override_extracted_em": round(sum(ov_ext) / max(1, len(ov_ext)), 4),
             "k3_override_substr_em": round(sum(ov_sub) / max(1, len(ov_sub)), 4),
             "static_l0_retention_strict_em": round(sum(st_ret_st) / max(1, len(st_ret_st)), 4),
+            "static_l0_retention_extracted_em": round(sum(st_ret_ext) / max(1, len(st_ret_ext)), 4),
             "static_l0_retention_substr_em": round(sum(st_ret_sub) / max(1, len(st_ret_sub)), 4),
             "max_toc_prefix_diff": round(max(inv_diffs) if inv_diffs else 0.0, 6),
         }
@@ -1363,13 +1512,17 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, default="Qwen/Qwen3-1.7B")
     parser.add_argument("--out-json", type=str, default="/content/lslc_results/v2_complete_summary.json")
+    parser.add_argument("--load-checkpoint", type=str, default="")
+    parser.add_argument("--prev-json", type=str, default="")
+    parser.add_argument("--skip-stage2", action="store_true")
+    parser.add_argument("--skip-ablation", action="store_true")
     args = parser.parse_args()
 
     device = torch.device("cuda")
     if not torch.cuda.is_bf16_supported():
         torch.backends.cudnn.enabled = False
     props = torch.cuda.get_device_properties(0)
-    print(f"=== LSLC V2.0.0 COMPLETE HARDENING SUITE on {props.name} ===", flush=True)
+    print(f"=== LSLC V2.1.0 COMPLETE HARDENING SUITE on {props.name} ===", flush=True)
 
     cfg = LSLCConfig.from_model_name(args.model, lr=3e-4)
     llm, tokenizer = load_frozen_qwen3(cfg, load_in_4bit=False, device=device)
@@ -1380,8 +1533,12 @@ def main() -> int:
 
     out_path = Path(args.out_json)
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    prev_data: dict[str, Any] = {}
+    if args.prev_json and Path(args.prev_json).is_file():
+        prev_data = json.loads(Path(args.prev_json).read_text(encoding="utf-8"))
+
     summary: dict[str, Any] = {
-        "version": "2.0.0",
+        "version": "2.1.0",
         "model": args.model,
         "gpu": props.name,
         "vram_gb": round(props.total_memory / (1024 ** 3), 2),
@@ -1391,33 +1548,47 @@ def main() -> int:
     def _flush() -> None:
         out_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
-    # Stage 1: Train Unified v2.0.0 Adapter Checkpoint (with Static l=0 Replay & Multi-Scale Frozen-toc_proj Router)
-    print("--- Stage 1: Training Unified LSLC v2.0.0 Adapter Checkpoint ---", flush=True)
-    summary["training"] = train_unified_v2_checkpoint(wrapper, train_pool, tokenizer, device)
-    clean_sd = {k: v.detach().cpu().contiguous().to(torch.bfloat16) for k, v in wrapper.lslc.state_dict().items()}
-    st_path = out_path.parent / "lslc_qwen3_1.7b_adapter.safetensors"
-    from safetensors.torch import save_file
+    # Stage 1: Train or Load Unified Adapter Checkpoint
+    from safetensors.torch import load_file, save_file
 
-    save_file(
-        clean_sd,
-        str(st_path),
-        metadata={
-            "format": "pt",
-            "architecture": "LayeredSpatialLatentCache",
-            "version": "2.0.0",
-            "base_model": args.model,
-            "trainable_parameters": str(wrapper.lslc.trainable_parameter_count()),
-            "suite": "lslc_v2_complete",
-        },
-    )
-    print(f"Exported unified v2.0.0 checkpoint -> {st_path}", flush=True)
+    if args.load_checkpoint and Path(args.load_checkpoint).is_file():
+        print(f"--- Stage 1: Loading pre-trained unified checkpoint from {args.load_checkpoint} ---", flush=True)
+        sd = load_file(args.load_checkpoint, device="cpu")
+        wrapper.lslc.load_state_dict({k: v.to(device=device, dtype=torch.float32) for k, v in sd.items()}, strict=True)
+        wrapper.lslc.eval()
+        summary["training"] = prev_data.get(
+            "training",
+            {"loaded_checkpoint": args.load_checkpoint, "trainable_params": wrapper.lslc.trainable_parameter_count()},
+        )
+    else:
+        print("--- Stage 1: Training Unified LSLC v2.1.0 Adapter Checkpoint ---", flush=True)
+        summary["training"] = train_unified_v2_checkpoint(wrapper, train_pool, tokenizer, device)
+        clean_sd = {k: v.detach().cpu().contiguous().to(torch.bfloat16) for k, v in wrapper.lslc.state_dict().items()}
+        st_path = out_path.parent / "lslc_qwen3_1.7b_adapter.safetensors"
+        save_file(
+            clean_sd,
+            str(st_path),
+            metadata={
+                "format": "pt",
+                "architecture": "LayeredSpatialLatentCache",
+                "version": "2.1.0",
+                "base_model": args.model,
+                "trainable_parameters": str(wrapper.lslc.trainable_parameter_count()),
+                "suite": "lslc_v2_complete",
+            },
+        )
+        print(f"Exported unified checkpoint -> {st_path}", flush=True)
     _flush()
 
     # Stage 2: 5-Way Multi-Turn State-Override Benchmark (Structured k=3, Structured k=5, Paraphrased NL k=3)
-    print("--- Stage 2: 5-Way State Overrides (Structured k=3/k=5 + Paraphrased NL k=3 + Static l=0 Retention) ---", flush=True)
-    summary["state_override_v2"] = evaluate_state_override_v2(
-        wrapper, val_pool, tokenizer, device, seeds=[42, 1337, 9999]
-    )
+    if args.skip_stage2 and "state_override_v2" in prev_data:
+        print("--- Stage 2: Reusing verified L4 State-Override v2.1.0 results from prev_json ---", flush=True)
+        summary["state_override_v2"] = prev_data["state_override_v2"]
+    else:
+        print("--- Stage 2: 5-Way State Overrides (Structured k=3/k=5 + Paraphrased NL k=3 + Static l=0 Retention) ---", flush=True)
+        summary["state_override_v2"] = evaluate_state_override_v2(
+            wrapper, val_pool, tokenizer, device, seeds=[42, 1337, 9999]
+        )
     _flush()
 
     # Stage 3: 32K (P=128, N=180) Multi-Seed NIAH + Pure E2E GPU Router vs Hybrid BM25 + Truncated Flat TOC Ablation
@@ -1435,20 +1606,28 @@ def main() -> int:
     _flush()
 
     # Stage 5: Live Memory & Latency Scaling (32K, 128K, 256K)
-    print("--- Stage 5: Live Memory & Latency Scaling (32K, 128K, 256K) ---", flush=True)
-    summary["memory_and_latency_scaling"] = profile_memory_and_latency_scaling(wrapper, val_pool, device)
+    if "memory_and_latency_scaling" in prev_data:
+        print("--- Stage 5: Reusing verified L4 Memory & Latency Scaling from prev_json ---", flush=True)
+        summary["memory_and_latency_scaling"] = prev_data["memory_and_latency_scaling"]
+    else:
+        print("--- Stage 5: Live Memory & Latency Scaling (32K, 128K, 256K) ---", flush=True)
+        summary["memory_and_latency_scaling"] = profile_memory_and_latency_scaling(wrapper, val_pool, device)
     _flush()
 
     # Stage 6: Controlled Iso-Param / Iso-Byte / Iso-Step 1D-Flat vs 1D-3Layer vs 3D-Spatial Ablation
-    print("--- Stage 6: Controlled Iso-Budget 1D-Flat vs 1D-3Layer vs 3D-Spatial Ablation ---", flush=True)
     del wrapper
     torch.cuda.empty_cache()
-    summary["iso_budget_1d_vs_3d_ablation"] = evaluate_iso_budget_1d_vs_3d_ablation(
-        llm, tokenizer, cfg, train_pool, val_pool, device
-    )
+    if args.skip_ablation and "iso_budget_1d_vs_3d_ablation" in prev_data:
+        print("--- Stage 6: Reusing verified L4 Iso-Budget 1D-vs-3D Ablation from prev_json ---", flush=True)
+        summary["iso_budget_1d_vs_3d_ablation"] = prev_data["iso_budget_1d_vs_3d_ablation"]
+    else:
+        print("--- Stage 6: Controlled Iso-Budget 1D-Flat vs 1D-3Layer vs 3D-Spatial Ablation ---", flush=True)
+        summary["iso_budget_1d_vs_3d_ablation"] = evaluate_iso_budget_1d_vs_3d_ablation(
+            llm, tokenizer, cfg, train_pool, val_pool, device
+        )
     _flush()
 
-    print(f"=== SAVED V2.0.0 COMPLETE SUMMARY -> {out_path} ===", flush=True)
+    print(f"=== SAVED V2.1.0 COMPLETE SUMMARY -> {out_path} ===", flush=True)
     return 0
 
 

@@ -1,8 +1,8 @@
 # Why In-Place Editable Context Memory Beats Raw-Text RAG—And Only Needs 27 MiB at 32K
 
 * **Category:** Guides / Engineering
-* **Published:** Nov 23, 2026
-* **Written by:** Ariel Fikru
+* **Published:** Nov 23, 2026 (Updated `v2.1.0`: Nov 24, 2026)
+* **Written by:** Ariel Fikru, Muhammadalif Ramadhan
 
 ---
 
@@ -113,7 +113,7 @@ $$
 \mathbf{Z}_{p, 2}^{\text{new}} = (1 - \mathbf{G}_p) \odot \mathbf{Z}_{p, 2}^{\text{old}} + \mathbf{G}_p \odot \Delta\mathbf{Z}_{p, 2}
 $$
 
-Because $\text{TOC}_{1..P}$ pools exclusively over $\ell \in \{0, 1\}$, the entire global TOC prefix remains bit-identical ($\max|\Delta_{\text{TOC}}| = 0.0$ by construction), and stale values are overwritten in latent space rather than left around to distract attention. *(Note: in our `v2.0.0` L4 BF16 multi-seed evaluation across $N=180$ $32\text{K}$ and $N=60$ $128\text{K}$ NIAH episodes, 2-level hierarchical LSLC with **100% GPU-resident routing (`0 B` CPU RAM via in-VRAM `SparseExactBank` `MaxSim`)** achieves **`74.4%` Strict / `97.8%` Substring Semantic EM** at `32K` (`46.7% / 76.7%` at `128K`) and **`31.1%–33.3%` Strict / `56.7%–61.1%` Substring Exact EM**, while pairing LSLC with a shared Okapi BM25 retriever reaches **`45.6%` Strict / `82.2%` Substring Exact EM (`97.0%` content-tok)** and **`74.4%` Strict / `98.9%` Substring Semantic EM** at `32K` (`91.1% / 71.1%` on T4 FP16). Across 5-way state overrides ($N=288$), LSLC executes edits in **`8.62–8.70 ms/edit`** on L4, reaching **`94.4%` Strict / `95.8%` Substring EM (`100.0%` content-tok)** on $k=3$ numeric overrides, **`38.3%–43.3%` Strict / `40.0%–46.7%` Substring EM (`82.0%–86.6%` content-tok)** on $k=5$ symbolic overrides, **`35.0%–40.0%` Substring EM** on paraphrased natural-language edits—where deterministic regex `Direct Text-Patch RAG` collapses to `0.0%`—and **`86.7%–97.2%` Static $\ell=0$ Policy Retention EM**.)*
+Because $\text{TOC}_{1..P}$ pools exclusively over $\ell \in \{0, 1\}$, the entire global TOC prefix remains bit-identical ($\max|\Delta_{\text{TOC}}| = 0.0$ by construction), and stale values are overwritten in latent space rather than left around to distract attention. *(Note: in our `v2.1.0` fair canonical-extraction evaluation on NVIDIA L4 `BF16` across $N=180$ $32\text{K}$ and $N=60$ $128\text{K}$ NIAH episodes, 2-level hierarchical LSLC with **100% GPU-resident routing (`0 B` additional CPU lexical index via in-VRAM `SparseExactBank` `MaxSim`)** achieves **`61.1%` Exact / `77.8%` (`98.9%` Substr) Semantic Extracted EM** at `32K` (`56.7% / 43.3%` at `128K`), while pairing LSLC with a shared Okapi BM25 retriever reaches **`80.0%` Exact (`97.0%` content-tok) / `77.8%` (`100.0%` Substr) Semantic Extracted EM** at `32K` and `70.0%` Exact at `128K`—compared with Raw-Text Chunk RAG's `93.3%` / `90.0%` Exact Extracted EM. Across 5-way state overrides ($N=288$, `P=4`), LSLC executes edits in **`8.25–8.85 ms/edit`** (`4.47–4.51 ms` zero-copy inference slice write), reaching **`94.4%–95.8%` Extracted EM (`97.7%–100.0%` content-tok)** on $k=3$ numeric overrides vs. `52.8%` best RAG, while mutable RAG leads on $k=5$ symbolic (`90.0%` vs. `40.0%–48.3%`) and `Append-Errata` edges out LSLC on paraphrased NL edits (`40.0%` vs. `30.0%–35.0%`). See [release_notes_v2.1.0.md](release_notes_v2.1.0.md) for the full Oracle A/B/C and `P=4/128/1024` edit-scaling diagnostics.)*
 
 | Benchmark / Stress Regime | Full 1D KV (BF16) | StreamingLLM / H2O-20% | 1D Flat Latent (12 KiB/p) | Raw-Text RAG (+Append / LLM-Rewrite) | **LSLC 3D + Exact Bank + Delta** |
 | :--- | :--- | :--- | :--- | :--- | :--- |

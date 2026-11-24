@@ -1,0 +1,147 @@
+{
+  "version": "2.1.0-diagnostics",
+  "model": "Qwen/Qwen3-1.7B",
+  "checkpoint": "/content/lslc_qwen3_1.7b_adapter.safetensors",
+  "gpu": "NVIDIA L4",
+  "oracle_abc_k5_symbolic": {
+    "num_episodes": 30,
+    "seed": 42,
+    "num_pages": 4,
+    "steps": {
+      "k=1": {
+        "mean_delta_gate": 0.2007,
+        "cond_a_oracle_raw_text": {
+          "extracted_em": 0.9,
+          "strict_em": 0.0,
+          "substr_em": 0.9,
+          "tf_content_tok_acc": 0.7465
+        },
+        "cond_b_oracle_reencoded_lslc": {
+          "extracted_em": 0.0,
+          "strict_em": 0.0,
+          "substr_em": 0.0,
+          "tf_content_tok_acc": 0.2587
+        },
+        "cond_c_oracle_sequential_delta": {
+          "extracted_em": 0.1,
+          "strict_em": 0.1,
+          "substr_em": 0.1,
+          "tf_content_tok_acc": 0.7056
+        }
+      },
+      "k=2": {
+        "mean_delta_gate": 0.2501,
+        "cond_a_oracle_raw_text": {
+          "extracted_em": 0.8667,
+          "strict_em": 0.0,
+          "substr_em": 0.8667,
+          "tf_content_tok_acc": 0.7629
+        },
+        "cond_b_oracle_reencoded_lslc": {
+          "extracted_em": 0.0,
+          "strict_em": 0.0,
+          "substr_em": 0.0,
+          "tf_content_tok_acc": 0.3063
+        },
+        "cond_c_oracle_sequential_delta": {
+          "extracted_em": 0.3,
+          "strict_em": 0.3,
+          "substr_em": 0.3,
+          "tf_content_tok_acc": 0.8435
+        }
+      },
+      "k=3": {
+        "mean_delta_gate": 0.25,
+        "cond_a_oracle_raw_text": {
+          "extracted_em": 0.9333,
+          "strict_em": 0.0,
+          "substr_em": 0.9333,
+          "tf_content_tok_acc": 0.7646
+        },
+        "cond_b_oracle_reencoded_lslc": {
+          "extracted_em": 0.0,
+          "strict_em": 0.0,
+          "substr_em": 0.0,
+          "tf_content_tok_acc": 0.3206
+        },
+        "cond_c_oracle_sequential_delta": {
+          "extracted_em": 0.2667,
+          "strict_em": 0.2667,
+          "substr_em": 0.2667,
+          "tf_content_tok_acc": 0.8063
+        }
+      },
+      "k=4": {
+        "mean_delta_gate": 0.2499,
+        "cond_a_oracle_raw_text": {
+          "extracted_em": 0.9333,
+          "strict_em": 0.0,
+          "substr_em": 0.9333,
+          "tf_content_tok_acc": 0.7585
+        },
+        "cond_b_oracle_reencoded_lslc": {
+          "extracted_em": 0.0,
+          "strict_em": 0.0,
+          "substr_em": 0.0,
+          "tf_content_tok_acc": 0.3402
+        },
+        "cond_c_oracle_sequential_delta": {
+          "extracted_em": 0.4,
+          "strict_em": 0.4,
+          "substr_em": 0.4,
+          "tf_content_tok_acc": 0.8279
+        }
+      },
+      "k=5": {
+        "mean_delta_gate": 0.2499,
+        "cond_a_oracle_raw_text": {
+          "extracted_em": 0.9,
+          "strict_em": 0.0333,
+          "substr_em": 0.9,
+          "tf_content_tok_acc": 0.7576
+        },
+        "cond_b_oracle_reencoded_lslc": {
+          "extracted_em": 0.0,
+          "strict_em": 0.0,
+          "substr_em": 0.0,
+          "tf_content_tok_acc": 0.2781
+        },
+        "cond_c_oracle_sequential_delta": {
+          "extracted_em": 0.2333,
+          "strict_em": 0.2333,
+          "substr_em": 0.2333,
+          "tf_content_tok_acc": 0.7604
+        }
+      }
+    }
+  },
+  "edit_scaling_probe": {
+    "P=4": {
+      "num_pages": 4,
+      "context_tokens": 1024,
+      "z_book_mib": 0.047,
+      "autograd_safe_clone_ms": 7.572,
+      "autograd_safe_clone_peak_delta_mib": 11.874,
+      "inference_zero_copy_inplace_ms": 4.484,
+      "inference_zero_copy_inplace_peak_delta_mib": 11.631
+    },
+    "P=128": {
+      "num_pages": 128,
+      "context_tokens": 32768,
+      "z_book_mib": 1.5,
+      "autograd_safe_clone_ms": 7.561,
+      "autograd_safe_clone_peak_delta_mib": 13.327,
+      "inference_zero_copy_inplace_ms": 4.469,
+      "inference_zero_copy_inplace_peak_delta_mib": 12.459
+    },
+    "P=1024": {
+      "num_pages": 1024,
+      "context_tokens": 262144,
+      "z_book_mib": 12.0,
+      "autograd_safe_clone_ms": 7.722,
+      "autograd_safe_clone_peak_delta_mib": 23.827,
+      "inference_zero_copy_inplace_ms": 4.506,
+      "inference_zero_copy_inplace_peak_delta_mib": 11.584
+    }
+  }
+}

@@ -271,14 +271,35 @@ def main() -> int:
     chk("table8_twobank_rows", "Two-Bank KV Reuse" in tex)
     chk("full_gen_no_double_count", "906.3$ vs.\\ $889.8" in tex and "946" not in tex)
     chk("lme_static_and_proxy", "0$ calls to \\texttt{apply\\_edit}" in tex and "lexical-coverage proxy" in tex.lower())
-    chk("17_json_manifest", "17$ saved JSON" in tex and "v3\\_universal\\_v2\\_train.json" in tex)
+    chk("19_json_manifest", "19$ saved JSON" in tex and "v3\\_universal\\_v2\\_train.json" in tex and "v33\\_update\\_aware\\_qwen3\\_1.7b.json" in tex)
+
+    # 5b. v3.3 Update-Aware Append Control (N=200 per backbone, 0 locked-page mismatches) (16)
+    for tag, fn in [("qwen", "v33_update_aware_qwen3_1.7b.json"), ("llama", "v33_update_aware_llama31_8b.json")]:
+        v33_d = json.loads((EVAL_DIR / fn).read_text())["update_aware_control_2x3"]
+        chk(f"v33_{tag}_zero_locked_mismatch", v33_d["ref_v32_locked_pages_mismatches"] == 0 and v33_d["ref_v32_ordered_pages_mismatches"] == 0)
+        for order in ["edited_last", "page_id_asc"]:
+            for pol in ["raw_text_append", "standalone_append_192tok", "standalone_overwrite_192tok"]:
+                entry = v33_d["systems"][f"{order}__{pol}"]
+                em = f"{entry['normalized_numeric_em'] * 100:.1f}\\%"
+                w2n = f"{entry['normalized_w2n_em'] * 100:.1f}\\%"
+                chk(f"v33_{tag}_{order}_{pol}_em_w2n", em in tex and w2n in tex, f"{em}/{w2n}")
+        pw = v33_d["pairwise_norm_em"]
+        if tag == "qwen":
+            chk("v33_qwen_holm_ed", abs(pw["edited_last__standalone_overwrite_192tok__vs__edited_last__standalone_append_192tok"]["exact_unrounded"]["p_mcnemar_holm"] - 4.47e-7) < 1e-8)
+        else:
+            chk("v33_llama_holm_raw_ed", abs(pw["edited_last__standalone_overwrite_192tok__vs__edited_last__raw_text_append"]["exact_unrounded"]["p_mcnemar_holm"] - 0.01496) < 2e-4)
 
     lower = tex.lower()
-    for w in ["statistical parity", "100\\% ood", "100% ood", "steelmanned", "note honestly", "honest caveats", "falsified", "orthogonal"]:
+    for w in ["statistical parity", "100\\% ood", "100% ood", "steelmanned", "note honestly", "honest caveats", "falsified", "orthogonal", "earlier released adapter", "prior adapter release", "genuine assist"]:
         chk(f"no_forbidden_{w.replace(' ', '_')}", w not in lower, w)
 
-    # Double-blind PDF & LaTeX source anonymity check (including public commit hash 0e8f2d8)
-    leak_terms = ["fikru", "ramadhan", "arielfikru", "zenodo", "24473281", "0e8f2d8"]
+    # Double-blind PDF & LaTeX source anonymity check (including public commit hash, SHA-256 hashes & ckpt filenames)
+    leak_terms = [
+        "fikru", "ramadhan", "arielfikru", "zenodo", "24473281", "0e8f2d8",
+        "94cc5270b441a55a", "17c7918a6d9da31c", "7048dfc167de9729",
+        "lslc_pathb_qwen3_1.7b.safetensors", "lslc_pathb_llama31_8b.safetensors",
+        "lslc_universal_v2_qwen3_1.7b.safetensors",
+    ]
     if ANON_PDF_PATH.exists():
         pdf_txt = subprocess.check_output(["pdftotext", str(ANON_PDF_PATH), "-"], text=True).lower()
         leaks = [w for w in leak_terms if w in pdf_txt]

@@ -2,7 +2,7 @@
 
 **Author:** Ariel Fikru (Independent Researcher)  
 **Preprint (v3.0.0):** [docs/tmlr_submission/main_tmlr_preprint.pdf](docs/tmlr_submission/main_tmlr_preprint.pdf) · **DOI:** [`10.5281/zenodo.24473281`](https://doi.org/10.5281/zenodo.24473281)  
-**CPU Metric Audit:** `python3 docs/reconcile_paper_metrics.py` (**91/91 checks passed**, pure Python stdlib, 0 GPU)
+**CPU Metric Audit:** `python3 docs/reconcile_paper_metrics.py` (**110/110 checks passed**, pure Python stdlib, 0 GPU)
 
 > **Supersede Notice (`v3.0.0`):** This release and manuscript supersede earlier `v1`/`v2` LSLC preprints under the same Zenodo concept DOI after controlled causal ablations established that verbatim state-edit recovery was carried by the **discrete span-bank (`PathBDiscreteMemory`, denoted `OW-192`)** rather than the co-trained continuous latent delta (`LSLC-Full`). Earlier `v2.1.0` engineering notes and checkpoints remain archived in the repository for full provenance.
 
@@ -27,6 +27,7 @@ Conditional on shared oracle edit page addresses $p_i$, identical edit-gate deci
 | **`OW-192`** (`PathBDiscreteMemory`) | **`74.5%`** (**`79.5%`**) | **`66.5%`** (**`71.5%`**) | `85.5%` (`90.0%`) | `79.0%` (`83.5%`) | **`192`** |
 
 - **Overwrite vs. Rolling-Tail Append (`OW-192` vs. `App-192`):** `+15.0 / +11.0 pp` on `Qwen3-1.7B` (`p_Holm <= 6.78e-4`, cluster sign-flip `p_sf,H <= 0.015`) and `+9.5 / +9.0 pp` on `Llama-3.1-8B-Instruct` (`p_Holm <= 3.73e-3`; cluster sign-flip `p_sf,H = 0.126–0.130` on single-seed Llama). Two disjoint fresh `Qwen3-1.7B` seeds (`2030+2031`, `N = 400`) replicate the exact `+15.0 pp` margin (`77.8%` vs. `62.8%`, `66–6`, `p = 7.26e-14`, cluster 95% CI `[+9.3%, +20.8%]`).
+- **Update-Aware Append Prompt Control (`v3.3`, `N = 200`/backbone, `0` locked-page mismatches):** Adding an explicit recency rule (*"later updates supersede earlier records; always answer using the latest approved update"*) across `Raw-App`, `App-192`, and `OW-192` lifts append by `+3.5–5.5 pp` on `Qwen3-1.7B` — leaving `OW-192` decisively ahead (`+13.5 / +7.5 pp` vs. `App-192`, `p_Holm <= 0.012`; `+23.0 / +17.0 pp` vs. `Raw-App`, `p_Holm <= 9.73e-8`). On instruction-tuned `Llama-3.1-8B-Instruct`, explicit prompting recovers `+7.0 / +13.0 pp` on `Raw-App` and `+5.0 / +8.5 pp` on `App-192`, narrowing `OW-192` vs. `App-192` to `+4.5 / +3.5 pp` (non-significant after Holm correction) while `OW-192` retains `+8.0 pp` over update-aware `Raw-App` under Edited-Last (`p_Holm = 0.0150`) and `Raw-OW` still leads update-aware `Raw-App` by `+7.0–11.5 pp`.
 - **Backbone-Divergent Outcome vs. Schema-Aware `Raw-OW`:** On `Qwen3-1.7B`, `OW-192` scores `+3.5` to `+6.0 pp` higher (`p_Holm >= 0.091`, n.s.). On `Llama-3.1-8B-Instruct`, **`Raw-OW` outperforms `OW-192`** by `-3.5 / -6.5 pp` Norm-EM (CI `[-13.5%, -0.9%]` `id_asc`), `-5.0 / -8.5 pp` W2N-EM (`p_Holm = 0.0116`, CI `[-16.0%, -2.6%]`), and `90% vs. 99%` (`78% vs. 91%` `id_asc`) on mutable queries.
 - **Blind Edit-Page Routing (`0` oracle $p_i$):** `91.81%` turn routing / `70.6%` E2E (`76.7%` W2N) on `Qwen3-1.7B` (`N = 180`), and `94.17%` turn routing / `90.0%` E2E (`93.3%` W2N) on `Llama-3.1-8B-Instruct` (`N = 60`).
 - **Write Latency Amortization:** Mid-layer edit gating adds `~172–186 ms` per `3–5`-turn episode, yielding an estimated break-even of **`>= 4` queries/episode** on `Llama-3.1-8B-Instruct` (`3.17` queries) and no amortization on `Qwen3-1.7B` at `4K` sequence length.
@@ -78,7 +79,8 @@ python3 docs/reconcile_paper_metrics.py
 - **Metric Reconciliation Script:** [docs/reconcile_paper_metrics.py](docs/reconcile_paper_metrics.py)
 - **Core Implementation:** [src/lslc/](src/lslc/) (`PathBDiscreteMemory`, `SalienceGate`, `ContextualEditGateHead`, `SparseExactBank`, and diagnostic `LSLC-Full` modules)
 - **Primary `v3.1` / `v3.2` Experiment Runners (GPU):**
-  - [scripts/colab_run_v32_tmlr_controls.py](scripts/colab_run_v32_tmlr_controls.py) — Locked-page $2\times 4$ factorial (`Gate-2`), `LongMemEval` `N=72`, Two-Bank KV reuse, and `32K` unified systems profile
+  - [scripts/colab_run_v33_update_aware_append.py](scripts/colab_run_v33_update_aware_append.py) — Matched `2×3` update-aware append prompt control (`N=200`/backbone, `0` locked-page mismatches vs. `v3.2`)
+  - [scripts/colab_run_v32_tmlr_controls.py](scripts/colab_run_v32_tmlr_controls.py) — Locked-page $2\times 4$ factorial (`LivingBook-Edit`), `LongMemEval` `N=72`, Two-Bank KV reuse, and `32K` unified systems profile
   - [scripts/colab_run_v3_gerbang6_llama8b_pathb.py](scripts/colab_run_v3_gerbang6_llama8b_pathb.py) — Dual-backbone `PathBDiscreteMemory` training, `Gate-2` E2E, `4K` KV-eviction Pareto, `RULER-style` `16K/32K`, `65`-file coding, and Llama-8B $\mathbf{Z}_{\text{book}}$ probe
   - [scripts/colab_run_v3_path_tiebreaker.py](scripts/colab_run_v3_path_tiebreaker.py) — `5`-cell iso-token masked-old edit probe & legacy `Gate-2` comparisons
 - **Archived Empirical JSON Logs:** [evals/m2_colab_l4/](evals/m2_colab_l4/) (`17` primary `v3.0` paper artifacts + earlier `v2.x` provenance logs)

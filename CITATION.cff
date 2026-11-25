@@ -1,18 +1,16 @@
 cff-version: 1.2.0
-title: "Layered Spatial Latent Caching (LSLC): In-Place Editable Compressed Context Memory vs. Raw-Text RAG with Volatility-Ordered Prefix Caching"
+title: "In-Place Span Overwrite vs. Append for Editable Compressed Context in Frozen LLMs, with Task-Dependent Diagnostics of Short-Budget Latent Prefixes"
 message: "If you use this software, adapter weights, or paper, please cite it as below."
 type: software
 authors:
   - given-names: Ariel
     family-names: Fikru
-  - given-names: Muhammadalif
-    family-names: Ramadhan
 repository-code: "https://github.com/arielfikru/lslc-research"
 url: "https://doi.org/10.5281/zenodo.24473281"
 doi: "10.5281/zenodo.24473281"
 license: MIT
-version: "2.1.0"
-date-released: 2026-11-24
+version: "3.0.0"
+date-released: 2026-11-26
 keywords:
   - kv-cache
   - context-compression

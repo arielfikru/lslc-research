@@ -1,0 +1,1341 @@
+{
+  "version": "3.0.0-gerbang4-community",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/lslc_results/lslc_universal_qwen3_1.7b.safetensors",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "save_checkpoint": null,
+  "config": {
+    "page_size": 256,
+    "k_exact": 48,
+    "salience_span_len": 16,
+    "contextual_page_spans": 1,
+    "router_mode": "content_attn",
+    "salience_mode": "learned_surprisal",
+    "delta_pooling_mode": "cross_attn",
+    "use_contextual_query_encoding": false,
+    "contextual_query_layer": null,
+    "use_bge_toc": true,
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "salience_route_weight": 1.5,
+    "lslc_k_deep": 4,
+    "lslc_k_skim": 2,
+    "chapter_size": 16
+  },
+  "realign": null,
+  "pilar4a": null,
+  "bge_pilar4a": null,
+  "ruler": {
+    "lengths": [
+      16384
+    ],
+    "tasks": [
+      "s_niah",
+      "mk_niah",
+      "vt"
+    ],
+    "salience_span_len": 16,
+    "k_exact": 48,
+    "salience_route_weight": 1.5,
+    "router_query_mode": "raw_question",
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "by_length": {
+      "16K": {
+        "by_task": {
+          "s_niah": {
+            "full_context_bf16": {
+              "num_episodes": 20,
+              "extracted_em": 1.0,
+              "em": 1.0,
+              "token_f1": 1.0,
+              "f1": 1.0,
+              "substring_match": 1.0,
+              "token_recall": 1.0,
+              "ci95": {
+                "extracted_em": [
+                  0.8389,
+                  1.0
+                ],
+                "token_f1": [
+                  1.0,
+                  1.0
+                ],
+                "token_f1_bootstrap": [
+                  1.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.8389,
+                  1.0
+                ],
+                "token_recall": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 16384.0,
+              "active_tokens_mean": 16384.0,
+              "memory_update_ms": 0.0,
+              "update_latency_ms": 0.0,
+              "per_query_ms": 863.8521,
+              "peak_vram_mb": 10266.73,
+              "max_toc_diff": 0.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-56 mentioned in the provided text?",
+                  "gold": "3686671",
+                  "pred": "3686671",
+                  "router_hit": null,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-18 mentioned in the provided text?",
+                  "gold": "9330803",
+                  "pred": "9330803",
+                  "router_hit": null,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-35 mentioned in the provided text?",
+                  "gold": "3228377",
+                  "pred": "3228377",
+                  "router_hit": null,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "bm25_rag_k1": {
+              "num_episodes": 20,
+              "extracted_em": 1.0,
+              "em": 1.0,
+              "token_f1": 1.0,
+              "f1": 1.0,
+              "substring_match": 1.0,
+              "token_recall": 1.0,
+              "ci95": {
+                "extracted_em": [
+                  0.8389,
+                  1.0
+                ],
+                "token_f1": [
+                  1.0,
+                  1.0
+                ],
+                "token_f1_bootstrap": [
+                  1.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.8389,
+                  1.0
+                ],
+                "token_recall": [
+                  1.0,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 256.7,
+              "active_tokens_mean": 256.7,
+              "memory_update_ms": 7.2515,
+              "update_latency_ms": 7.2515,
+              "per_query_ms": 328.0295,
+              "peak_vram_mb": 3640.49,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-56 mentioned in the provided text?",
+                  "gold": "3686671",
+                  "pred": "3686671",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-18 mentioned in the provided text?",
+                  "gold": "9330803",
+                  "pred": "9330803",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-35 mentioned in the provided text?",
+                  "gold": "3228377",
+                  "pred": "3228377",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "bm25_rag_k2": {
+              "num_episodes": 20,
+              "extracted_em": 1.0,
+              "em": 1.0,
+              "token_f1": 1.0,
+              "f1": 1.0,
+              "substring_match": 1.0,
+              "token_recall": 1.0,
+              "ci95": {
+                "extracted_em": [
+                  0.8389,
+                  1.0
+                ],
+                "token_f1": [
+                  1.0,
+                  1.0
+                ],
+                "token_f1_bootstrap": [
+                  1.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.8389,
+                  1.0
+                ],
+                "token_recall": [
+                  1.0,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 513.75,
+              "active_tokens_mean": 513.75,
+              "memory_update_ms": 7.2202,
+              "update_latency_ms": 7.2202,
+              "per_query_ms": 327.3269,
+              "peak_vram_mb": 3747.9,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-56 mentioned in the provided text?",
+                  "gold": "3686671",
+                  "pred": "3686671",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-18 mentioned in the provided text?",
+                  "gold": "9330803",
+                  "pred": "9330803",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-35 mentioned in the provided text?",
+                  "gold": "3228377",
+                  "pred": "3228377",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "bm25_rag_k4": {
+              "num_episodes": 20,
+              "extracted_em": 1.0,
+              "em": 1.0,
+              "token_f1": 1.0,
+              "f1": 1.0,
+              "substring_match": 1.0,
+              "token_recall": 1.0,
+              "ci95": {
+                "extracted_em": [
+                  0.8389,
+                  1.0
+                ],
+                "token_f1": [
+                  1.0,
+                  1.0
+                ],
+                "token_f1_bootstrap": [
+                  1.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.8389,
+                  1.0
+                ],
+                "token_recall": [
+                  1.0,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 1027.85,
+              "active_tokens_mean": 1027.85,
+              "memory_update_ms": 7.2218,
+              "update_latency_ms": 7.2218,
+              "per_query_ms": 325.8632,
+              "peak_vram_mb": 3959.1,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-56 mentioned in the provided text?",
+                  "gold": "3686671",
+                  "pred": "3686671",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-18 mentioned in the provided text?",
+                  "gold": "9330803",
+                  "pred": "9330803",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-35 mentioned in the provided text?",
+                  "gold": "3228377",
+                  "pred": "3228377",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "lslc_v3_e2e_gpu": {
+              "num_episodes": 20,
+              "extracted_em": 0.95,
+              "em": 0.95,
+              "token_f1": 0.95,
+              "f1": 0.95,
+              "substring_match": 0.95,
+              "token_recall": 0.95,
+              "ci95": {
+                "extracted_em": [
+                  0.7639,
+                  0.9911
+                ],
+                "token_f1": [
+                  0.852,
+                  1.0
+                ],
+                "token_f1_bootstrap": [
+                  0.85,
+                  1.0
+                ],
+                "substring_match": [
+                  0.7639,
+                  0.9911
+                ],
+                "token_recall": [
+                  0.852,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 341.0,
+              "active_tokens_mean": 341.0,
+              "memory_update_ms": 113.5814,
+              "update_latency_ms": 113.5814,
+              "per_query_ms": 336.1323,
+              "peak_vram_mb": 3730.64,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-56 mentioned in the provided text?",
+                  "gold": "3686671",
+                  "pred": "3686671",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-18 mentioned in the provided text?",
+                  "gold": "9330803",
+                  "pred": "9330803",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-35 mentioned in the provided text?",
+                  "gold": "3228377",
+                  "pred": "3228377",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            }
+          },
+          "mk_niah": {
+            "full_context_bf16": {
+              "num_episodes": 20,
+              "extracted_em": 0.9,
+              "em": 0.9,
+              "token_f1": 0.9,
+              "f1": 0.9,
+              "substring_match": 0.9,
+              "token_recall": 0.9,
+              "ci95": {
+                "extracted_em": [
+                  0.699,
+                  0.9721
+                ],
+                "token_f1": [
+                  0.7651,
+                  1.0
+                ],
+                "token_f1_bootstrap": [
+                  0.75,
+                  1.0
+                ],
+                "substring_match": [
+                  0.699,
+                  0.9721
+                ],
+                "token_recall": [
+                  0.7651,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 16384.0,
+              "active_tokens_mean": 16384.0,
+              "memory_update_ms": 0.0,
+              "update_latency_ms": 0.0,
+              "per_query_ms": 845.3444,
+              "peak_vram_mb": 10271.94,
+              "max_toc_diff": 0.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for timber-node-18 mentioned in the provided text?",
+                  "gold": "2977458",
+                  "pred": "2977458",
+                  "router_hit": null,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for zenith-node-22 mentioned in the provided text?",
+                  "gold": "8093443",
+                  "pred": "8093443",
+                  "router_hit": null,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for willow-node-21 mentioned in the provided text?",
+                  "gold": "9980902",
+                  "pred": "9980902",
+                  "router_hit": null,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "bm25_rag_k1": {
+              "num_episodes": 20,
+              "extracted_em": 0.7,
+              "em": 0.7,
+              "token_f1": 0.7,
+              "f1": 0.7,
+              "substring_match": 0.7,
+              "token_recall": 0.7,
+              "ci95": {
+                "extracted_em": [
+                  0.481,
+                  0.8545
+                ],
+                "token_f1": [
+                  0.4939,
+                  0.9061
+                ],
+                "token_f1_bootstrap": [
+                  0.5,
+                  0.9
+                ],
+                "substring_match": [
+                  0.481,
+                  0.8545
+                ],
+                "token_recall": [
+                  0.4939,
+                  0.9061
+                ],
+                "router_hit_rate": [
+                  0.4939,
+                  0.9061
+                ]
+              },
+              "active_prefix_tokens": 256.6,
+              "active_tokens_mean": 256.6,
+              "memory_update_ms": 7.0579,
+              "update_latency_ms": 7.0579,
+              "per_query_ms": 339.8308,
+              "peak_vram_mb": 3645.68,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.7,
+              "samples": [
+                {
+                  "question": "What is the special magic number for timber-node-18 mentioned in the provided text?",
+                  "gold": "2977458",
+                  "pred": "1774196",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "What is the special magic number for zenith-node-22 mentioned in the provided text?",
+                  "gold": "8093443",
+                  "pred": "4928844",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "What is the special magic number for willow-node-21 mentioned in the provided text?",
+                  "gold": "9980902",
+                  "pred": "1681833",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                }
+              ]
+            },
+            "bm25_rag_k2": {
+              "num_episodes": 20,
+              "extracted_em": 0.95,
+              "em": 0.95,
+              "token_f1": 0.95,
+              "f1": 0.95,
+              "substring_match": 0.95,
+              "token_recall": 0.95,
+              "ci95": {
+                "extracted_em": [
+                  0.7639,
+                  0.9911
+                ],
+                "token_f1": [
+                  0.852,
+                  1.0
+                ],
+                "token_f1_bootstrap": [
+                  0.85,
+                  1.0
+                ],
+                "substring_match": [
+                  0.7639,
+                  0.9911
+                ],
+                "token_recall": [
+                  0.852,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  0.852,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 513.35,
+              "active_tokens_mean": 513.35,
+              "memory_update_ms": 7.0834,
+              "update_latency_ms": 7.0834,
+              "per_query_ms": 323.0709,
+              "peak_vram_mb": 3752.86,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.95,
+              "samples": [
+                {
+                  "question": "What is the special magic number for timber-node-18 mentioned in the provided text?",
+                  "gold": "2977458",
+                  "pred": "2977458",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for zenith-node-22 mentioned in the provided text?",
+                  "gold": "8093443",
+                  "pred": "8093443",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for willow-node-21 mentioned in the provided text?",
+                  "gold": "9980902",
+                  "pred": "9980902",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "bm25_rag_k4": {
+              "num_episodes": 20,
+              "extracted_em": 1.0,
+              "em": 1.0,
+              "token_f1": 1.0,
+              "f1": 1.0,
+              "substring_match": 1.0,
+              "token_recall": 1.0,
+              "ci95": {
+                "extracted_em": [
+                  0.8389,
+                  1.0
+                ],
+                "token_f1": [
+                  1.0,
+                  1.0
+                ],
+                "token_f1_bootstrap": [
+                  1.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.8389,
+                  1.0
+                ],
+                "token_recall": [
+                  1.0,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 1026.8,
+              "active_tokens_mean": 1026.8,
+              "memory_update_ms": 7.0737,
+              "update_latency_ms": 7.0737,
+              "per_query_ms": 328.3653,
+              "peak_vram_mb": 3963.0,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for timber-node-18 mentioned in the provided text?",
+                  "gold": "2977458",
+                  "pred": "2977458",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for zenith-node-22 mentioned in the provided text?",
+                  "gold": "8093443",
+                  "pred": "8093443.",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for willow-node-21 mentioned in the provided text?",
+                  "gold": "9980902",
+                  "pred": "9980902",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "lslc_v3_e2e_gpu": {
+              "num_episodes": 20,
+              "extracted_em": 0.65,
+              "em": 0.65,
+              "token_f1": 0.65,
+              "f1": 0.65,
+              "substring_match": 0.65,
+              "token_recall": 0.65,
+              "ci95": {
+                "extracted_em": [
+                  0.4329,
+                  0.8188
+                ],
+                "token_f1": [
+                  0.4355,
+                  0.8645
+                ],
+                "token_f1_bootstrap": [
+                  0.45,
+                  0.85
+                ],
+                "substring_match": [
+                  0.4329,
+                  0.8188
+                ],
+                "token_recall": [
+                  0.4355,
+                  0.8645
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 339.4,
+              "active_tokens_mean": 339.4,
+              "memory_update_ms": 94.875,
+              "update_latency_ms": 94.875,
+              "per_query_ms": 408.6494,
+              "peak_vram_mb": 3730.64,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for timber-node-18 mentioned in the provided text?",
+                  "gold": "2977458",
+                  "pred": "2977458",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for zenith-node-22 mentioned in the provided text?",
+                  "gold": "8093443",
+                  "pred": "10 27 January 1939 he was posted to RAAF Station of about 5 @,@\nThe81",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "What is the special magic number for willow-node-21 mentioned in the provided text?",
+                  "gold": "9980902",
+                  "pred": "1954 August 1959 to 28 March 196",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                }
+              ]
+            }
+          },
+          "vt": {
+            "full_context_bf16": {
+              "num_episodes": 20,
+              "extracted_em": 0.1,
+              "em": 0.1,
+              "token_f1": 0.0458,
+              "f1": 0.0458,
+              "substring_match": 0.1,
+              "token_recall": 0.1,
+              "ci95": {
+                "extracted_em": [
+                  0.0279,
+                  0.301
+                ],
+                "token_f1": [
+                  0.0,
+                  0.1144
+                ],
+                "token_f1_bootstrap": [
+                  0.0,
+                  0.1333
+                ],
+                "substring_match": [
+                  0.0279,
+                  0.301
+                ],
+                "token_recall": [
+                  0.0,
+                  0.2349
+                ]
+              },
+              "active_prefix_tokens": 16384.0,
+              "active_tokens_mean": 16384.0,
+              "memory_update_ms": 0.0,
+              "update_latency_ms": 0.0,
+              "per_query_ms": 927.0885,
+              "peak_vram_mb": 10271.2,
+              "max_toc_diff": 0.0,
+              "samples": [
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_N0?",
+                  "gold": "50301",
+                  "pred": "The numeric value assigned to VAR_N0 is 20074.",
+                  "router_hit": null,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_Q1?",
+                  "gold": "17796",
+                  "pred": "The numeric value assigned to VAR_Q1 is 20237.",
+                  "router_hit": null,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_B2?",
+                  "gold": "60393",
+                  "pred": "92339",
+                  "router_hit": null,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                }
+              ]
+            },
+            "bm25_rag_k1": {
+              "num_episodes": 20,
+              "extracted_em": 0.0,
+              "em": 0.0,
+              "token_f1": 0.0,
+              "f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.1611
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "token_f1_bootstrap": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.1611
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  0.005,
+                  0.095
+                ]
+              },
+              "active_prefix_tokens": 256.9,
+              "active_tokens_mean": 256.9,
+              "memory_update_ms": 7.2988,
+              "update_latency_ms": 7.2988,
+              "per_query_ms": 380.2778,
+              "peak_vram_mb": 3645.77,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.05,
+              "samples": [
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_N0?",
+                  "gold": "50301",
+                  "pred": "87",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_Q1?",
+                  "gold": "17796",
+                  "pred": "2850",
+                  "router_hit": 0.25,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_B2?",
+                  "gold": "60393",
+                  "pred": "VAR_B2 is assigned the value 3.",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                }
+              ]
+            },
+            "bm25_rag_k2": {
+              "num_episodes": 20,
+              "extracted_em": 0.0,
+              "em": 0.0,
+              "token_f1": 0.0,
+              "f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.1611
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "token_f1_bootstrap": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.1611
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  0.0949,
+                  0.2051
+                ]
+              },
+              "active_prefix_tokens": 513.75,
+              "active_tokens_mean": 513.75,
+              "memory_update_ms": 7.2769,
+              "update_latency_ms": 7.2769,
+              "per_query_ms": 388.1005,
+              "peak_vram_mb": 3752.68,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.15,
+              "samples": [
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_N0?",
+                  "gold": "50301",
+                  "pred": "100",
+                  "router_hit": 0.25,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_Q1?",
+                  "gold": "17796",
+                  "pred": "2850",
+                  "router_hit": 0.25,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_B2?",
+                  "gold": "60393",
+                  "pred": "VAR_B2 is assigned the value 57.",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                }
+              ]
+            },
+            "bm25_rag_k4": {
+              "num_episodes": 20,
+              "extracted_em": 0.0,
+              "em": 0.0,
+              "token_f1": 0.0,
+              "f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.1611
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "token_f1_bootstrap": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.1611
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  0.2145,
+                  0.2855
+                ]
+              },
+              "active_prefix_tokens": 1027.55,
+              "active_tokens_mean": 1027.55,
+              "memory_update_ms": 7.2518,
+              "update_latency_ms": 7.2518,
+              "per_query_ms": 271.0992,
+              "peak_vram_mb": 3962.18,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.25,
+              "samples": [
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_N0?",
+                  "gold": "50301",
+                  "pred": "125.",
+                  "router_hit": 0.25,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_Q1?",
+                  "gold": "17796",
+                  "pred": "186",
+                  "router_hit": 0.25,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_B2?",
+                  "gold": "60393",
+                  "pred": "1000",
+                  "router_hit": 0.25,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                }
+              ]
+            },
+            "lslc_v3_e2e_gpu": {
+              "num_episodes": 20,
+              "extracted_em": 0.15,
+              "em": 0.15,
+              "token_f1": 0.15,
+              "f1": 0.15,
+              "substring_match": 0.15,
+              "token_recall": 0.15,
+              "ci95": {
+                "extracted_em": [
+                  0.0524,
+                  0.3604
+                ],
+                "token_f1": [
+                  0.0,
+                  0.3106
+                ],
+                "token_f1_bootstrap": [
+                  0.0,
+                  0.3
+                ],
+                "substring_match": [
+                  0.0524,
+                  0.3604
+                ],
+                "token_recall": [
+                  0.0,
+                  0.3106
+                ],
+                "router_hit_rate": [
+                  0.3887,
+                  0.5613
+                ]
+              },
+              "active_prefix_tokens": 342.6,
+              "active_tokens_mean": 342.6,
+              "memory_update_ms": 94.9458,
+              "update_latency_ms": 94.9458,
+              "per_query_ms": 246.084,
+              "peak_vram_mb": 3730.46,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.475,
+              "samples": [
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_N0?",
+                  "gold": "50301",
+                  "pred": "186",
+                  "router_hit": 0.25,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_Q1?",
+                  "gold": "17796",
+                  "pred": "17796",
+                  "router_hit": 0.75,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_B2?",
+                  "gold": "60393",
+                  "pred": "VAR_B2 = 92339",
+                  "router_hit": 0.5,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                }
+              ]
+            }
+          }
+        },
+        "summary": {
+          "full_context_bf16": {
+            "num_episodes": 60,
+            "extracted_em": 0.6667,
+            "em": 0.6667,
+            "token_f1": 0.6486,
+            "f1": 0.6486,
+            "substring_match": 0.6667,
+            "token_recall": 0.6667,
+            "ci95": {
+              "extracted_em": [
+                0.5406,
+                0.7727
+              ],
+              "token_f1": [
+                0.5286,
+                0.7686
+              ],
+              "token_f1_bootstrap": [
+                0.5278,
+                0.7542
+              ],
+              "substring_match": [
+                0.5406,
+                0.7727
+              ],
+              "token_recall": [
+                0.5464,
+                0.787
+              ]
+            },
+            "active_prefix_tokens": 16384.0,
+            "active_tokens_mean": 16384.0,
+            "memory_update_ms": 0.0,
+            "update_latency_ms": 0.0,
+            "per_query_ms": 878.7617,
+            "peak_vram_mb": 10271.94,
+            "max_toc_diff": 0.0
+          },
+          "bm25_rag_k1": {
+            "num_episodes": 60,
+            "extracted_em": 0.5667,
+            "em": 0.5667,
+            "token_f1": 0.5667,
+            "f1": 0.5667,
+            "substring_match": 0.5667,
+            "token_recall": 0.5667,
+            "ci95": {
+              "extracted_em": [
+                0.4411,
+                0.6843
+              ],
+              "token_f1": [
+                0.4402,
+                0.6931
+              ],
+              "token_f1_bootstrap": [
+                0.45,
+                0.7
+              ],
+              "substring_match": [
+                0.4411,
+                0.6843
+              ],
+              "token_recall": [
+                0.4402,
+                0.6931
+              ],
+              "router_hit_rate": [
+                0.4608,
+                0.7059
+              ]
+            },
+            "active_prefix_tokens": 256.7333,
+            "active_tokens_mean": 256.7333,
+            "memory_update_ms": 7.2027,
+            "update_latency_ms": 7.2027,
+            "per_query_ms": 349.3794,
+            "peak_vram_mb": 3645.77,
+            "max_toc_diff": 0.0,
+            "router_hit_rate": 0.5833
+          },
+          "bm25_rag_k2": {
+            "num_episodes": 60,
+            "extracted_em": 0.65,
+            "em": 0.65,
+            "token_f1": 0.65,
+            "f1": 0.65,
+            "substring_match": 0.65,
+            "token_recall": 0.65,
+            "ci95": {
+              "extracted_em": [
+                0.5236,
+                0.7583
+              ],
+              "token_f1": [
+                0.5283,
+                0.7717
+              ],
+              "token_f1_bootstrap": [
+                0.5333,
+                0.7833
+              ],
+              "substring_match": [
+                0.5236,
+                0.7583
+              ],
+              "token_recall": [
+                0.5283,
+                0.7717
+              ],
+              "router_hit_rate": [
+                0.594,
+                0.806
+              ]
+            },
+            "active_prefix_tokens": 513.6167,
+            "active_tokens_mean": 513.6167,
+            "memory_update_ms": 7.1935,
+            "update_latency_ms": 7.1935,
+            "per_query_ms": 346.1661,
+            "peak_vram_mb": 3752.86,
+            "max_toc_diff": 0.0,
+            "router_hit_rate": 0.7
+          },
+          "bm25_rag_k4": {
+            "num_episodes": 60,
+            "extracted_em": 0.6667,
+            "em": 0.6667,
+            "token_f1": 0.6667,
+            "f1": 0.6667,
+            "substring_match": 0.6667,
+            "token_recall": 0.6667,
+            "ci95": {
+              "extracted_em": [
+                0.5406,
+                0.7727
+              ],
+              "token_f1": [
+                0.5464,
+                0.787
+              ],
+              "token_f1_bootstrap": [
+                0.55,
+                0.7833
+              ],
+              "substring_match": [
+                0.5406,
+                0.7727
+              ],
+              "token_recall": [
+                0.5464,
+                0.787
+              ],
+              "router_hit_rate": [
+                0.659,
+                0.841
+              ]
+            },
+            "active_prefix_tokens": 1027.4,
+            "active_tokens_mean": 1027.4,
+            "memory_update_ms": 7.1824,
+            "update_latency_ms": 7.1824,
+            "per_query_ms": 308.4426,
+            "peak_vram_mb": 3963.0,
+            "max_toc_diff": 0.0,
+            "router_hit_rate": 0.75
+          },
+          "lslc_v3_e2e_gpu": {
+            "num_episodes": 60,
+            "extracted_em": 0.5833,
+            "em": 0.5833,
+            "token_f1": 0.5833,
+            "f1": 0.5833,
+            "substring_match": 0.5833,
+            "token_recall": 0.5833,
+            "ci95": {
+              "extracted_em": [
+                0.4572,
+                0.6993
+              ],
+              "token_f1": [
+                0.4575,
+                0.7091
+              ],
+              "token_f1_bootstrap": [
+                0.4667,
+                0.7167
+              ],
+              "substring_match": [
+                0.4572,
+                0.6993
+              ],
+              "token_recall": [
+                0.4575,
+                0.7091
+              ],
+              "router_hit_rate": [
+                0.7558,
+                0.8942
+              ]
+            },
+            "active_prefix_tokens": 341.0,
+            "active_tokens_mean": 341.0,
+            "memory_update_ms": 101.1341,
+            "update_latency_ms": 101.1341,
+            "per_query_ms": 330.2886,
+            "peak_vram_mb": 3730.64,
+            "max_toc_diff": 0.0,
+            "router_hit_rate": 0.825
+          }
+        }
+      }
+    }
+  },
+  "longmemeval": null,
+  "diag_probe": null,
+  "span_salience_probe": null,
+  "span16_bge_probe": null
+}

@@ -1,0 +1,192 @@
+{
+  "version": "3.0.0-gerbang4-community",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/lslc_results/lslc_universal_qwen3_1.7b.safetensors",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "save_checkpoint": null,
+  "config": {
+    "page_size": 256,
+    "k_exact": 48,
+    "salience_span_len": 16,
+    "contextual_page_spans": 1,
+    "router_mode": "content_attn",
+    "salience_mode": "learned_surprisal",
+    "delta_pooling_mode": "cross_attn",
+    "use_contextual_query_encoding": false,
+    "contextual_query_layer": null,
+    "use_bge_toc": true,
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "salience_route_weight": 1.5,
+    "lslc_k_deep": 4,
+    "lslc_k_skim": 2,
+    "chapter_size": 16
+  },
+  "realign": null,
+  "pilar4a": null,
+  "bge_pilar4a": {
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "salience_span_len": 16,
+    "k_exact": 48,
+    "salience_route_weight": 1.5,
+    "zero_overlap_eval": {
+      "P=16": {
+        "num_episodes": 72,
+        "num_pages": 16,
+        "peak_vram_mb": 3614.18,
+        "bm25_cpu": {
+          "top1_recall": 0.0556,
+          "top1_ci95": [
+            0.0218,
+            0.1343
+          ],
+          "top2_recall": 0.1389,
+          "top2_ci95": [
+            0.0772,
+            0.2371
+          ],
+          "per_query_ms": 3.344
+        },
+        "bge_dense_1span_w0": {
+          "top1_recall": 0.2361,
+          "top1_ci95": [
+            0.153,
+            0.346
+          ],
+          "top2_recall": 0.4583,
+          "top2_ci95": [
+            0.3483,
+            0.5726
+          ],
+          "per_query_ms": 10.791
+        },
+        "bge_dense_4span_w0": {
+          "top1_recall": 0.4444,
+          "top1_ci95": [
+            0.3354,
+            0.5591
+          ],
+          "top2_recall": 0.5556,
+          "top2_ci95": [
+            0.4409,
+            0.6646
+          ],
+          "per_query_ms": 9.424
+        },
+        "lslc_bge_hybrid_w1.5": {
+          "top1_recall": 0.3889,
+          "top1_ci95": [
+            0.2847,
+            0.5044
+          ],
+          "top2_recall": 0.4861,
+          "top2_ci95": [
+            0.3743,
+            0.5993
+          ],
+          "per_query_ms": 11.351
+        }
+      },
+      "P=64": {
+        "num_episodes": 72,
+        "num_pages": 64,
+        "peak_vram_mb": 3723.1,
+        "bm25_cpu": {
+          "top1_recall": 0.0278,
+          "top1_ci95": [
+            0.0077,
+            0.0957
+          ],
+          "top2_recall": 0.0694,
+          "top2_ci95": [
+            0.03,
+            0.1525
+          ],
+          "per_query_ms": 8.037
+        },
+        "bge_dense_1span_w0": {
+          "top1_recall": 0.0972,
+          "top1_ci95": [
+            0.0479,
+            0.1874
+          ],
+          "top2_recall": 0.1806,
+          "top2_ci95": [
+            0.1087,
+            0.2848
+          ],
+          "per_query_ms": 9.821
+        },
+        "bge_dense_4span_w0": {
+          "top1_recall": 0.3889,
+          "top1_ci95": [
+            0.2847,
+            0.5044
+          ],
+          "top2_recall": 0.4583,
+          "top2_ci95": [
+            0.3483,
+            0.5726
+          ],
+          "per_query_ms": 9.767
+        },
+        "lslc_bge_hybrid_w1.5": {
+          "top1_recall": 0.3194,
+          "top1_ci95": [
+            0.2233,
+            0.4339
+          ],
+          "top2_recall": 0.375,
+          "top2_ci95": [
+            0.2722,
+            0.4905
+          ],
+          "per_query_ms": 11.182
+        }
+      }
+    },
+    "router_stress": {
+      "router_stress_p64": {
+        "num_pages": 64,
+        "num_entity_pages": 12,
+        "bge_dense_w0_top1_recall": 0.1667,
+        "bge_dense_w0_top2_recall": 0.1667,
+        "lslc_bge_hybrid_w1.5_top1_recall": 1.0,
+        "lslc_bge_hybrid_w1.5_top2_recall": 1.0,
+        "lslc_native_hybrid_top1_recall": 1.0,
+        "lslc_native_hybrid_top2_recall": 1.0
+      },
+      "router_stress_p128": {
+        "num_pages": 128,
+        "num_entity_pages": 20,
+        "bge_dense_w0_top1_recall": 0.05,
+        "bge_dense_w0_top2_recall": 0.15,
+        "lslc_bge_hybrid_w1.5_top1_recall": 0.6,
+        "lslc_bge_hybrid_w1.5_top2_recall": 0.85,
+        "lslc_native_hybrid_top1_recall": 0.85,
+        "lslc_native_hybrid_top2_recall": 1.0
+      }
+    },
+    "prior_qwen3_only_4span_control": {
+      "source_artifact": "evals/m2_colab_l4/v3_gerbang4_4span_and_spansalience.json",
+      "P=16": {
+        "top1_recall": 0.1806,
+        "top2_recall": 0.25
+      },
+      "P=64": {
+        "top1_recall": 0.0972,
+        "top2_recall": 0.1667
+      }
+    }
+  },
+  "ruler": null,
+  "longmemeval": null,
+  "diag_probe": null,
+  "span_salience_probe": null,
+  "span16_bge_probe": null
+}

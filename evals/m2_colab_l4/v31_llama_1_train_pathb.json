@@ -1,0 +1,115 @@
+{
+  "version": "3.1.0-gerbang6-llama8b-pathb-hardened",
+  "git_sha": "unknown",
+  "git_dirty": null,
+  "checkpoint_sha256": "17c7918a6d9da31c0640c94e902b8e4a84d31264bbbd459797b250b5d06300fb",
+  "trainable_param_breakdown": {
+    "salience_gate_params": 315653,
+    "edit_gate_params": 279042,
+    "hw_coord_embed_params": 0,
+    "layered_latent_encoder_params": 0,
+    "spatial_projector_params": 0,
+    "delta_updater_params": 0,
+    "total_pathb_trainable_params": 594695,
+    "bge_router_frozen_params": 33360000,
+    "frozen_llm_params": 8030261248
+  },
+  "storage_bytes": {
+    "exact_bank_bytes_per_page_before_edit": 192,
+    "base_token_ids_extra_bytes_per_page_after_edit": 192,
+    "exact_bank_bytes_per_page_after_edit": 384,
+    "bge_4span_bf16_bytes_per_page": 3072,
+    "stored_bytes_per_page_before_edit": 3264,
+    "stored_bytes_per_page_after_edit": 3456,
+    "total_stored_bytes_per_page": 3456
+  },
+  "requested_model": "meta-llama/Llama-3.1-8B-Instruct",
+  "resolved_model_id": "unsloth/Meta-Llama-3.1-8B-Instruct",
+  "model_load_attempts": [
+    {
+      "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+      "status": "failed: OSError: You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct.\n401 Client Error. (Request ID: Root=1-6b06dcb1-661"
+    },
+    {
+      "model_id": "unsloth/Meta-Llama-3.1-8B-Instruct",
+      "status": "loaded"
+    }
+  ],
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": null,
+  "saved_checkpoint": {
+    "path": "/content/lslc_results/lslc_pathb_llama31_8b.safetensors",
+    "bytes": 2381052,
+    "sha256": "17c7918a6d9da31c0640c94e902b8e4a84d31264bbbd459797b250b5d06300fb",
+    "num_tensors": 25
+  },
+  "config": {
+    "d_llm": 4096,
+    "num_llm_layers": 32,
+    "num_kv_heads": 8,
+    "llm_head_dim": 128,
+    "contextual_edit_layer": 16,
+    "page_size": 256,
+    "k_exact": 48,
+    "salience_span_len": 16,
+    "salience_route_weight": 1.5,
+    "edit_gate_hidden_dim": 64,
+    "span_aligned_overwrite": true,
+    "true_two_bank_layout": true,
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "has_layered_latent_encoder": false,
+    "has_z_book": false,
+    "has_hw_coord_embed": false,
+    "prompt_format": "llama-3.1-instruct"
+  },
+  "train_pathb": {
+    "elapsed_sec": 31.56,
+    "python_corpus_source": "hf_ungated:Nan-Do/code-search-net-python",
+    "num_salience_pages": 336,
+    "num_edit_turns": 384,
+    "salience_steps": 250,
+    "salience_initial_loss": 1.9644,
+    "salience_final_loss": 0.058,
+    "edit_gate_layer": 16,
+    "edit_gate_hidden_dim": 64,
+    "edit_gate_steps": 200,
+    "edit_gate_initial_loss": 0.7176,
+    "edit_gate_final_loss": 0.0006,
+    "edit_gate_train_acc": 1.0,
+    "trainable_pathb_params": 594695,
+    "trainable_param_breakdown": {
+      "salience_gate_params": 315653,
+      "edit_gate_params": 279042,
+      "hw_coord_embed_params": 0,
+      "layered_latent_encoder_params": 0,
+      "spatial_projector_params": 0,
+      "delta_updater_params": 0,
+      "total_pathb_trainable_params": 594695,
+      "bge_router_frozen_params": 33360000,
+      "frozen_llm_params": 8030261248
+    },
+    "special_tokens_in_bank": 0,
+    "max_frozen_param_diff": 0.0,
+    "disjointness_audit": {
+      "verified": true,
+      "checked_items_by_domain": {
+        "prose_and_state_revision": 96,
+        "span16_factual_clauses": 160,
+        "natural_python_code": 80
+      },
+      "forbidden_term_counts": {
+        "gate2_holdout": 26,
+        "gate3_eval_repo": 78,
+        "ruler_eval": 8,
+        "longmemeval_eval": 7
+      }
+    }
+  },
+  "llama_gate2_n200": null,
+  "llama_coding_n24": null,
+  "llama_ood_kv_4k": null,
+  "llama_ruler_16k_32k_and_profile": null,
+  "llama_zbook_probe": null
+}

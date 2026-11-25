@@ -1,0 +1,1731 @@
+{
+  "version": "3.0.0-gerbang4-community",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": null,
+  "save_checkpoint": "/content/lslc_results/v3_g4_span16_salience_ckpt.safetensors",
+  "config": {
+    "page_size": 256,
+    "k_exact": 48,
+    "salience_span_len": 16,
+    "contextual_page_spans": 1,
+    "router_mode": "content_attn",
+    "salience_mode": "learned_surprisal",
+    "delta_pooling_mode": "cross_attn",
+    "use_contextual_query_encoding": true,
+    "contextual_query_layer": 14,
+    "lslc_k_deep": 4,
+    "lslc_k_skim": 2,
+    "chapter_size": 16
+  },
+  "pilar4a": null,
+  "ruler": null,
+  "longmemeval": null,
+  "diag_probe": null,
+  "span_salience_probe": null,
+  "span16_bge_probe": {
+    "context_length": 4096,
+    "g2_checkpoint": {
+      "path": "/content/v3_g2_cond_b_ckpt.safetensors",
+      "missing_keys": [],
+      "unexpected_keys": []
+    },
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "jalur_a_triggered": true,
+    "jalur_a_train_stats": {
+      "steps": 150,
+      "batch_size": 8,
+      "lr": 0.001,
+      "span_len": 16,
+      "elapsed_sec": 2.71,
+      "initial_loss_mean": 0.9192,
+      "final_loss_mean": 0.0594,
+      "trainable_salience_params": 182533,
+      "max_frozen_param_diff": 0.0
+    },
+    "saved_salience_checkpoint": "/content/lslc_results/v3_g4_span16_salience_ckpt.safetensors",
+    "active_system_used_for_bge_and_lme": "jalur_a_finetuned",
+    "ruler_span16_k48_zero_train": {
+      "exact_bank_audit": {
+        "overall": {
+          "num_episodes": 8,
+          "all_7_digits_contiguous_rate": 0.625,
+          "all_7_digits_multiset_rate": 0.75,
+          "digit_token_recall_mean": 0.8929,
+          "key_in_bank_rate": 0.25,
+          "special_tokens_in_bank_total": 0
+        },
+        "by_task": {
+          "s_niah": {
+            "num_episodes": 4,
+            "all_7_digits_contiguous_rate": 1.0,
+            "all_7_digits_multiset_rate": 1.0,
+            "digit_token_recall_mean": 1.0,
+            "key_in_bank_rate": 0.5,
+            "special_tokens_in_bank_total": 0,
+            "examples": [
+              {
+                "gold": "2753069",
+                "key": "amber-88",
+                "all_7_digits_contiguous": 1.0,
+                "digit_token_recall": 1.0,
+                "bank_decoded": " 2753069.\n time riff was sampled by Public Enemy Breaking Bad episode \" Thirty @-@ Eight Snub \" , and sampled by @-@ platform video game Tony Hawk 's Project 8 . Nolan Nelson"
+              },
+              {
+                "gold": "3747839",
+                "key": "basalt-99",
+                "all_7_digits_contiguous": 1.0,
+                "digit_token_recall": 1.0,
+                "bank_decoded": " several Neolithic burial chamber sites , as well\nOne of the special magic numbers basalt-99 is: 3747839.\n coast , and the celebrated poem Da Sang o da Papa Men by Vagaland"
+              }
+            ]
+          },
+          "mk_niah": {
+            "num_episodes": 4,
+            "all_7_digits_contiguous_rate": 0.25,
+            "all_7_digits_multiset_rate": 0.5,
+            "digit_token_recall_mean": 0.7857,
+            "key_in_bank_rate": 0.0,
+            "special_tokens_in_bank_total": 0,
+            "examples": [
+              {
+                "gold": "4639262",
+                "key": "ember-node-04",
+                "all_7_digits_contiguous": 0.0,
+                "digit_token_recall": 1.0,
+                "bank_decoded": "39262.\ngraded Beatriz to a tropical storm . Rapid weakening20168.\n remnants persisted for several more hours before dissipating roughly is: 1007454.\n San Telmo . Later"
+              },
+              {
+                "gold": "5979380",
+                "key": "agate-node-45",
+                "all_7_digits_contiguous": 1.0,
+                "digit_token_recall": 1.0,
+                "bank_decoded": " special magic numbers for falcon-node-05 is: 458\nOne of the special magic numbers for pebble-node-37 is:5979380.\n H. gammarus reach sexual maturity"
+              }
+            ]
+          }
+        }
+      },
+      "ruler_modes": {
+        "plain_stage1_full": {
+          "overall": {
+            "num_episodes": 8,
+            "extracted_em": 0.125,
+            "token_f1": 0.125,
+            "substring_match": 0.375,
+            "token_recall": 0.125,
+            "ci95": {
+              "extracted_em": [
+                0.0224,
+                0.4709
+              ],
+              "token_f1": [
+                0.0,
+                0.37
+              ],
+              "substring_match": [
+                0.1368,
+                0.6943
+              ],
+              "token_recall": [
+                0.0,
+                0.37
+              ],
+              "router_hit_rate": [
+                0.4292,
+                1.0
+              ]
+            },
+            "active_prefix_tokens": 306.0,
+            "memory_update_ms": 99.2546,
+            "per_query_ms": 480.1447,
+            "peak_vram_mb": 3759.74,
+            "max_toc_diff": 0.0,
+            "router_hit_rate": 0.75
+          },
+          "by_task": {
+            "s_niah": {
+              "num_episodes": 4,
+              "extracted_em": 0.25,
+              "token_f1": 0.25,
+              "substring_match": 0.75,
+              "token_recall": 0.25,
+              "ci95": {
+                "extracted_em": [
+                  0.0456,
+                  0.6994
+                ],
+                "token_f1": [
+                  0.0,
+                  0.74
+                ],
+                "substring_match": [
+                  0.3006,
+                  0.9544
+                ],
+                "token_recall": [
+                  0.0,
+                  0.74
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 306.0,
+              "memory_update_ms": 186.3667,
+              "per_query_ms": 529.9215,
+              "peak_vram_mb": 3759.62,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                  "gold": "2753069",
+                  "pred": " 72-610-2346\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                  "gold": "3747839",
+                  "pred": " 37478391\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 1.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                  "gold": "7414158",
+                  "pred": " 7414158\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                },
+                {
+                  "question": "What is the special magic number for delta-35 mentioned in the provided text?",
+                  "gold": "5701630",
+                  "pred": " 57016301\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 1.0,
+                  "token_recall": 0.0
+                }
+              ]
+            },
+            "mk_niah": {
+              "num_episodes": 4,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.4899
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.4899
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  0.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 306.0,
+              "memory_update_ms": 12.1425,
+              "per_query_ms": 430.368,
+              "peak_vram_mb": 3759.74,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.5,
+              "samples": [
+                {
+                  "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                  "gold": "4639262",
+                  "pred": " 8074593.\n",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                  "gold": "5979380",
+                  "pred": " 7106750.\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                  "gold": "1993560",
+                  "pred": " 1303693.\n",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for delta-node-03 mentioned in the provided text?",
+                  "gold": "9130257",
+                  "pred": " 757\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                }
+              ]
+            }
+          }
+        },
+        "chatml_exact_only": {
+          "overall": {
+            "num_episodes": 8,
+            "extracted_em": 0.375,
+            "token_f1": 0.375,
+            "substring_match": 0.375,
+            "token_recall": 0.375,
+            "ci95": {
+              "extracted_em": [
+                0.1368,
+                0.6943
+              ],
+              "token_f1": [
+                0.0164,
+                0.7336
+              ],
+              "substring_match": [
+                0.1368,
+                0.6943
+              ],
+              "token_recall": [
+                0.0164,
+                0.7336
+              ],
+              "router_hit_rate": [
+                0.4292,
+                1.0
+              ]
+            },
+            "active_prefix_tokens": 192.0,
+            "memory_update_ms": 99.2546,
+            "per_query_ms": 347.0499,
+            "peak_vram_mb": 3721.4,
+            "max_toc_diff": 0.0,
+            "router_hit_rate": 0.75
+          },
+          "by_task": {
+            "s_niah": {
+              "num_episodes": 4,
+              "extracted_em": 0.75,
+              "token_f1": 0.75,
+              "substring_match": 0.75,
+              "token_recall": 0.75,
+              "ci95": {
+                "extracted_em": [
+                  0.3006,
+                  0.9544
+                ],
+                "token_f1": [
+                  0.26,
+                  1.0
+                ],
+                "substring_match": [
+                  0.3006,
+                  0.9544
+                ],
+                "token_recall": [
+                  0.26,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 192.0,
+              "memory_update_ms": 186.3667,
+              "per_query_ms": 326.5115,
+              "peak_vram_mb": 3720.99,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                  "gold": "2753069",
+                  "pred": "2753069",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                  "gold": "3747839",
+                  "pred": "3747839",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                  "gold": "7414158",
+                  "pred": "7414158",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                },
+                {
+                  "question": "What is the special magic number for delta-35 mentioned in the provided text?",
+                  "gold": "5701630",
+                  "pred": "delta-35",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                }
+              ]
+            },
+            "mk_niah": {
+              "num_episodes": 4,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.4899
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.4899
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  0.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 192.0,
+              "memory_update_ms": 12.1425,
+              "per_query_ms": 367.5883,
+              "peak_vram_mb": 3721.4,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.5,
+              "samples": [
+                {
+                  "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                  "gold": "4639262",
+                  "pred": "8074593",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                  "gold": "5979380",
+                  "pred": "4867078",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                  "gold": "1993560",
+                  "pred": "1303693",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for delta-node-03 mentioned in the provided text?",
+                  "gold": "9130257",
+                  "pred": "6797032",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                }
+              ]
+            }
+          }
+        }
+      },
+      "router_stress": {
+        "router_stress_p64": {
+          "num_pages": 64,
+          "num_entity_pages": 12,
+          "dense_w0_top1_recall": 0.0833,
+          "dense_w0_top2_recall": 0.1667,
+          "hybrid_w2_top1_recall": 1.0,
+          "hybrid_w2_top2_recall": 1.0
+        },
+        "router_stress_p128": {
+          "num_pages": 128,
+          "num_entity_pages": 20,
+          "dense_w0_top1_recall": 0.05,
+          "dense_w0_top2_recall": 0.1,
+          "hybrid_w2_top1_recall": 1.0,
+          "hybrid_w2_top2_recall": 1.0
+        }
+      }
+    },
+    "ruler_span16_k48_jalur_a_ft": {
+      "exact_bank_audit": {
+        "overall": {
+          "num_episodes": 8,
+          "all_7_digits_contiguous_rate": 0.875,
+          "all_7_digits_multiset_rate": 1.0,
+          "digit_token_recall_mean": 1.0,
+          "key_in_bank_rate": 0.375,
+          "special_tokens_in_bank_total": 0
+        },
+        "by_task": {
+          "s_niah": {
+            "num_episodes": 4,
+            "all_7_digits_contiguous_rate": 1.0,
+            "all_7_digits_multiset_rate": 1.0,
+            "digit_token_recall_mean": 1.0,
+            "key_in_bank_rate": 0.75,
+            "special_tokens_in_bank_total": 0,
+            "examples": [
+              {
+                "gold": "2753069",
+                "key": "amber-88",
+                "all_7_digits_contiguous": 1.0,
+                "digit_token_recall": 1.0,
+                "bank_decoded": " stunt , the 2005 Iraq War documentary Soundtrack to War ,-88 is: 2753069.\n time riff was sampled by Public Enemy in their 1988 song \" She Watch"
+              },
+              {
+                "gold": "3747839",
+                "key": "basalt-99",
+                "all_7_digits_contiguous": 1.0,
+                "digit_token_recall": 1.0,
+                "bank_decoded": "olithic burial chamber sites , as well\nOne of the special magic numbers for basalt-99 is: 3747839.\n the island . The population reached 380 or more in the nineteenth century ,"
+              }
+            ]
+          },
+          "mk_niah": {
+            "num_episodes": 4,
+            "all_7_digits_contiguous_rate": 0.75,
+            "all_7_digits_multiset_rate": 1.0,
+            "digit_token_recall_mean": 1.0,
+            "key_in_bank_rate": 0.0,
+            "special_tokens_in_bank_total": 0,
+            "examples": [
+              {
+                "gold": "4639262",
+                "key": "ember-node-04",
+                "all_7_digits_contiguous": 1.0,
+                "digit_token_recall": 1.0,
+                "bank_decoded": "-04 is: 4639262.\ngraded Beat-32 is: 6441492.\n-@-48 is: 1007454.\n San Tel"
+              },
+              {
+                "gold": "5979380",
+                "key": "agate-node-45",
+                "all_7_digits_contiguous": 1.0,
+                "digit_token_recall": 1.0,
+                "bank_decoded": "-node-21 is: 6530971.\n \n\n-node-37 is: 8113963.\n while-45 is: 5979380.\n H."
+              }
+            ]
+          }
+        }
+      },
+      "ruler_modes": {
+        "plain_stage1_full": {
+          "overall": {
+            "num_episodes": 8,
+            "extracted_em": 0.375,
+            "token_f1": 0.375,
+            "substring_match": 0.625,
+            "token_recall": 0.375,
+            "ci95": {
+              "extracted_em": [
+                0.1368,
+                0.6943
+              ],
+              "token_f1": [
+                0.0164,
+                0.7336
+              ],
+              "substring_match": [
+                0.3057,
+                0.8632
+              ],
+              "token_recall": [
+                0.0164,
+                0.7336
+              ],
+              "router_hit_rate": [
+                0.63,
+                1.0
+              ]
+            },
+            "active_prefix_tokens": 306.0,
+            "memory_update_ms": 12.7212,
+            "per_query_ms": 464.1675,
+            "peak_vram_mb": 3928.74,
+            "max_toc_diff": 0.0,
+            "router_hit_rate": 0.875
+          },
+          "by_task": {
+            "s_niah": {
+              "num_episodes": 4,
+              "extracted_em": 0.5,
+              "token_f1": 0.5,
+              "substring_match": 1.0,
+              "token_recall": 0.5,
+              "ci95": {
+                "extracted_em": [
+                  0.15,
+                  0.85
+                ],
+                "token_f1": [
+                  0.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.5101,
+                  1.0
+                ],
+                "token_recall": [
+                  0.0,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 306.0,
+              "memory_update_ms": 13.1952,
+              "per_query_ms": 466.6405,
+              "peak_vram_mb": 3928.74,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                  "gold": "2753069",
+                  "pred": " 2753069\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                  "gold": "3747839",
+                  "pred": " 37478397\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 1.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                  "gold": "7414158",
+                  "pred": " 7414158\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                },
+                {
+                  "question": "What is the special magic number for delta-35 mentioned in the provided text?",
+                  "gold": "5701630",
+                  "pred": " 57016301\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 1.0,
+                  "token_recall": 0.0
+                }
+              ]
+            },
+            "mk_niah": {
+              "num_episodes": 4,
+              "extracted_em": 0.25,
+              "token_f1": 0.25,
+              "substring_match": 0.25,
+              "token_recall": 0.25,
+              "ci95": {
+                "extracted_em": [
+                  0.0456,
+                  0.6994
+                ],
+                "token_f1": [
+                  0.0,
+                  0.74
+                ],
+                "substring_match": [
+                  0.0456,
+                  0.6994
+                ],
+                "token_recall": [
+                  0.0,
+                  0.74
+                ],
+                "router_hit_rate": [
+                  0.26,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 306.0,
+              "memory_update_ms": 12.2473,
+              "per_query_ms": 461.6945,
+              "peak_vram_mb": 3928.36,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.75,
+              "samples": [
+                {
+                  "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                  "gold": "4639262",
+                  "pred": " 32478192\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                  "gold": "5979380",
+                  "pred": " 8113963\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                  "gold": "1993560",
+                  "pred": " 1993560\n",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                },
+                {
+                  "question": "What is the special magic number for delta-node-03 mentioned in the provided text?",
+                  "gold": "9130257",
+                  "pred": " 9736423.\n",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                }
+              ]
+            }
+          }
+        },
+        "chatml_exact_only": {
+          "overall": {
+            "num_episodes": 8,
+            "extracted_em": 0.625,
+            "token_f1": 0.625,
+            "substring_match": 0.625,
+            "token_recall": 0.625,
+            "ci95": {
+              "extracted_em": [
+                0.3057,
+                0.8632
+              ],
+              "token_f1": [
+                0.2664,
+                0.9836
+              ],
+              "substring_match": [
+                0.3057,
+                0.8632
+              ],
+              "token_recall": [
+                0.2664,
+                0.9836
+              ],
+              "router_hit_rate": [
+                0.63,
+                1.0
+              ]
+            },
+            "active_prefix_tokens": 192.0,
+            "memory_update_ms": 12.7212,
+            "per_query_ms": 321.386,
+            "peak_vram_mb": 3890.01,
+            "max_toc_diff": 0.0,
+            "router_hit_rate": 0.875
+          },
+          "by_task": {
+            "s_niah": {
+              "num_episodes": 4,
+              "extracted_em": 0.75,
+              "token_f1": 0.75,
+              "substring_match": 0.75,
+              "token_recall": 0.75,
+              "ci95": {
+                "extracted_em": [
+                  0.3006,
+                  0.9544
+                ],
+                "token_f1": [
+                  0.26,
+                  1.0
+                ],
+                "substring_match": [
+                  0.3006,
+                  0.9544
+                ],
+                "token_recall": [
+                  0.26,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 192.0,
+              "memory_update_ms": 13.1952,
+              "per_query_ms": 296.2138,
+              "peak_vram_mb": 3889.22,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                  "gold": "2753069",
+                  "pred": "18",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                  "gold": "3747839",
+                  "pred": "3747839",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                  "gold": "7414158",
+                  "pred": "7414158",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                },
+                {
+                  "question": "What is the special magic number for delta-35 mentioned in the provided text?",
+                  "gold": "5701630",
+                  "pred": "5701630",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                }
+              ]
+            },
+            "mk_niah": {
+              "num_episodes": 4,
+              "extracted_em": 0.5,
+              "token_f1": 0.5,
+              "substring_match": 0.5,
+              "token_recall": 0.5,
+              "ci95": {
+                "extracted_em": [
+                  0.15,
+                  0.85
+                ],
+                "token_f1": [
+                  0.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.15,
+                  0.85
+                ],
+                "token_recall": [
+                  0.0,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  0.26,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 192.0,
+              "memory_update_ms": 12.2473,
+              "per_query_ms": 346.5583,
+              "peak_vram_mb": 3890.01,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.75,
+              "samples": [
+                {
+                  "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                  "gold": "4639262",
+                  "pred": "4639262",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                },
+                {
+                  "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                  "gold": "5979380",
+                  "pred": "4277872",
+                  "router_hit": 1.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                },
+                {
+                  "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                  "gold": "1993560",
+                  "pred": "1993560",
+                  "router_hit": 1.0,
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0,
+                  "token_recall": 1.0
+                },
+                {
+                  "question": "What is the special magic number for delta-node-03 mentioned in the provided text?",
+                  "gold": "9130257",
+                  "pred": "9736423",
+                  "router_hit": 0.0,
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0,
+                  "token_recall": 0.0
+                }
+              ]
+            }
+          }
+        }
+      },
+      "router_stress": {
+        "router_stress_p64": {
+          "num_pages": 64,
+          "num_entity_pages": 12,
+          "dense_w0_top1_recall": 0.0833,
+          "dense_w0_top2_recall": 0.1667,
+          "hybrid_w2_top1_recall": 0.9167,
+          "hybrid_w2_top2_recall": 1.0
+        },
+        "router_stress_p128": {
+          "num_pages": 128,
+          "num_entity_pages": 20,
+          "dense_w0_top1_recall": 0.0,
+          "dense_w0_top2_recall": 0.05,
+          "hybrid_w2_top1_recall": 0.9,
+          "hybrid_w2_top2_recall": 1.0
+        }
+      }
+    },
+    "bge_2x2_table": {
+      "zero_overlap_eval": {
+        "P=16": {
+          "num_episodes": 72,
+          "num_pages": 16,
+          "peak_vram_mb": 3951.29,
+          "bm25_cpu": {
+            "top1_recall": 0.0556,
+            "top1_ci95": [
+              0.0218,
+              0.1343
+            ],
+            "top2_recall": 0.1389,
+            "top2_ci95": [
+              0.0772,
+              0.2371
+            ],
+            "per_query_ms": 2.648
+          },
+          "bge_dense_1span_w0": {
+            "top1_recall": 0.2222,
+            "top1_ci95": [
+              0.1417,
+              0.3309
+            ],
+            "top2_recall": 0.4583,
+            "top2_ci95": [
+              0.3483,
+              0.5726
+            ],
+            "per_query_ms": 9.93
+          },
+          "bge_dense_4span_w0": {
+            "top1_recall": 0.4444,
+            "top1_ci95": [
+              0.3354,
+              0.5591
+            ],
+            "top2_recall": 0.5556,
+            "top2_ci95": [
+              0.4409,
+              0.6646
+            ],
+            "per_query_ms": 9.482
+          },
+          "lslc_bge_hybrid_w2": {
+            "top1_recall": 0.2639,
+            "top1_ci95": [
+              0.1759,
+              0.3758
+            ],
+            "top2_recall": 0.3889,
+            "top2_ci95": [
+              0.2847,
+              0.5044
+            ],
+            "per_query_ms": 10.954
+          }
+        },
+        "P=64": {
+          "num_episodes": 72,
+          "num_pages": 64,
+          "peak_vram_mb": 4060.2,
+          "bm25_cpu": {
+            "top1_recall": 0.0278,
+            "top1_ci95": [
+              0.0077,
+              0.0957
+            ],
+            "top2_recall": 0.0694,
+            "top2_ci95": [
+              0.03,
+              0.1525
+            ],
+            "per_query_ms": 8.082
+          },
+          "bge_dense_1span_w0": {
+            "top1_recall": 0.0972,
+            "top1_ci95": [
+              0.0479,
+              0.1874
+            ],
+            "top2_recall": 0.1806,
+            "top2_ci95": [
+              0.1087,
+              0.2848
+            ],
+            "per_query_ms": 10.168
+          },
+          "bge_dense_4span_w0": {
+            "top1_recall": 0.3889,
+            "top1_ci95": [
+              0.2847,
+              0.5044
+            ],
+            "top2_recall": 0.4583,
+            "top2_ci95": [
+              0.3483,
+              0.5726
+            ],
+            "per_query_ms": 9.615
+          },
+          "lslc_bge_hybrid_w2": {
+            "top1_recall": 0.1111,
+            "top1_ci95": [
+              0.0574,
+              0.2042
+            ],
+            "top2_recall": 0.2639,
+            "top2_ci95": [
+              0.1759,
+              0.3758
+            ],
+            "per_query_ms": 11.063
+          }
+        }
+      },
+      "router_stress": {
+        "router_stress_p64": {
+          "num_pages": 64,
+          "num_entity_pages": 12,
+          "bge_dense_w0_top1_recall": 0.1667,
+          "bge_dense_w0_top2_recall": 0.1667,
+          "lslc_bge_hybrid_w2_top1_recall": 0.9167,
+          "lslc_bge_hybrid_w2_top2_recall": 1.0
+        },
+        "router_stress_p128": {
+          "num_pages": 128,
+          "num_entity_pages": 20,
+          "bge_dense_w0_top1_recall": 0.05,
+          "bge_dense_w0_top2_recall": 0.15,
+          "lslc_bge_hybrid_w2_top1_recall": 0.6,
+          "lslc_bge_hybrid_w2_top2_recall": 0.95
+        }
+      }
+    },
+    "longmemeval_sanity_n6": {
+      "dataset": {
+        "repo_id": "xiaowu0162/longmemeval-cleaned",
+        "filename": "longmemeval_s_cleaned.json",
+        "categories": [
+          "knowledge-update",
+          "single-session-user",
+          "multi-session"
+        ],
+        "seed": 2026,
+        "dataset_source": "hf_hub:xiaowu0162/longmemeval-cleaned/longmemeval_s_cleaned.json",
+        "resolved_path": "/root/.cache/huggingface/hub/datasets--xiaowu0162--longmemeval-cleaned/snapshots/98d7416c24c778c2fee6e6f3006e7a073259d48f/longmemeval_s_cleaned.json",
+        "raw_total_items": 500,
+        "selected_total": 6,
+        "counts_by_category": {
+          "knowledge-update": 2,
+          "single-session-user": 2,
+          "multi-session": 2
+        }
+      },
+      "modes": {
+        "chatml_exact_only": {
+          "overall": {
+            "num_episodes": 6,
+            "extracted_em": 0.0,
+            "token_f1": 0.0833,
+            "substring_match": 0.0,
+            "token_recall": 0.0833,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.3903
+              ],
+              "token_f1": [
+                0.0,
+                0.2467
+              ],
+              "substring_match": [
+                0.0,
+                0.3903
+              ],
+              "token_recall": [
+                0.0,
+                0.2467
+              ]
+            },
+            "active_prefix_tokens": 192.0,
+            "memory_update_ms": 750.5788,
+            "per_query_ms": 248.3672,
+            "peak_vram_mb": 3981.44,
+            "max_toc_diff": 0.0,
+            "gold_session_hit_rate": 0.8333,
+            "mean_strip_gate": 0.0717,
+            "num_bank_writes_mean": 0.667
+          },
+          "by_category": {
+            "knowledge-update": {
+              "num_episodes": 2,
+              "extracted_em": 0.0,
+              "token_f1": 0.25,
+              "substring_match": 0.0,
+              "token_recall": 0.25,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.6576
+                ],
+                "token_f1": [
+                  0.0,
+                  0.74
+                ],
+                "substring_match": [
+                  0.0,
+                  0.6576
+                ],
+                "token_recall": [
+                  0.0,
+                  0.74
+                ]
+              },
+              "active_prefix_tokens": 192.0,
+              "memory_update_ms": 728.0865,
+              "per_query_ms": 277.4345,
+              "peak_vram_mb": 3960.52,
+              "max_toc_diff": 0.0
+            },
+            "multi-session": {
+              "num_episodes": 2,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.6576
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.6576
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "active_prefix_tokens": 192.0,
+              "memory_update_ms": 832.374,
+              "per_query_ms": 212.791,
+              "peak_vram_mb": 3980.5,
+              "max_toc_diff": 0.0
+            },
+            "single-session-user": {
+              "num_episodes": 2,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.6576
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.6576
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "active_prefix_tokens": 192.0,
+              "memory_update_ms": 691.276,
+              "per_query_ms": 254.876,
+              "peak_vram_mb": 3981.44,
+              "max_toc_diff": 0.0
+            }
+          },
+          "samples": [
+            {
+              "question_id": "031748ae",
+              "question_type": "knowledge-update",
+              "question": "How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?",
+              "gold": "When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers",
+              "pred": "3",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "852ce960",
+              "question_type": "knowledge-update",
+              "question": "What was the amount I was pre-approved for when I got my mortgage from Wells Fargo?",
+              "gold": "$400,000",
+              "pred": "$350,000.",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.5,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "311778f1",
+              "question_type": "single-session-user",
+              "question": "How many hours did I spend watching documentaries on Netflix last month?",
+              "gold": "10",
+              "pred": "12.5",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "3b6f954b",
+              "question_type": "single-session-user",
+              "question": "Where did I attend for my study abroad program?",
+              "gold": "University of Melbourne in Australia",
+              "pred": "The Great Ocean Road.",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "dd2973ad",
+              "question_type": "multi-session",
+              "question": "What time did I go to bed on the day before I had a doctor's appointment?",
+              "gold": "2 AM",
+              "pred": "10:00 PM",
+              "gold_session_hit": 0.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "b5ef892d",
+              "question_type": "multi-session",
+              "question": "How many days did I spend on camping trips in the United States this year?",
+              "gold": "8 days.",
+              "pred": "2",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            }
+          ]
+        },
+        "chatml_full": {
+          "overall": {
+            "num_episodes": 6,
+            "extracted_em": 0.0,
+            "token_f1": 0.0159,
+            "substring_match": 0.0,
+            "token_recall": 0.0833,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.3903
+              ],
+              "token_f1": [
+                0.0,
+                0.047
+              ],
+              "substring_match": [
+                0.0,
+                0.3903
+              ],
+              "token_recall": [
+                0.0,
+                0.2467
+              ]
+            },
+            "active_prefix_tokens": 332.0,
+            "memory_update_ms": 750.5788,
+            "per_query_ms": 1318.3457,
+            "peak_vram_mb": 4019.99,
+            "max_toc_diff": 0.0,
+            "gold_session_hit_rate": 0.8333,
+            "mean_strip_gate": 0.0717,
+            "num_bank_writes_mean": 0.667
+          },
+          "by_category": {
+            "knowledge-update": {
+              "num_episodes": 2,
+              "extracted_em": 0.0,
+              "token_f1": 0.0476,
+              "substring_match": 0.0,
+              "token_recall": 0.25,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.6576
+                ],
+                "token_f1": [
+                  0.0,
+                  0.141
+                ],
+                "substring_match": [
+                  0.0,
+                  0.6576
+                ],
+                "token_recall": [
+                  0.0,
+                  0.74
+                ]
+              },
+              "active_prefix_tokens": 334.0,
+              "memory_update_ms": 728.0865,
+              "per_query_ms": 1410.7955,
+              "peak_vram_mb": 4019.99,
+              "max_toc_diff": 0.0
+            },
+            "multi-session": {
+              "num_episodes": 2,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.6576
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.6576
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "active_prefix_tokens": 327.5,
+              "memory_update_ms": 832.374,
+              "per_query_ms": 1435.823,
+              "peak_vram_mb": 4013.04,
+              "max_toc_diff": 0.0
+            },
+            "single-session-user": {
+              "num_episodes": 2,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.6576
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.6576
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "active_prefix_tokens": 334.5,
+              "memory_update_ms": 691.276,
+              "per_query_ms": 1108.4185,
+              "peak_vram_mb": 4017.78,
+              "max_toc_diff": 0.0
+            }
+          },
+          "samples": [
+            {
+              "question_id": "031748ae",
+              "question_type": "knowledge-update",
+              "question": "How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?",
+              "gold": "When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers",
+              "pred": "The user is asking for a response that is both concise and clear. The user is asking for a response that is both concise and clear.",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "852ce960",
+              "question_type": "knowledge-update",
+              "question": "What was the amount I was pre-approved for when I got my mortgage from Wells Fargo?",
+              "gold": "$400,000",
+              "pred": "The user is asking for a loan with a $350,000 loan amount, but the loan is not approved. The user is asking for",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.09523809523809525,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "311778f1",
+              "question_type": "single-session-user",
+              "question": "How many hours did I spend watching documentaries on Netflix last month?",
+              "gold": "10",
+              "pred": "The user is asking for a solution that includes the following:\n- The user is",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "3b6f954b",
+              "question_type": "single-session-user",
+              "question": "Where did I attend for my study abroad program?",
+              "gold": "University of Melbourne in Australia",
+              "pred": "I need to find a way to create a new query that matches the user's request. The user is asking for a query that includes the word \"safety",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "dd2973ad",
+              "question_type": "multi-session",
+              "question": "What time did I go to bed on the day before I had a doctor's appointment?",
+              "gold": "2 AM",
+              "pred": "I need to find the best answer for the question: \"What time did I go to bed on the day before I had a doctor's appointment?\"",
+              "gold_session_hit": 0.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "b5ef892d",
+              "question_type": "multi-session",
+              "question": "How many days did I spend on camping trips in the United States this year?",
+              "gold": "8 days.",
+              "pred": "The answer is: 2023-04-29\n</think>\n\nThe answer is: 2023-04-2",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            }
+          ]
+        },
+        "plain_stage1_full": {
+          "overall": {
+            "num_episodes": 6,
+            "extracted_em": 0.0,
+            "token_f1": 0.2233,
+            "substring_match": 0.0,
+            "token_recall": 0.2583,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.3903
+              ],
+              "token_f1": [
+                0.0052,
+                0.4415
+              ],
+              "substring_match": [
+                0.0,
+                0.3903
+              ],
+              "token_recall": [
+                0.0231,
+                0.4936
+              ]
+            },
+            "active_prefix_tokens": 332.0,
+            "memory_update_ms": 750.5788,
+            "per_query_ms": 573.7083,
+            "peak_vram_mb": 4009.85,
+            "max_toc_diff": 0.0,
+            "gold_session_hit_rate": 0.8333,
+            "mean_strip_gate": 0.0717,
+            "num_bank_writes_mean": 0.667
+          },
+          "by_category": {
+            "knowledge-update": {
+              "num_episodes": 2,
+              "extracted_em": 0.0,
+              "token_f1": 0.3023,
+              "substring_match": 0.0,
+              "token_recall": 0.325,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.6576
+                ],
+                "token_f1": [
+                  0.0,
+                  0.8949
+                ],
+                "substring_match": [
+                  0.0,
+                  0.6576
+                ],
+                "token_recall": [
+                  0.0,
+                  0.962
+                ]
+              },
+              "active_prefix_tokens": 334.0,
+              "memory_update_ms": 728.0865,
+              "per_query_ms": 836.1815,
+              "peak_vram_mb": 4009.85,
+              "max_toc_diff": 0.0
+            },
+            "multi-session": {
+              "num_episodes": 2,
+              "extracted_em": 0.0,
+              "token_f1": 0.25,
+              "substring_match": 0.0,
+              "token_recall": 0.25,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.6576
+                ],
+                "token_f1": [
+                  0.0,
+                  0.74
+                ],
+                "substring_match": [
+                  0.0,
+                  0.6576
+                ],
+                "token_recall": [
+                  0.0,
+                  0.74
+                ]
+              },
+              "active_prefix_tokens": 327.5,
+              "memory_update_ms": 832.374,
+              "per_query_ms": 362.699,
+              "peak_vram_mb": 4002.77,
+              "max_toc_diff": 0.0
+            },
+            "single-session-user": {
+              "num_episodes": 2,
+              "extracted_em": 0.0,
+              "token_f1": 0.1176,
+              "substring_match": 0.0,
+              "token_recall": 0.2,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.6576
+                ],
+                "token_f1": [
+                  0.0,
+                  0.3482
+                ],
+                "substring_match": [
+                  0.0,
+                  0.6576
+                ],
+                "token_recall": [
+                  0.0,
+                  0.592
+                ]
+              },
+              "active_prefix_tokens": 334.5,
+              "memory_update_ms": 691.276,
+              "per_query_ms": 522.2445,
+              "peak_vram_mb": 4008.07,
+              "max_toc_diff": 0.0
+            }
+          },
+          "samples": [
+            {
+              "question_id": "031748ae",
+              "question_type": "knowledge-update",
+              "question": "How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?",
+              "gold": "When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers",
+              "pred": " I lead 4 engineers now. I just started my new role as Senior Software Engineer two months ago. I lead 4 engineers now.\n",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.6046511627906976,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "852ce960",
+              "question_type": "knowledge-update",
+              "question": "What was the amount I was pre-approved for when I got my mortgage from Wells Fargo?",
+              "gold": "$400,000",
+              "pred": " $350K\n",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "311778f1",
+              "question_type": "single-session-user",
+              "question": "How many hours did I spend watching documentaries on Netflix last month?",
+              "gold": "10",
+              "pred": " 122 hours\n",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "3b6f954b",
+              "question_type": "single-session-user",
+              "question": "Where did I attend for my study abroad program?",
+              "gold": "University of Melbourne in Australia",
+              "pred": " I attended the University of California, Los Angeles for my study abroad program.\n",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.23529411764705882,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "dd2973ad",
+              "question_type": "multi-session",
+              "question": "What time did I go to bed on the day before I had a doctor's appointment?",
+              "gold": "2 AM",
+              "pred": " 11:00pm\n",
+              "gold_session_hit": 0.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0
+            },
+            {
+              "question_id": "b5ef892d",
+              "question_type": "multi-session",
+              "question": "How many days did I spend on camping trips in the United States this year?",
+              "gold": "8 days.",
+              "pred": " 123 days\n",
+              "gold_session_hit": 1.0,
+              "extracted_em": 0.0,
+              "token_f1": 0.5,
+              "substring_match": 0.0
+            }
+          ]
+        }
+      }
+    }
+  }
+}

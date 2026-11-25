@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -21,6 +22,15 @@ class DeltaUpdater(nn.Module):
         self.edit_spatial_proj = nn.Linear(cfg.d_enc, cfg.d_enc)
         self.edit_tail_proj = nn.Linear(cfg.d_enc, cfg.d_enc)
         self.layer_emb = nn.Embedding(cfg.num_layers, cfg.d_enc)
+        self._last_edit_attn: torch.Tensor | None = None
+        self._last_gate_logits: torch.Tensor | None = None
+
+        if cfg.delta_pooling_mode == "cross_attn":
+            self.sticky_queries = nn.Parameter(torch.randn(1, cfg.grid_w, cfg.d_enc) * 0.02)
+            self.sticky_attn = nn.MultiheadAttention(
+                cfg.d_enc, cfg.enc_heads, dropout=cfg.enc_dropout, batch_first=True
+            )
+            self.sticky_norm = nn.LayerNorm(cfg.d_enc)
 
         self.cross_block = PerceiverCrossAttentionBlock(cfg.d_enc, cfg.enc_heads, cfg.enc_dropout)
         self.self_block = SpatialLayerSelfAttentionBlock(cfg)
@@ -70,17 +80,41 @@ class DeltaUpdater(nn.Module):
         updated_enc = self.self_block(self.cross_block(z_enc, edit_enc))
         updated_grid = updated_enc.view(bsz, layers, h, w, self.cfg.d_enc).permute(0, 1, 4, 2, 3)
 
-        # Direct order-preserving spatial projection of revision tokens onto the bottom sticky-note strip (h = H-1)
-        # Combines full-turn 4-bin summary + 1-to-1 un-averaged tail-W token alignment on (h = H-1, w = 0..W-1)
-        edit_binned = F.adaptive_avg_pool1d(edit_enc.transpose(1, 2), output_size=w).transpose(1, 2)
-        if edit_enc.shape[1] >= w:
-            tail_enc = edit_enc[:, -w:, :]
+        # Pool revision tokens onto the bottom sticky-note strip (h = H-1)
+        if self.cfg.delta_pooling_mode == "cross_attn":
+            t_e = edit_enc.shape[1]
+            pos = torch.arange(t_e, device=edit_enc.device, dtype=torch.float32).unsqueeze(1)
+            div = torch.exp(
+                torch.arange(0, self.cfg.d_enc, 2, device=edit_enc.device, dtype=torch.float32)
+                * (-math.log(10000.0) / max(1, self.cfg.d_enc))
+            )
+            pe = torch.zeros((1, t_e, self.cfg.d_enc), device=edit_enc.device, dtype=edit_enc.dtype)
+            angles = pos * div.unsqueeze(0)
+            pe[:, :, 0::2] = torch.sin(angles).to(edit_enc.dtype)
+            pe[:, :, 1::2] = torch.cos(angles[:, : pe[:, :, 1::2].shape[-1]]).to(edit_enc.dtype)
+            edit_pos = edit_enc + 0.1 * pe
+
+            q_slots = self.sticky_queries.expand(bsz, -1, -1).to(edit_pos.dtype)
+            attn_out, attn_weights = self.sticky_attn(
+                q_slots, edit_pos, edit_pos, need_weights=True, average_attn_weights=True
+            )
+            self._last_edit_attn = attn_weights.mean(dim=1).detach()  # [B, T_e]
+            edit_strip = (
+                self.edit_spatial_proj(self.sticky_norm(q_slots + attn_out))
+                .transpose(1, 2)
+                .view(bsz, self.cfg.d_enc, 1, w)
+            )
         else:
-            pad_len = w - edit_enc.shape[1]
-            tail_enc = F.pad(edit_enc, (0, 0, pad_len, 0))
-        edit_strip = (self.edit_spatial_proj(edit_binned) + self.edit_tail_proj(tail_enc)).transpose(1, 2).view(
-            bsz, self.cfg.d_enc, 1, w
-        )
+            self._last_edit_attn = None
+            edit_binned = F.adaptive_avg_pool1d(edit_enc.transpose(1, 2), output_size=w).transpose(1, 2)
+            if edit_enc.shape[1] >= w:
+                tail_enc = edit_enc[:, -w:, :]
+            else:
+                pad_len = w - edit_enc.shape[1]
+                tail_enc = F.pad(edit_enc, (0, 0, pad_len, 0))
+            edit_strip = (self.edit_spatial_proj(edit_binned) + self.edit_tail_proj(tail_enc)).transpose(1, 2).view(
+                bsz, self.cfg.d_enc, 1, w
+            )
         edit_spatial = torch.zeros((bsz, self.cfg.d_enc, h, w), device=z_page.device, dtype=updated_grid.dtype)
         edit_spatial[:, :, -1:, :] = edit_strip.to(updated_grid.dtype)
 
@@ -89,8 +123,10 @@ class DeltaUpdater(nn.Module):
 
         # Layer l=2 (Dynamic Sticky-Note) receives localized gated state override
         l2_feat = updated_grid[:, 2] + edit_spatial
-        prior = self.sticky_spatial_prior.to(dtype=l2_feat.dtype, device=l2_feat.device)
-        gate_l2 = torch.sigmoid(self.gate_head(l2_feat) + prior)  # [B, 1, H, W]
+        prior = self.sticky_spatial_prior.to(dtype=torch.float32, device=l2_feat.device)
+        gate_logits = self.gate_head(l2_feat).float() + prior  # [B, 1, H, W] strictly float32
+        self._last_gate_logits = gate_logits.squeeze(1)  # [B, H, W] for non-saturating BCEWithLogits supervision
+        gate_l2 = torch.sigmoid(gate_logits).to(l2_feat.dtype)  # [B, 1, H, W]
         delta_l2 = self.delta_head(l2_feat)  # [B, C, H, W]
         # Pre-gate channel-wise RMS alignment prevents cumulative activation-norm drift across k >= 5 sequential edits
         old_rms = z_page[:, 2].float().pow(2).mean(dim=1, keepdim=True).add(1e-6).sqrt()
@@ -117,12 +153,19 @@ class DeltaUpdater(nn.Module):
         page_indices: torch.Tensor,
         edit_embeds: torch.Tensor,
         allow_entity_update: bool | None = None,
+        in_place: bool = False,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         """Update selected page [B] inside book [B, P, 3, C, H, W] without touching other pages."""
+        if in_place and torch.is_grad_enabled():
+            raise RuntimeError("in_place=True requires torch.no_grad() / inference mode")
         bsz = z_book.shape[0]
         batch_arange = torch.arange(bsz, device=z_book.device)
         target_pages = z_book[batch_arange, page_indices]
         new_pages, gates = self.forward(target_pages, edit_embeds, allow_entity_update=allow_entity_update)
+
+        if in_place:
+            z_book[batch_arange, page_indices] = new_pages.to(z_book.dtype)
+            return z_book, gates
 
         z_book_new = z_book.clone()
         z_book_new[batch_arange, page_indices] = new_pages.to(z_book_new.dtype)

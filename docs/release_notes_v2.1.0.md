@@ -1,7 +1,7 @@
 # LSLC `v2.1.0` Release Notes — Fair Decoding, Root-Cause A/B/C Diagnostics, and Honest Trade-Offs
 
 **Release:** `v2.1.0` (`2026-11-24`)  
-**Authors:** Ariel Fikru, Muhammadalif Ramadhan  
+**Authors:** Ariel Fikru  
 **Target Checkpoint:** [`NekoFi/LSLC-Qwen3-1.7B-Adapter`](https://huggingface.co/NekoFi/LSLC-Qwen3-1.7B-Adapter) (`40,420,550` trainable params, `80,861,684` bytes, `bfloat16`)  
 **Checkpoint SHA-256:** `5bfc03fe9e6dcb6950176d8d11f13373c00722e74088681c1b0c0dc3ca3ed095`  
 **Paper & Raw Artifacts:** [LSLC_2026_Fikru.pdf](LSLC_2026_Fikru.pdf) | [v2_complete_summary.json](../evals/m2_colab_l4/v2_complete_summary.json) | [v21_diagnostics.json](../evals/m2_colab_l4/v21_diagnostics.json)

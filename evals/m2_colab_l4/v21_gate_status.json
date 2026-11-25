@@ -1,0 +1,35 @@
+{
+  "stage": "completed",
+  "done": true,
+  "rc": 0,
+  "pid": 1120,
+  "completed_files": [
+    "v3_universal_v21_train.json",
+    "univ_v21_parts_manifest.json",
+    "univ_v21_part_aa",
+    "univ_v21_part_ab",
+    "univ_v21_part_ac",
+    "univ_v21_part_ad",
+    "v3_g4_ruler32k_v21_gate.json",
+    "v3_g5_v21_gate.json"
+  ],
+  "timings": {
+    "V21_1_train": 150.9,
+    "V21_2_ruler32k": 242.2,
+    "V21_3_fairg2_coding24": 966.5,
+    "total_sec": 1362.0
+  },
+  "updated_at": "2026-11-25 07:46:40",
+  "v21_ckpt_sha256": "bd1b2183377a0f9656bbebd3ea57d5e74024677d124a4a2a6d33a669e379469b",
+  "hard_stop_gate": {
+    "pass": false,
+    "ruler_32k_em": 0.6333,
+    "fair_g2_norm_em": 0.6667,
+    "coding_n24_by_arm": {
+      "lslc_v3_k2": 0.0,
+      "lslc_v3_k4": 0.0,
+      "lslc_v3_dynamic_k": 0.0
+    },
+    "coding_n24_best": 0.0
+  }
+}

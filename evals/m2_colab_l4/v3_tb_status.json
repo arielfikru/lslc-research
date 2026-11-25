@@ -1,0 +1,29 @@
+{
+  "stage": "stopped_anti_reclaim_before_T6_ruler_profile",
+  "done": true,
+  "rc": 0,
+  "pid": 10736,
+  "checkpoint": "/content/lslc_results/lslc_universal_v2_qwen3_1.7b.safetensors",
+  "completed_files": [
+    "v3_tb_1_edit_masked_old.json",
+    "v3_tb_2_lme_probe_n9.json",
+    "v3_tb_3_gate2_n200.json",
+    "v3_tb_4_coding_n24.json",
+    "v3_tb_5_ood_kv.json"
+  ],
+  "skipped_stages": [
+    {
+      "stage": "T6_ruler_profile",
+      "reason": "anti_reclaim_uptime_126.48m_ge_125.0m"
+    }
+  ],
+  "timings": {
+    "T1_edit_masked_old": 79.1,
+    "T2_lme_probe_n9": 58.0,
+    "T3_gate2_n200": 1251.9,
+    "T4_coding_n24": 3437.6,
+    "T5_ood_kv": 215.0
+  },
+  "session_uptime_min": 126.48,
+  "updated_at": "2026-11-25 09:25:39"
+}

@@ -1,0 +1,757 @@
+{
+  "version": "3.0.0-phase1",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "stage1_only": true,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "hf_hub_release/lslc_qwen3_1.7b_adapter.safetensors",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "config": {
+    "use_contextual_edit_encoding": true,
+    "contextual_edit_layer": 14,
+    "distill_mode": "cond_b",
+    "lambda_cond_b_distill": 0.5,
+    "num_pages": 16,
+    "page_size": 256
+  },
+  "identifier_trace": {
+    "pre_stage1": {
+      "cond_b_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.0,
+        "in_assembled_prefix_rate": 0.0,
+        "in_generated_answer_rate": 0.0,
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_deep_idx": [
+              10
+            ],
+            "answer_str": "blue-green-prod",
+            "ans_tok_ids": [
+              6303,
+              38268,
+              9838,
+              67
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " Awaiting deployment ."
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_deep_idx": [
+              2
+            ],
+            "answer_str": "us-west-oregon",
+            "ans_tok_ids": [
+              601,
+              37602,
+              12,
+              460,
+              11670
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " @\n"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_deep_idx": [
+              5
+            ],
+            "answer_str": "shadow-mirror",
+            "ans_tok_ids": [
+              12455,
+              1448,
+              28812
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 1999 ."
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "answer_str": "dual signoff",
+            "ans_tok_ids": [
+              18579,
+              1841,
+              1847
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " @-@ 10000000000000000000"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_deep_idx": [
+              7
+            ],
+            "answer_str": "quorum-degraded",
+            "ans_tok_ids": [
+              922,
+              33006,
+              6810,
+              23343
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " Deployed @ 2022-05-12 @ 10:00:00"
+          }
+        ]
+      },
+      "cond_c_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.25,
+        "in_assembled_prefix_rate": 0.25,
+        "in_generated_answer_rate": 0.0417,
+        "failed_samples": [
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_deep_idx": [
+              2
+            ],
+            "answer_str": "us-west-oregon",
+            "ans_tok_ids": [
+              601,
+              37602,
+              12,
+              460,
+              11670
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 1."
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_deep_idx": [
+              5
+            ],
+            "answer_str": "shadow-mirror",
+            "ans_tok_ids": [
+              12455,
+              1448,
+              28812
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 1999 ."
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "answer_str": "dual signoff",
+            "ans_tok_ids": [
+              18579,
+              1841,
+              1847
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " @-@ 10000000000000000000"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_deep_idx": [
+              7
+            ],
+            "answer_str": "quorum-degraded",
+            "ans_tok_ids": [
+              922,
+              33006,
+              6810,
+              23343
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 1."
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_deep_idx": [
+              13
+            ],
+            "answer_str": "quorum-degraded",
+            "ans_tok_ids": [
+              922,
+              33006,
+              6810,
+              23343
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 100% deployed ."
+          }
+        ]
+      },
+      "cond_c_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.25,
+        "in_assembled_prefix_rate": 0.125,
+        "in_generated_answer_rate": 0.0417,
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_deep_idx": [
+              12,
+              0
+            ],
+            "answer_str": "blue-green-prod",
+            "ans_tok_ids": [
+              6303,
+              38268,
+              9838,
+              67
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": false,
+            "gen_text": " dual-layered dual-layered dual-layered dual-layered dual-layered dual-layered dual-layered dual-layered"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_deep_idx": [
+              14,
+              9
+            ],
+            "answer_str": "us-west-oregon",
+            "ans_tok_ids": [
+              601,
+              37602,
+              12,
+              460,
+              11670
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-layered dual-layered dual-layered dual-layered dual-layered dual-layered dual-layered dual-layered"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_deep_idx": [
+              12,
+              4
+            ],
+            "answer_str": "shadow-mirror",
+            "ans_tok_ids": [
+              12455,
+              1448,
+              28812
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual @-@ dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_deep_idx": [
+              7,
+              10
+            ],
+            "answer_str": "quorum-degraded",
+            "ans_tok_ids": [
+              922,
+              33006,
+              6810,
+              23343
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " dual-layered dual-layered dual-layered dual-layered dual-layered dual-layered dual-layered dual-layered"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_deep_idx": [
+              13,
+              3
+            ],
+            "answer_str": "quorum-degraded",
+            "ans_tok_ids": [
+              922,
+              33006,
+              6810,
+              23343
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual phased deployment dual phased rollout dual phased transition dual phased refresh dual phased launch dual phased rollout dual phased transition dual phased deployment"
+          }
+        ]
+      }
+    },
+    "post_stage1": {
+      "cond_b_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.0,
+        "in_assembled_prefix_rate": 0.0,
+        "in_generated_answer_rate": 0.0833,
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_deep_idx": [
+              10
+            ],
+            "answer_str": "blue-green-prod",
+            "ans_tok_ids": [
+              6303,
+              38268,
+              9838,
+              67
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " active-stable\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_deep_idx": [
+              2
+            ],
+            "answer_str": "us-west-oregon",
+            "ans_tok_ids": [
+              601,
+              37602,
+              12,
+              460,
+              11670
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " blue-green @-@316 in1970\n"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_deep_idx": [
+              5
+            ],
+            "answer_str": "shadow-mirror",
+            "ans_tok_ids": [
+              12455,
+              1448,
+              28812
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " stable-19391937\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_deep_idx": [
+              7
+            ],
+            "answer_str": "quorum-degraded",
+            "ans_tok_ids": [
+              922,
+              33006,
+              6810,
+              23343
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " blue-green @0001\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_deep_idx": [
+              13
+            ],
+            "answer_str": "quorum-degraded",
+            "ans_tok_ids": [
+              922,
+              33006,
+              6810,
+              23343
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " staging-prod-105-175-105-175-105-"
+          }
+        ]
+      },
+      "cond_c_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.25,
+        "in_assembled_prefix_rate": 0.25,
+        "in_generated_answer_rate": 0.2917,
+        "failed_samples": [
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_deep_idx": [
+              2
+            ],
+            "answer_str": "us-west-oregon",
+            "ans_tok_ids": [
+              601,
+              37602,
+              12,
+              460,
+              11670
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " blue-green @-@blue-green\n"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_deep_idx": [
+              5
+            ],
+            "answer_str": "shadow-mirror",
+            "ans_tok_ids": [
+              12455,
+              1448,
+              28812
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " stable-19391937\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_deep_idx": [
+              13
+            ],
+            "answer_str": "quorum-degraded",
+            "ans_tok_ids": [
+              922,
+              33006,
+              6810,
+              23343
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " active-rolling\n"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 12,
+            "router_deep_idx": [
+              12
+            ],
+            "answer_str": "shadow-mirror",
+            "ans_tok_ids": [
+              12455,
+              1448,
+              28812
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " stable-11-11-11-11-11-11-11-1"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "answer_str": "ninety days",
+            "ans_tok_ids": [
+              77876,
+              2849
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 30 days\n"
+          }
+        ]
+      },
+      "cond_c_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.25,
+        "in_assembled_prefix_rate": 0.0417,
+        "in_generated_answer_rate": 0.3333,
+        "failed_samples": [
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_deep_idx": [
+              14,
+              9
+            ],
+            "answer_str": "us-west-oregon",
+            "ans_tok_ids": [
+              601,
+              37602,
+              12,
+              460,
+              11670
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " eu-west-niemy-1960s-1960s-1960s-"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_deep_idx": [
+              15,
+              4
+            ],
+            "answer_str": "shadow-mirror",
+            "ans_tok_ids": [
+              12455,
+              1448,
+              28812
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " canary-staging-canary-staging-canary-staging-canary-staging-canary-staging-canary-staging"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_deep_idx": [
+              11,
+              13
+            ],
+            "answer_str": "quorum-degraded",
+            "ans_tok_ids": [
+              922,
+              33006,
+              6810,
+              23343
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " blue-green-prod-lockbox-staging-mirror-2020-03-17-19"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 12,
+            "router_deep_idx": [
+              8,
+              5
+            ],
+            "answer_str": "shadow-mirror",
+            "ans_tok_ids": [
+              12455,
+              1448,
+              28812
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " canary-staging-staging-staging-staging-staging-staging-staging-staging-staging-staging-staging"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_deep_idx": [
+              2,
+              8
+            ],
+            "answer_str": "ninety days",
+            "ans_tok_ids": [
+              77876,
+              2849
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " thirty minutes dual-layer-locking ; dual-layer-locking ; dual-layer-locking ; dual-layer-locking ; dual-layer"
+          }
+        ]
+      }
+    },
+    "post_stage2": null
+  },
+  "stage1_train": {
+    "steps": 250,
+    "elapsed_sec": 249.77,
+    "peak_vram_gb": 6.121,
+    "final_loss": 9.344,
+    "final_ntp": 0.7851,
+    "final_rec": 3.1926,
+    "final_mat": 0.7903,
+    "final_sal": 1.5501,
+    "final_route": 3.1562,
+    "final_cond_b": 0.0,
+    "final_gate": 0.0
+  },
+  "stage2_train": null,
+  "stage3_eval_holdout_budget": null,
+  "stage3_eval_holdout_symbolic": null,
+  "stage4_oracle_and_breakeven": {
+    "oracle_abc_symbolic": {
+      "A_raw_text": {
+        "k=1": 0.375,
+        "k=2": 0.625,
+        "k=3": 0.375,
+        "k=5": 0.375
+      },
+      "B_reencode_scratch": {
+        "k=1": 0.0,
+        "k=2": 0.0,
+        "k=3": 0.0,
+        "k=5": 0.0
+      },
+      "C_delta_updater": {
+        "k=1": 0.0,
+        "k=2": 0.125,
+        "k=3": 0.0,
+        "k=5": 0.125
+      }
+    },
+    "oracle_abc_budget": {
+      "A_raw_text": {
+        "k=1": 0.625,
+        "k=2": 0.25,
+        "k=3": 0.375,
+        "k=5": 0.125
+      },
+      "B_reencode_scratch": {
+        "k=1": 0.375,
+        "k=2": 0.0,
+        "k=3": 0.0,
+        "k=5": 0.0
+      },
+      "C_delta_updater": {
+        "k=1": 0.375,
+        "k=2": 0.125,
+        "k=3": 0.0,
+        "k=5": 0.125
+      }
+    },
+    "page_scaling": {
+      "P=4": {
+        "clone_ms": 180.099,
+        "in_place_ms": 7.338,
+        "clone_peak_mb": 3455.116,
+        "in_place_peak_mb": 3455.087
+      },
+      "P=128": {
+        "clone_ms": 6.948,
+        "in_place_ms": 6.787,
+        "clone_peak_mb": 3462.665,
+        "in_place_peak_mb": 3463.863
+      },
+      "P=1024": {
+        "clone_ms": 6.869,
+        "in_place_ms": 7.049,
+        "clone_peak_mb": 3528.919,
+        "in_place_peak_mb": 3527.328
+      }
+    },
+    "q_breakeven": {
+      "local_write_ms": 8.469,
+      "contextual_encode_ms": 44.522,
+      "end_to_end_edit_ms": 52.99,
+      "lslc_per_query_ms": 58.519,
+      "rag_edit_ms": 0.96,
+      "rag_per_query_ms": 44.901,
+      "full_context_per_query_ms": 125.022,
+      "q_star_vs_rag_bm25": null,
+      "q_star_vs_full_context": 1,
+      "by_q": {
+        "Q=1": {
+          "lslc_total_ms": 111.51,
+          "rag_bm25_total_ms": 45.862,
+          "full_context_total_ms": 125.022,
+          "speedup_vs_rag_x": 0.411,
+          "speedup_vs_full_x": 1.121
+        },
+        "Q=10": {
+          "lslc_total_ms": 638.184,
+          "rag_bm25_total_ms": 449.973,
+          "full_context_total_ms": 1250.223,
+          "speedup_vs_rag_x": 0.705,
+          "speedup_vs_full_x": 1.959
+        },
+        "Q=100": {
+          "lslc_total_ms": 5904.932,
+          "rag_bm25_total_ms": 4491.09,
+          "full_context_total_ms": 12502.227,
+          "speedup_vs_rag_x": 0.761,
+          "speedup_vs_full_x": 2.117
+        }
+      }
+    },
+    "analytical_memory_4k": {
+      "num_tokens": 4096,
+      "pages": 16,
+      "k_toc": 12,
+      "k_skim": 2,
+      "k_deep": 2,
+      "active_dense_tokens": 68,
+      "active_exact_tokens": 32,
+      "active_total_tokens": 100,
+      "kv_kib_per_token": 112.0,
+      "book_mib": 0.1875,
+      "exact_bank_mib": 0.001953125,
+      "active_kv_mib": 10.9375,
+      "lslc_net_mib": 11.126953125,
+      "full_fp16_kv_mib": 448.0,
+      "int4_kv_mib": 112.0,
+      "h2o_20pct_mib": 89.60000038146973,
+      "ratio_vs_fp16": 40.26259434790241,
+      "ratio_vs_int4": 10.065648586975602
+    },
+    "sample_page_size": 256
+  }
+}

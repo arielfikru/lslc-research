@@ -2,7 +2,7 @@
 
 * **Category:** Guides / Engineering
 * **Published:** Nov 23, 2026 (Updated `v2.1.0`: Nov 24, 2026)
-* **Written by:** Ariel Fikru, Muhammadalif Ramadhan
+* **Written by:** Ariel Fikru
 
 ---
 

@@ -1,20 +1,52 @@
 """Layered Spatial Latent Caching (LSLC) — Modular PyTorch MVE Package."""
 
 from .config import LSLCConfig, compute_analytical_memory_stats, select_amp_dtype
+from .coding_benchmark import (
+    CodingAgentHarness,
+    CrossFileAPIMigrationBenchmark,
+    MigrationEvalResult,
+    MigrationTask,
+    verify_migration_patch,
+)
 from .datasets import (
+    AdversarialLivingBookDataset,
     ChunkedTextPageDataset,
     LSLCEpisode,
     LivingBookStateOverrideDataset,
     SyntheticExactSemanticNIAHDataset,
+    ZeroOverlapParaphraseRoutingBenchmark,
+    content_words,
 )
 from .delta_updater import DeltaUpdater
 from .encoder import LayeredLatentEncoder, SalienceGate, SparseExactBank
+from .pathb import (
+    ContextualEditGateHead,
+    PathBDiscreteMemory,
+    canonicalize_w2n_answer,
+    compute_prefix_lcs_len,
+    compute_value_em,
+    get_git_provenance,
+    get_newline_sep_token_id,
+    heuristic_span16_tfidf_bank,
+    load_pathb_checkpoint,
+    save_pathb_checkpoint,
+)
+from .lora import (
+    LoRALinear,
+    inject_lora,
+    lora_parameters,
+    lora_state_dict,
+    merge_lora,
+    set_lora_enabled,
+    unmerge_lora,
+)
 from .projector import (
     AssemblyOutput,
     BookPrefixAssembler,
     QueryToTOCRouter,
     RouterOutput,
     SpatialLatentProjector,
+    compute_router_infonce_loss,
 )
 from .rope_3d import FactorizedRoPE3D, PageRoPE1D
 from .trainer import (
@@ -23,6 +55,8 @@ from .trainer import (
     LSLCSystem,
     TinyMockCausalLM,
     estimate_int4_kv_bytes,
+    extract_contextual_edit_embeds,
+    extract_contextual_page_keys,
     greedy_generate_from_prefix,
     h2o_evict_keep_indices,
     load_frozen_qwen3,
@@ -32,9 +66,16 @@ from .trainer import (
 LayeredSpatialLatentCache = LSLCSystem
 
 __all__ = [
+    "AdversarialLivingBookDataset",
     "AssemblyOutput",
+    "CodingAgentHarness",
+    "CrossFileAPIMigrationBenchmark",
+    "MigrationEvalResult",
+    "MigrationTask",
+    "verify_migration_patch",
     "BookPrefixAssembler",
     "ChunkedTextPageDataset",
+    "ContextualEditGateHead",
     "DeltaUpdater",
     "FactorizedRoPE3D",
     "FrozenQwenLSLCWrapper",
@@ -42,10 +83,12 @@ __all__ = [
     "LSLCEpisode",
     "LSLCLossOutput",
     "LSLCSystem",
+    "LoRALinear",
     "LayeredSpatialLatentCache",
     "LayeredLatentEncoder",
     "LivingBookStateOverrideDataset",
     "PageRoPE1D",
+    "PathBDiscreteMemory",
     "QueryToTOCRouter",
     "RouterOutput",
     "SalienceGate",
@@ -53,11 +96,30 @@ __all__ = [
     "SpatialLatentProjector",
     "SyntheticExactSemanticNIAHDataset",
     "TinyMockCausalLM",
+    "ZeroOverlapParaphraseRoutingBenchmark",
+    "canonicalize_w2n_answer",
     "compute_analytical_memory_stats",
+    "compute_prefix_lcs_len",
+    "compute_router_infonce_loss",
+    "compute_value_em",
+    "content_words",
     "estimate_int4_kv_bytes",
+    "extract_contextual_edit_embeds",
+    "extract_contextual_page_keys",
+    "get_git_provenance",
+    "get_newline_sep_token_id",
     "greedy_generate_from_prefix",
     "h2o_evict_keep_indices",
+    "heuristic_span16_tfidf_bank",
+    "inject_lora",
     "load_frozen_qwen3",
+    "load_pathb_checkpoint",
+    "lora_parameters",
+    "lora_state_dict",
+    "merge_lora",
+    "save_pathb_checkpoint",
     "select_amp_dtype",
+    "set_lora_enabled",
     "streamingllm_keep_indices",
+    "unmerge_lora",
 ]

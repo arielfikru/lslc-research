@@ -1,0 +1,1347 @@
+{
+  "version": "3.0.0-gerbang5-ablations",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/lslc_results/lslc_universal_qwen3_1.7b.safetensors",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "config": {
+    "page_size": 256,
+    "k_exact": 48,
+    "salience_span_len": 16,
+    "salience_route_weight": 1.5,
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "eval_n": 48
+  },
+  "ablation_2x2_edit": {
+    "deltaZ_ON_bank_ON": {
+      "continuous_delta_z": true,
+      "discrete_exact_bank": true,
+      "overall": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.8045,
+            0.9671
+          ],
+          "f1": [
+            0.875,
+            0.9931
+          ],
+          "semantic_acc": [
+            0.8045,
+            0.9671
+          ],
+          "edit_latency_ms": [
+            50.3244,
+            65.1911
+          ],
+          "mean_strip_gate": [
+            0.8192,
+            0.8535
+          ],
+          "bank_write_rate": [
+            0.9259,
+            1.0
+          ],
+          "active_prefix_tokens": [
+            298.0,
+            298.0
+          ]
+        },
+        "em": 0.9167,
+        "f1": 0.9444,
+        "semantic_acc": 0.9167,
+        "edit_latency_ms": 55.4884,
+        "mean_strip_gate": 0.8382,
+        "bank_write_rate": 1.0,
+        "active_prefix_tokens": 298.0,
+        "max_toc_diff": 0.0
+      },
+      "by_suite": {
+        "verbatim": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.7416,
+              0.9769
+            ],
+            "f1": [
+              0.9306,
+              1.0
+            ],
+            "semantic_acc": [
+              0.7416,
+              0.9769
+            ],
+            "edit_latency_ms": [
+              50.0659,
+              79.6539
+            ],
+            "mean_strip_gate": [
+              0.8653,
+              0.8742
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.9167,
+          "f1": 0.9722,
+          "semantic_acc": 0.9167,
+          "edit_latency_ms": 60.1593,
+          "mean_strip_gate": 0.87,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "What is the updated protocol for Service HarborGate-10?",
+              "edit": "Approved revision: Service HarborGate-10 updated its protocol from TLS-1.2 to TLS-1.3.",
+              "gold": "TLS-1.3",
+              "pred": "TLS-1.3",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 283.548,
+              "mean_strip_gate": 0.8717,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated retention window for Service CloudVault-11?",
+              "edit": "Approved revision: Service CloudVault-11 updated its retention window from 14 days to 45 days.",
+              "gold": "45 days",
+              "pred": "45 days",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 52.7,
+              "mean_strip_gate": 0.8806,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated sampling interval for Service MetricPulse-12?",
+              "edit": "Approved revision: Service MetricPulse-12 updated its sampling interval from 30 seconds to 5 seconds.",
+              "gold": "5 seconds",
+              "pred": "5 seconds",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 51.072,
+              "mean_strip_gate": 0.8751,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        },
+        "implicit": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.7416,
+              0.9769
+            ],
+            "f1": [
+              0.7416,
+              0.9769
+            ],
+            "semantic_acc": [
+              0.7416,
+              0.9769
+            ],
+            "edit_latency_ms": [
+              50.2601,
+              51.3658
+            ],
+            "mean_strip_gate": [
+              0.7808,
+              0.832
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.9167,
+          "f1": 0.9167,
+          "semantic_acc": 0.9167,
+          "edit_latency_ms": 50.8174,
+          "mean_strip_gate": 0.8063,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "Can the TokyoBilling-1 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Asia region switch to read-only mode tomorrow.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 51.453,
+              "mean_strip_gate": 0.8604,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Can the SeoulLedger-2 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Nordic region are promoted to full read-write mode tomorrow.",
+              "gold": "Yes",
+              "pred": "Yes",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 51.391,
+              "mean_strip_gate": 0.8502,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Is contractor OsakaPay-3 permitted to enter the Archive Room? Answer Yes or No.",
+              "edit": "Security update: Entering the Archive Room strictly requires Tier-A clearance.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 51.418,
+              "mean_strip_gate": 0.7383,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        }
+      }
+    },
+    "deltaZ_ON_bank_OFF": {
+      "continuous_delta_z": true,
+      "discrete_exact_bank": false,
+      "overall": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.1656,
+            0.4099
+          ],
+          "f1": [
+            0.2812,
+            0.5208
+          ],
+          "semantic_acc": [
+            0.1656,
+            0.4099
+          ],
+          "edit_latency_ms": [
+            49.9531,
+            50.4517
+          ],
+          "mean_strip_gate": [
+            0.8192,
+            0.8535
+          ],
+          "bank_write_rate": [
+            0.9259,
+            1.0
+          ],
+          "active_prefix_tokens": [
+            298.0,
+            298.0
+          ]
+        },
+        "em": 0.2708,
+        "f1": 0.3854,
+        "semantic_acc": 0.2708,
+        "edit_latency_ms": 50.2014,
+        "mean_strip_gate": 0.8382,
+        "bank_write_rate": 1.0,
+        "active_prefix_tokens": 298.0,
+        "max_toc_diff": 0.0
+      },
+      "by_suite": {
+        "verbatim": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.125,
+              0.3333
+            ],
+            "semantic_acc": [
+              0.0,
+              0.138
+            ],
+            "edit_latency_ms": [
+              49.7168,
+              50.3097
+            ],
+            "mean_strip_gate": [
+              0.8653,
+              0.8742
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.0,
+          "f1": 0.2292,
+          "semantic_acc": 0.0,
+          "edit_latency_ms": 49.9539,
+          "mean_strip_gate": 0.87,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "What is the updated protocol for Service HarborGate-10?",
+              "edit": "Approved revision: Service HarborGate-10 updated its protocol from TLS-1.2 to TLS-1.3.",
+              "gold": "TLS-1.3",
+              "pred": "TLS-1.2",
+              "em": 0.0,
+              "f1": 0.5,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 50.377,
+              "mean_strip_gate": 0.8717,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated retention window for Service CloudVault-11?",
+              "edit": "Approved revision: Service CloudVault-11 updated its retention window from 14 days to 45 days.",
+              "gold": "45 days",
+              "pred": "14 days",
+              "em": 0.0,
+              "f1": 0.5,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 50.204,
+              "mean_strip_gate": 0.8806,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated sampling interval for Service MetricPulse-12?",
+              "edit": "Approved revision: Service MetricPulse-12 updated its sampling interval from 30 seconds to 5 seconds.",
+              "gold": "5 seconds",
+              "pred": "3-82",
+              "em": 0.0,
+              "f1": 0.0,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 50.139,
+              "mean_strip_gate": 0.8751,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        },
+        "implicit": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.3508,
+              0.7211
+            ],
+            "f1": [
+              0.3508,
+              0.7211
+            ],
+            "semantic_acc": [
+              0.3508,
+              0.7211
+            ],
+            "edit_latency_ms": [
+              50.0945,
+              50.8678
+            ],
+            "mean_strip_gate": [
+              0.7808,
+              0.832
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.5417,
+          "f1": 0.5417,
+          "semantic_acc": 0.5417,
+          "edit_latency_ms": 50.4488,
+          "mean_strip_gate": 0.8063,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "Can the TokyoBilling-1 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Asia region switch to read-only mode tomorrow.",
+              "gold": "No",
+              "pred": "Yes",
+              "em": 0.0,
+              "f1": 0.0,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 52.229,
+              "mean_strip_gate": 0.8604,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Can the SeoulLedger-2 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Nordic region are promoted to full read-write mode tomorrow.",
+              "gold": "Yes",
+              "pred": "Yes",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 49.254,
+              "mean_strip_gate": 0.8502,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Is contractor OsakaPay-3 permitted to enter the Archive Room? Answer Yes or No.",
+              "edit": "Security update: Entering the Archive Room strictly requires Tier-A clearance.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 49.228,
+              "mean_strip_gate": 0.7383,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        }
+      }
+    },
+    "deltaZ_OFF_bank_ON": {
+      "continuous_delta_z": false,
+      "discrete_exact_bank": true,
+      "overall": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.7783,
+            0.9547
+          ],
+          "f1": [
+            0.8611,
+            0.9861
+          ],
+          "semantic_acc": [
+            0.7783,
+            0.9547
+          ],
+          "edit_latency_ms": [
+            50.1728,
+            50.7794
+          ],
+          "mean_strip_gate": [
+            0.8192,
+            0.8535
+          ],
+          "bank_write_rate": [
+            0.9259,
+            1.0
+          ],
+          "active_prefix_tokens": [
+            298.0,
+            298.0
+          ]
+        },
+        "em": 0.8958,
+        "f1": 0.9375,
+        "semantic_acc": 0.8958,
+        "edit_latency_ms": 50.4471,
+        "mean_strip_gate": 0.8382,
+        "bank_write_rate": 1.0,
+        "active_prefix_tokens": 298.0,
+        "max_toc_diff": 0.0
+      },
+      "by_suite": {
+        "verbatim": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.69,
+              0.9566
+            ],
+            "f1": [
+              0.9167,
+              1.0
+            ],
+            "semantic_acc": [
+              0.69,
+              0.9566
+            ],
+            "edit_latency_ms": [
+              49.8974,
+              50.6327
+            ],
+            "mean_strip_gate": [
+              0.8653,
+              0.8742
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.875,
+          "f1": 0.9583,
+          "semantic_acc": 0.875,
+          "edit_latency_ms": 50.2748,
+          "mean_strip_gate": 0.87,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "What is the updated protocol for Service HarborGate-10?",
+              "edit": "Approved revision: Service HarborGate-10 updated its protocol from TLS-1.2 to TLS-1.3.",
+              "gold": "TLS-1.3",
+              "pred": "TLS-1.3",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 52.582,
+              "mean_strip_gate": 0.8717,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated retention window for Service CloudVault-11?",
+              "edit": "Approved revision: Service CloudVault-11 updated its retention window from 14 days to 45 days.",
+              "gold": "45 days",
+              "pred": "45 days",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 50.347,
+              "mean_strip_gate": 0.8806,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated sampling interval for Service MetricPulse-12?",
+              "edit": "Approved revision: Service MetricPulse-12 updated its sampling interval from 30 seconds to 5 seconds.",
+              "gold": "5 seconds",
+              "pred": "5 seconds",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 51.317,
+              "mean_strip_gate": 0.8751,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        },
+        "implicit": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.7416,
+              0.9769
+            ],
+            "f1": [
+              0.7416,
+              0.9769
+            ],
+            "semantic_acc": [
+              0.7416,
+              0.9769
+            ],
+            "edit_latency_ms": [
+              50.2853,
+              51.0308
+            ],
+            "mean_strip_gate": [
+              0.7808,
+              0.832
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.9167,
+          "f1": 0.9167,
+          "semantic_acc": 0.9167,
+          "edit_latency_ms": 50.6195,
+          "mean_strip_gate": 0.8063,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "Can the TokyoBilling-1 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Asia region switch to read-only mode tomorrow.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 50.082,
+              "mean_strip_gate": 0.8604,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Can the SeoulLedger-2 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Nordic region are promoted to full read-write mode tomorrow.",
+              "gold": "Yes",
+              "pred": "Yes",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 50.128,
+              "mean_strip_gate": 0.8502,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Is contractor OsakaPay-3 permitted to enter the Archive Room? Answer Yes or No.",
+              "edit": "Security update: Entering the Archive Room strictly requires Tier-A clearance.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 52.619,
+              "mean_strip_gate": 0.7383,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        }
+      }
+    },
+    "deltaZ_OFF_bank_OFF": {
+      "continuous_delta_z": false,
+      "discrete_exact_bank": false,
+      "overall": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.1995,
+            0.4533
+          ],
+          "f1": [
+            0.3125,
+            0.5521
+          ],
+          "semantic_acc": [
+            0.1995,
+            0.4533
+          ],
+          "edit_latency_ms": [
+            50.0369,
+            50.463
+          ],
+          "mean_strip_gate": [
+            0.8192,
+            0.8535
+          ],
+          "bank_write_rate": [
+            0.9259,
+            1.0
+          ],
+          "active_prefix_tokens": [
+            298.0,
+            298.0
+          ]
+        },
+        "em": 0.3125,
+        "f1": 0.4271,
+        "semantic_acc": 0.3125,
+        "edit_latency_ms": 50.2384,
+        "mean_strip_gate": 0.8382,
+        "bank_write_rate": 1.0,
+        "active_prefix_tokens": 298.0,
+        "max_toc_diff": 0.0
+      },
+      "by_suite": {
+        "verbatim": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.125,
+              0.3333
+            ],
+            "semantic_acc": [
+              0.0,
+              0.138
+            ],
+            "edit_latency_ms": [
+              50.0116,
+              50.7717
+            ],
+            "mean_strip_gate": [
+              0.8653,
+              0.8742
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.0,
+          "f1": 0.2292,
+          "semantic_acc": 0.0,
+          "edit_latency_ms": 50.3325,
+          "mean_strip_gate": 0.87,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "What is the updated protocol for Service HarborGate-10?",
+              "edit": "Approved revision: Service HarborGate-10 updated its protocol from TLS-1.2 to TLS-1.3.",
+              "gold": "TLS-1.3",
+              "pred": "TLS-1.2",
+              "em": 0.0,
+              "f1": 0.5,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 51.271,
+              "mean_strip_gate": 0.8717,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated retention window for Service CloudVault-11?",
+              "edit": "Approved revision: Service CloudVault-11 updated its retention window from 14 days to 45 days.",
+              "gold": "45 days",
+              "pred": "14 days",
+              "em": 0.0,
+              "f1": 0.5,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 53.924,
+              "mean_strip_gate": 0.8806,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated sampling interval for Service MetricPulse-12?",
+              "edit": "Approved revision: Service MetricPulse-12 updated its sampling interval from 30 seconds to 5 seconds.",
+              "gold": "5 seconds",
+              "pred": "3-82",
+              "em": 0.0,
+              "f1": 0.0,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 51.903,
+              "mean_strip_gate": 0.8751,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        },
+        "implicit": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.4271,
+              0.7884
+            ],
+            "f1": [
+              0.4271,
+              0.7884
+            ],
+            "semantic_acc": [
+              0.4271,
+              0.7884
+            ],
+            "edit_latency_ms": [
+              49.9299,
+              50.3535
+            ],
+            "mean_strip_gate": [
+              0.7808,
+              0.832
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.625,
+          "f1": 0.625,
+          "semantic_acc": 0.625,
+          "edit_latency_ms": 50.1443,
+          "mean_strip_gate": 0.8063,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "Can the TokyoBilling-1 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Asia region switch to read-only mode tomorrow.",
+              "gold": "No",
+              "pred": "Yes",
+              "em": 0.0,
+              "f1": 0.0,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 50.44,
+              "mean_strip_gate": 0.8604,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Can the SeoulLedger-2 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Nordic region are promoted to full read-write mode tomorrow.",
+              "gold": "Yes",
+              "pred": "Yes",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 51.47,
+              "mean_strip_gate": 0.8502,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Is contractor OsakaPay-3 permitted to enter the Archive Room? Answer Yes or No.",
+              "edit": "Security update: Entering the Archive Room strictly requires Tier-A clearance.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 50.631,
+              "mean_strip_gate": 0.7383,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "ablation_1d_vs_3d": {
+    "3d_spatial_pyramid": {
+      "encoder_params": 10104960,
+      "total_params": 41506827,
+      "active_prefix_tokens": 60,
+      "train_steps": 240,
+      "train_sec": 35.72,
+      "final_train_loss": 1.839,
+      "metrics": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.0,
+            0.0741
+          ],
+          "f1": [
+            0.0394,
+            0.0718
+          ],
+          "tok_acc": [
+            0.5479,
+            0.7479
+          ],
+          "nll": [
+            0.6518,
+            1.1807
+          ]
+        },
+        "em": 0.0,
+        "f1": 0.0556,
+        "tok_acc": 0.65,
+        "nll": 0.9159,
+        "ppl": 2.499
+      },
+      "prefix_cache_invariance": {
+        "max_toc_diff": 0.0,
+        "max_l0_l1_diff": 0.0
+      },
+      "page_scaling": {
+        "P=8": {
+          "encode_and_route_ms": 12.96,
+          "active_prefix_tokens": 60
+        },
+        "P=16": {
+          "encode_and_route_ms": 22.53,
+          "active_prefix_tokens": 68
+        },
+        "P=32": {
+          "encode_and_route_ms": 13.39,
+          "active_prefix_tokens": 86
+        }
+      }
+    },
+    "1d_3layer_flat": {
+      "encoder_params": 10734208,
+      "total_params": 42136075,
+      "active_prefix_tokens": 60,
+      "train_steps": 240,
+      "train_sec": 33.65,
+      "final_train_loss": 1.7388,
+      "metrics": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.0,
+            0.0741
+          ],
+          "f1": [
+            0.075,
+            0.1333
+          ],
+          "tok_acc": [
+            0.5396,
+            0.7375
+          ],
+          "nll": [
+            0.6509,
+            1.1741
+          ]
+        },
+        "em": 0.0,
+        "f1": 0.1056,
+        "tok_acc": 0.6438,
+        "nll": 0.9149,
+        "ppl": 2.4965
+      },
+      "prefix_cache_invariance": {
+        "max_toc_diff": 0.0,
+        "max_l0_l1_diff": 0.0
+      },
+      "page_scaling": {
+        "P=8": {
+          "encode_and_route_ms": 8.29,
+          "active_prefix_tokens": 60
+        },
+        "P=16": {
+          "encode_and_route_ms": 8.4,
+          "active_prefix_tokens": 68
+        },
+        "P=32": {
+          "encode_and_route_ms": 8.6,
+          "active_prefix_tokens": 72
+        }
+      }
+    },
+    "iso_token_verified": true
+  },
+  "true_kv_baselines": {
+    "iso_token_budget": 298,
+    "num_pages": 8,
+    "icae_params": 11713536,
+    "icae_train_steps": 240,
+    "systems": {
+      "full_kv_bf16": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.0115,
+            0.1398
+          ],
+          "f1": [
+            0.1525,
+            0.193
+          ],
+          "tok_acc": [
+            0.8906,
+            0.9063
+          ],
+          "per_query_ms": [
+            1127.0264,
+            1132.503
+          ]
+        },
+        "em": 0.0417,
+        "f1": 0.1715,
+        "tok_acc": 0.8975,
+        "per_query_ms": 1129.8241,
+        "ppl": 14.2913,
+        "active_tokens_mean": 2048.0,
+        "exact_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0231,
+              0.2584
+            ],
+            "f1": [
+              0.2027,
+              0.2578
+            ],
+            "tok_acc": [
+              0.9,
+              0.9208
+            ]
+          },
+          "em": 0.0833,
+          "f1": 0.2273,
+          "tok_acc": 0.9083
+        },
+        "semantic_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.1132,
+              0.1189
+            ],
+            "tok_acc": [
+              0.8791,
+              0.8976
+            ]
+          },
+          "em": 0.0,
+          "f1": 0.1158,
+          "tok_acc": 0.8866
+        },
+        "peak_vram_mb": 5379.8
+      },
+      "true_int4_kv_cache": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.0215,
+            0.1684
+          ],
+          "f1": [
+            0.1299,
+            0.1822
+          ],
+          "tok_acc": [
+            0.8841,
+            0.8989
+          ],
+          "per_query_ms": [
+            1140.1944,
+            1145.7791
+          ]
+        },
+        "em": 0.0625,
+        "f1": 0.1549,
+        "tok_acc": 0.891,
+        "per_query_ms": 1142.9531,
+        "ppl": 17.7621,
+        "active_tokens_mean": 2048.0,
+        "exact_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0434,
+              0.31
+            ],
+            "f1": [
+              0.1555,
+              0.2456
+            ],
+            "tok_acc": [
+              0.8833,
+              0.9167
+            ]
+          },
+          "em": 0.125,
+          "f1": 0.1989,
+          "tok_acc": 0.9
+        },
+        "semantic_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.099,
+              0.119
+            ],
+            "tok_acc": [
+              0.8791,
+              0.8848
+            ]
+          },
+          "em": 0.0,
+          "f1": 0.1108,
+          "tok_acc": 0.8819
+        },
+        "peak_vram_mb": 5827.98,
+        "analytical_kv_4k_mib": 112.0
+      },
+      "true_attn_h2o_snapkv": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.0,
+            0.0741
+          ],
+          "f1": [
+            0.0211,
+            0.0592
+          ],
+          "tok_acc": [
+            0.2065,
+            0.3432
+          ],
+          "per_query_ms": [
+            1212.6659,
+            1216.5212
+          ]
+        },
+        "em": 0.0,
+        "f1": 0.0384,
+        "tok_acc": 0.2777,
+        "per_query_ms": 1214.5797,
+        "ppl": 16.8972,
+        "active_tokens_mean": 298.0,
+        "exact_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.0,
+              0.138
+            ],
+            "tok_acc": [
+              0.0542,
+              0.1417
+            ]
+          },
+          "em": 0.0,
+          "f1": 0.0,
+          "tok_acc": 0.0958
+        },
+        "semantic_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.048,
+              0.1093
+            ],
+            "tok_acc": [
+              0.3843,
+              0.5289
+            ]
+          },
+          "em": 0.0,
+          "f1": 0.0767,
+          "tok_acc": 0.4595
+        },
+        "peak_vram_mb": 9668.59
+      },
+      "icae_1d_latent_baseline": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.0,
+            0.0741
+          ],
+          "f1": [
+            0.036,
+            0.0652
+          ],
+          "tok_acc": [
+            0.5396,
+            0.7458
+          ],
+          "per_query_ms": [
+            1136.1314,
+            1140.3792
+          ]
+        },
+        "em": 0.0,
+        "f1": 0.0508,
+        "tok_acc": 0.6479,
+        "per_query_ms": 1138.3584,
+        "ppl": 379.9882,
+        "active_tokens_mean": 296.0,
+        "exact_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.0,
+              0.138
+            ],
+            "tok_acc": [
+              0.2583,
+              0.3333
+            ]
+          },
+          "em": 0.0,
+          "f1": 0.0,
+          "tok_acc": 0.2958
+        },
+        "semantic_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.0987,
+              0.1043
+            ],
+            "tok_acc": [
+              0.862,
+              1.0
+            ]
+          },
+          "em": 0.0,
+          "f1": 0.1015,
+          "tok_acc": 1.0
+        },
+        "peak_vram_mb": 5188.64
+      },
+      "lslc_v3_universal": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.3639,
+            0.6361
+          ],
+          "f1": [
+            0.6216,
+            0.7664
+          ],
+          "tok_acc": [
+            0.8631,
+            0.928
+          ],
+          "per_query_ms": [
+            513.6925,
+            661.3513
+          ]
+        },
+        "em": 0.5,
+        "f1": 0.6922,
+        "tok_acc": 0.897,
+        "per_query_ms": 582.9316,
+        "ppl": 63.8629,
+        "active_tokens_mean": 298.0,
+        "exact_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.862,
+              1.0
+            ],
+            "f1": [
+              0.7103,
+              0.9405
+            ],
+            "tok_acc": [
+              0.862,
+              1.0
+            ]
+          },
+          "em": 1.0,
+          "f1": 0.8393,
+          "tok_acc": 1.0
+        },
+        "semantic_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.4971,
+              0.5861
+            ],
+            "tok_acc": [
+              0.7552,
+              0.8322
+            ]
+          },
+          "em": 0.0,
+          "f1": 0.5451,
+          "tok_acc": 0.794
+        },
+        "peak_vram_mb": 4492.62
+      }
+    }
+  },
+  "fair_g2_and_coding_n24": null
+}

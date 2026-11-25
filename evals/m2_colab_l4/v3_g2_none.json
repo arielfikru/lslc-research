@@ -1,0 +1,2249 @@
+{
+  "version": "3.0.0-clean-phase1",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "stage1_only": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/lslc_results/v3_s1_r3_frozen_ckpt.safetensors",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "lora": {
+    "r": 0
+  },
+  "lm_ppl_pre": {
+    "n_chunks": 32,
+    "tokens": 8192,
+    "mean_nll": 2.9255,
+    "ppl": 18.6433
+  },
+  "lm_ppl_post": {
+    "n_chunks": 32,
+    "tokens": 8192,
+    "mean_nll": 2.9255,
+    "ppl": 18.6433
+  },
+  "ood_ppl_pre": {
+    "code_ood": {
+      "tokens": 292,
+      "mean_nll": 1.6142,
+      "ppl": 5.0241
+    },
+    "prose_ood": {
+      "tokens": 116,
+      "mean_nll": 5.8836,
+      "ppl": 359.0966
+    },
+    "overall": {
+      "tokens": 408,
+      "mean_nll": 3.7489,
+      "ppl": 42.4751
+    }
+  },
+  "ood_ppl_post": {
+    "code_ood": {
+      "tokens": 292,
+      "mean_nll": 1.6142,
+      "ppl": 5.0241
+    },
+    "prose_ood": {
+      "tokens": 116,
+      "mean_nll": 5.8836,
+      "ppl": 359.0966
+    },
+    "overall": {
+      "tokens": 408,
+      "mean_nll": 3.7489,
+      "ppl": 42.4751
+    }
+  },
+  "config": {
+    "use_contextual_edit_encoding": true,
+    "contextual_edit_layer": 14,
+    "distill_mode": "none",
+    "lambda_cond_b_distill": 0.0,
+    "salience_mode": "learned_surprisal",
+    "delta_pooling_mode": "cross_attn",
+    "router_mode": "content_attn",
+    "k_exact": 24,
+    "train_style": "mixed_natural",
+    "salience_route_weight": 2.0,
+    "timing_salience_route_weight": 2.0,
+    "num_pages": 16,
+    "page_size": 256
+  },
+  "identifier_trace": {
+    "pre_stage1": {
+      "cond_b_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 1.0,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 1.0,
+        "in_generated_answer_rate": 0.8333,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.3333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "ten percent",
+            "ans_tok_ids": [
+              5779,
+              3266
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 1000\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "five hundred rps",
+            "ans_tok_ids": [
+              4236,
+              7739,
+              435,
+              1690
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 500\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 14,
+            "router_top1": 14,
+            "router_deep_idx": [
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "five hundred rps",
+            "ans_tok_ids": [
+              4236,
+              7739,
+              435,
+              1690
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 500\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 4,
+            "router_top1": 4,
+            "router_deep_idx": [
+              4
+            ],
+            "router_hit": true,
+            "answer_str": "unit and fuzz",
+            "ans_tok_ids": [
+              4982,
+              323,
+              76142
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " unit and fuzz checks\n"
+          }
+        ]
+      },
+      "cond_b_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 1.0,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 1.0,
+        "in_generated_answer_rate": 0.9583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 4,
+            "router_top1": 4,
+            "router_deep_idx": [
+              0,
+              4
+            ],
+            "router_hit": true,
+            "answer_str": "unit and fuzz",
+            "ans_tok_ids": [
+              4982,
+              323,
+              76142
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " unit and fuzz checks\n"
+          }
+        ]
+      },
+      "cond_b_hybrid_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 1.0,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 1.0,
+        "in_generated_answer_rate": 0.9583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 4,
+            "router_top1": 4,
+            "router_deep_idx": [
+              0,
+              4
+            ],
+            "router_hit": true,
+            "answer_str": "unit and fuzz",
+            "ans_tok_ids": [
+              4982,
+              323,
+              76142
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " unit and fuzz checks\n"
+          }
+        ]
+      },
+      "cond_c_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.75,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.75,
+        "in_generated_answer_rate": 0.5,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.6667
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.3333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.1667,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 10,
+            "router_deep_idx": [
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " complete\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 2,
+            "router_deep_idx": [
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_top1": 13,
+            "router_deep_idx": [
+              13
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " us-west-oregon\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "ten percent",
+            "ans_tok_ids": [
+              5779,
+              3266
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 1000\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 8,
+            "router_top1": 8,
+            "router_deep_idx": [
+              8
+            ],
+            "router_hit": true,
+            "answer_str": "draining-maintenance",
+            "ans_tok_ids": [
+              73009,
+              1448,
+              24559
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " read-only-replica\n"
+          }
+        ]
+      },
+      "cond_c_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.75,
+        "router_top1_recall": 0.5,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.75,
+        "in_generated_answer_rate": 0.4583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.1667,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 2,
+            "router_deep_idx": [
+              10,
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 14,
+            "router_deep_idx": [
+              2,
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 9,
+            "router_deep_idx": [
+              7,
+              9
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_top1": 10,
+            "router_deep_idx": [
+              13,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 11,
+            "router_top1": 10,
+            "router_deep_idx": [
+              11,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "draining-maintenance",
+            "ans_tok_ids": [
+              73009,
+              1448,
+              24559
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          }
+        ]
+      },
+      "cond_c_hybrid_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.75,
+        "router_top1_recall": 0.5,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.75,
+        "in_generated_answer_rate": 0.4583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.1667,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 2,
+            "router_deep_idx": [
+              10,
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 14,
+            "router_deep_idx": [
+              2,
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 9,
+            "router_deep_idx": [
+              7,
+              9
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_top1": 10,
+            "router_deep_idx": [
+              13,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 11,
+            "router_top1": 10,
+            "router_deep_idx": [
+              11,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "draining-maintenance",
+            "ans_tok_ids": [
+              73009,
+              1448,
+              24559
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          }
+        ]
+      }
+    },
+    "post_stage1": null,
+    "post_stage1_headerless": null,
+    "post_stage2": {
+      "cond_b_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 1.0,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 1.0,
+        "in_generated_answer_rate": 0.8333,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.3333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "ten percent",
+            "ans_tok_ids": [
+              5779,
+              3266
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 1000\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "five hundred rps",
+            "ans_tok_ids": [
+              4236,
+              7739,
+              435,
+              1690
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 500\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 14,
+            "router_top1": 14,
+            "router_deep_idx": [
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "five hundred rps",
+            "ans_tok_ids": [
+              4236,
+              7739,
+              435,
+              1690
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 500\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 4,
+            "router_top1": 4,
+            "router_deep_idx": [
+              4
+            ],
+            "router_hit": true,
+            "answer_str": "unit and fuzz",
+            "ans_tok_ids": [
+              4982,
+              323,
+              76142
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " unit and fuzz checks\n"
+          }
+        ]
+      },
+      "cond_b_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 1.0,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 1.0,
+        "in_generated_answer_rate": 0.9583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 4,
+            "router_top1": 4,
+            "router_deep_idx": [
+              0,
+              4
+            ],
+            "router_hit": true,
+            "answer_str": "unit and fuzz",
+            "ans_tok_ids": [
+              4982,
+              323,
+              76142
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " unit and fuzz checks\n"
+          }
+        ]
+      },
+      "cond_b_hybrid_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 1.0,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 1.0,
+        "in_generated_answer_rate": 0.9583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 4,
+            "router_top1": 4,
+            "router_deep_idx": [
+              0,
+              4
+            ],
+            "router_hit": true,
+            "answer_str": "unit and fuzz",
+            "ans_tok_ids": [
+              4982,
+              323,
+              76142
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " unit and fuzz checks\n"
+          }
+        ]
+      },
+      "cond_c_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.875,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.875,
+        "in_generated_answer_rate": 0.7083,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.8333
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.3333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.6667,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.6667,
+            "in_generated_answer_rate": 0.6667
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_top1": 13,
+            "router_deep_idx": [
+              13
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " apoutheast-1\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "ten percent",
+            "ans_tok_ids": [
+              5779,
+              3266
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 1000\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 8,
+            "router_top1": 8,
+            "router_deep_idx": [
+              8
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " ap-southeast-1\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "five hundred rps",
+            "ans_tok_ids": [
+              4236,
+              7739,
+              435,
+              1690
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 500\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 14,
+            "router_top1": 14,
+            "router_deep_idx": [
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "five hundred rps",
+            "ans_tok_ids": [
+              4236,
+              7739,
+              435,
+              1690
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 500\n"
+          }
+        ]
+      },
+      "cond_c_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.875,
+        "router_top1_recall": 0.5,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.875,
+        "in_generated_answer_rate": 0.4583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.6667,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.6667,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 2,
+            "router_deep_idx": [
+              10,
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 14,
+            "router_deep_idx": [
+              2,
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 9,
+            "router_deep_idx": [
+              7,
+              9
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_top1": 10,
+            "router_deep_idx": [
+              13,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 11,
+            "router_top1": 10,
+            "router_deep_idx": [
+              11,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "draining-maintenance",
+            "ans_tok_ids": [
+              73009,
+              1448,
+              24559
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          }
+        ]
+      },
+      "cond_c_hybrid_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.875,
+        "router_top1_recall": 0.5,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.875,
+        "in_generated_answer_rate": 0.4583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.6667,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.6667,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 2,
+            "router_deep_idx": [
+              10,
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 14,
+            "router_deep_idx": [
+              2,
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 9,
+            "router_deep_idx": [
+              7,
+              9
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_top1": 10,
+            "router_deep_idx": [
+              13,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 11,
+            "router_top1": 10,
+            "router_deep_idx": [
+              11,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "draining-maintenance",
+            "ans_tok_ids": [
+              73009,
+              1448,
+              24559
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          }
+        ]
+      }
+    }
+  },
+  "router_stress_p64": null,
+  "router_stress_p128": null,
+  "stage1_train": null,
+  "stage2_train": {
+    "steps": 250,
+    "elapsed_sec": 252.79,
+    "peak_vram_gb": 5.757,
+    "final_loss": 2.9859,
+    "final_ntp": 1.0566,
+    "final_rec": 0.0,
+    "final_mat": 1.3128,
+    "final_sal": 0.0,
+    "final_route": 0.7109,
+    "final_cond_b": 0.0,
+    "final_gate": 0.1689,
+    "final_lm_reg": 0.0
+  },
+  "stage3_eval_holdout_budget": {
+    "rag_immutable": {
+      "extracted_em": 0.2292,
+      "clause_or_prefix_em": 0.0833,
+      "substr_em": 0.3542,
+      "tf_tok_acc": 0.5156,
+      "f1": 0.5501,
+      "by_query_type": {
+        "accepted_override": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.0,
+          "tf_tok_acc": 0.3194,
+          "f1": 0.4127
+        },
+        "neighbor_preservation": {
+          "extracted_em": 0.9167,
+          "clause_or_prefix_em": 0.3333,
+          "substr_em": 0.9167,
+          "tf_tok_acc": 1.0,
+          "f1": 0.9167
+        },
+        "randomized_static_retention": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.5,
+          "tf_tok_acc": 0.5417,
+          "f1": 0.4703
+        },
+        "rejected_proposal": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.0,
+          "tf_tok_acc": 0.2014,
+          "f1": 0.4008
+        }
+      }
+    },
+    "rag_append_errata": {
+      "extracted_em": 0.2292,
+      "clause_or_prefix_em": 0.0833,
+      "substr_em": 0.3542,
+      "tf_tok_acc": 0.6215,
+      "f1": 0.5501,
+      "by_query_type": {
+        "accepted_override": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.0,
+          "tf_tok_acc": 0.4792,
+          "f1": 0.4127
+        },
+        "neighbor_preservation": {
+          "extracted_em": 0.9167,
+          "clause_or_prefix_em": 0.3333,
+          "substr_em": 0.9167,
+          "tf_tok_acc": 1.0,
+          "f1": 0.9167
+        },
+        "randomized_static_retention": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.5,
+          "tf_tok_acc": 0.5417,
+          "f1": 0.4703
+        },
+        "rejected_proposal": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.0,
+          "tf_tok_acc": 0.4653,
+          "f1": 0.4008
+        }
+      }
+    },
+    "rag_direct_patch_oracle_verified": {
+      "extracted_em": 0.7292,
+      "clause_or_prefix_em": 0.2708,
+      "substr_em": 0.8542,
+      "tf_tok_acc": 0.8854,
+      "f1": 0.8467,
+      "by_query_type": {
+        "accepted_override": {
+          "extracted_em": 1.0,
+          "clause_or_prefix_em": 0.4167,
+          "substr_em": 1.0,
+          "tf_tok_acc": 1.0,
+          "f1": 1.0
+        },
+        "neighbor_preservation": {
+          "extracted_em": 0.9167,
+          "clause_or_prefix_em": 0.3333,
+          "substr_em": 0.9167,
+          "tf_tok_acc": 1.0,
+          "f1": 0.9167
+        },
+        "randomized_static_retention": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.5,
+          "tf_tok_acc": 0.5417,
+          "f1": 0.4703
+        },
+        "rejected_proposal": {
+          "extracted_em": 1.0,
+          "clause_or_prefix_em": 0.3333,
+          "substr_em": 1.0,
+          "tf_tok_acc": 1.0,
+          "f1": 1.0
+        }
+      }
+    },
+    "lslc_v3_e2e_gpu": {
+      "extracted_em": 0.6458,
+      "clause_or_prefix_em": 0.6042,
+      "substr_em": 0.6875,
+      "tf_tok_acc": 0.8142,
+      "f1": 0.8037,
+      "by_query_type": {
+        "accepted_override": {
+          "extracted_em": 0.3333,
+          "clause_or_prefix_em": 0.3333,
+          "substr_em": 0.3333,
+          "tf_tok_acc": 0.5556,
+          "f1": 0.627
+        },
+        "neighbor_preservation": {
+          "extracted_em": 1.0,
+          "clause_or_prefix_em": 1.0,
+          "substr_em": 1.0,
+          "tf_tok_acc": 1.0,
+          "f1": 1.0
+        },
+        "randomized_static_retention": {
+          "extracted_em": 0.8333,
+          "clause_or_prefix_em": 0.6667,
+          "substr_em": 1.0,
+          "tf_tok_acc": 1.0,
+          "f1": 0.9646
+        },
+        "rejected_proposal": {
+          "extracted_em": 0.4167,
+          "clause_or_prefix_em": 0.4167,
+          "substr_em": 0.4167,
+          "tf_tok_acc": 0.7014,
+          "f1": 0.623
+        }
+      },
+      "max_prefix_invariance_diff": 0.1328125,
+      "mean_accepted_gate": 0.23305,
+      "mean_rejected_gate": 0.04035
+    },
+    "lslc_v3_shared_bm25": {
+      "extracted_em": 0.7917,
+      "clause_or_prefix_em": 0.7708,
+      "substr_em": 0.8333,
+      "tf_tok_acc": 0.8854,
+      "f1": 0.9026,
+      "by_query_type": {
+        "accepted_override": {
+          "extracted_em": 0.6667,
+          "clause_or_prefix_em": 0.6667,
+          "substr_em": 0.6667,
+          "tf_tok_acc": 0.8125,
+          "f1": 0.881
+        },
+        "neighbor_preservation": {
+          "extracted_em": 1.0,
+          "clause_or_prefix_em": 1.0,
+          "substr_em": 1.0,
+          "tf_tok_acc": 1.0,
+          "f1": 1.0
+        },
+        "randomized_static_retention": {
+          "extracted_em": 0.75,
+          "clause_or_prefix_em": 0.6667,
+          "substr_em": 0.9167,
+          "tf_tok_acc": 0.9167,
+          "f1": 0.908
+        },
+        "rejected_proposal": {
+          "extracted_em": 0.75,
+          "clause_or_prefix_em": 0.75,
+          "substr_em": 0.75,
+          "tf_tok_acc": 0.8125,
+          "f1": 0.8214
+        }
+      },
+      "max_prefix_invariance_diff": 0.1328125,
+      "mean_accepted_gate": 0.23305,
+      "mean_rejected_gate": 0.04035
+    }
+  },
+  "stage3_eval_holdout_symbolic": {
+    "rag_immutable": {
+      "extracted_em": 0.1875,
+      "clause_or_prefix_em": 0.0208,
+      "substr_em": 0.3125,
+      "tf_tok_acc": 0.4359,
+      "f1": 0.5897,
+      "by_query_type": {
+        "accepted_override": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.0,
+          "tf_tok_acc": 0.1905,
+          "f1": 0.5041
+        },
+        "neighbor_preservation": {
+          "extracted_em": 0.6667,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.6667,
+          "tf_tok_acc": 0.7708,
+          "f1": 0.8305
+        },
+        "randomized_static_retention": {
+          "extracted_em": 0.0833,
+          "clause_or_prefix_em": 0.0833,
+          "substr_em": 0.5833,
+          "tf_tok_acc": 0.625,
+          "f1": 0.5451
+        },
+        "rejected_proposal": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.0,
+          "tf_tok_acc": 0.1571,
+          "f1": 0.479
+        }
+      }
+    },
+    "rag_append_errata": {
+      "extracted_em": 0.1875,
+      "clause_or_prefix_em": 0.0208,
+      "substr_em": 0.3125,
+      "tf_tok_acc": 0.4359,
+      "f1": 0.5897,
+      "by_query_type": {
+        "accepted_override": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.0,
+          "tf_tok_acc": 0.1905,
+          "f1": 0.5041
+        },
+        "neighbor_preservation": {
+          "extracted_em": 0.6667,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.6667,
+          "tf_tok_acc": 0.7708,
+          "f1": 0.8305
+        },
+        "randomized_static_retention": {
+          "extracted_em": 0.0833,
+          "clause_or_prefix_em": 0.0833,
+          "substr_em": 0.5833,
+          "tf_tok_acc": 0.625,
+          "f1": 0.5451
+        },
+        "rejected_proposal": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.0,
+          "tf_tok_acc": 0.1571,
+          "f1": 0.479
+        }
+      }
+    },
+    "rag_direct_patch_oracle_verified": {
+      "extracted_em": 0.6042,
+      "clause_or_prefix_em": 0.0208,
+      "substr_em": 0.7292,
+      "tf_tok_acc": 0.7396,
+      "f1": 0.792,
+      "by_query_type": {
+        "accepted_override": {
+          "extracted_em": 0.8333,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.8333,
+          "tf_tok_acc": 0.7885,
+          "f1": 0.8966
+        },
+        "neighbor_preservation": {
+          "extracted_em": 0.6667,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.6667,
+          "tf_tok_acc": 0.7708,
+          "f1": 0.829
+        },
+        "randomized_static_retention": {
+          "extracted_em": 0.0833,
+          "clause_or_prefix_em": 0.0833,
+          "substr_em": 0.5833,
+          "tf_tok_acc": 0.625,
+          "f1": 0.5451
+        },
+        "rejected_proposal": {
+          "extracted_em": 0.8333,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.8333,
+          "tf_tok_acc": 0.7742,
+          "f1": 0.8974
+        }
+      }
+    },
+    "lslc_v3_e2e_gpu": {
+      "extracted_em": 0.4167,
+      "clause_or_prefix_em": 0.3958,
+      "substr_em": 0.5,
+      "tf_tok_acc": 0.5923,
+      "f1": 0.7702,
+      "by_query_type": {
+        "accepted_override": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.0,
+          "tf_tok_acc": 0.1952,
+          "f1": 0.5557
+        },
+        "neighbor_preservation": {
+          "extracted_em": 1.0,
+          "clause_or_prefix_em": 1.0,
+          "substr_em": 1.0,
+          "tf_tok_acc": 1.0,
+          "f1": 1.0
+        },
+        "randomized_static_retention": {
+          "extracted_em": 0.6667,
+          "clause_or_prefix_em": 0.5833,
+          "substr_em": 1.0,
+          "tf_tok_acc": 1.0,
+          "f1": 0.9293
+        },
+        "rejected_proposal": {
+          "extracted_em": 0.0,
+          "clause_or_prefix_em": 0.0,
+          "substr_em": 0.0,
+          "tf_tok_acc": 0.1738,
+          "f1": 0.5959
+        }
+      },
+      "max_prefix_invariance_diff": 0.126953125,
+      "mean_accepted_gate": 0.23012,
+      "mean_rejected_gate": 0.04517
+    },
+    "lslc_v3_shared_bm25": {
+      "extracted_em": 0.5625,
+      "clause_or_prefix_em": 0.5417,
+      "substr_em": 0.6667,
+      "tf_tok_acc": 0.9102,
+      "f1": 0.8401,
+      "by_query_type": {
+        "accepted_override": {
+          "extracted_em": 0.5,
+          "clause_or_prefix_em": 0.5,
+          "substr_em": 0.5,
+          "tf_tok_acc": 0.8982,
+          "f1": 0.8094
+        },
+        "neighbor_preservation": {
+          "extracted_em": 1.0,
+          "clause_or_prefix_em": 1.0,
+          "substr_em": 1.0,
+          "tf_tok_acc": 1.0,
+          "f1": 1.0
+        },
+        "randomized_static_retention": {
+          "extracted_em": 0.6667,
+          "clause_or_prefix_em": 0.5833,
+          "substr_em": 1.0,
+          "tf_tok_acc": 1.0,
+          "f1": 0.9293
+        },
+        "rejected_proposal": {
+          "extracted_em": 0.0833,
+          "clause_or_prefix_em": 0.0833,
+          "substr_em": 0.1667,
+          "tf_tok_acc": 0.7427,
+          "f1": 0.6217
+        }
+      },
+      "max_prefix_invariance_diff": 0.134765625,
+      "mean_accepted_gate": 0.23012,
+      "mean_rejected_gate": 0.04517
+    }
+  },
+  "stage4_oracle_and_breakeven": {
+    "oracle_abc_symbolic": {
+      "A_raw_text_base_frozen": {
+        "k=1": 0.6667,
+        "k=2": 0.75,
+        "k=3": 0.6667,
+        "k=5": 0.4167
+      },
+      "A_raw_text": {
+        "k=1": 0.6667,
+        "k=2": 0.75,
+        "k=3": 0.6667,
+        "k=5": 0.4167
+      },
+      "B_reencode_scratch": {
+        "k=1": 0.8333,
+        "k=2": 1.0,
+        "k=3": 0.9167,
+        "k=5": 0.9167
+      },
+      "C_delta_updater": {
+        "k=1": 0.5,
+        "k=2": 0.9167,
+        "k=3": 0.75,
+        "k=5": 0.75
+      },
+      "a_failed_samples": [
+        {
+          "answer": "active-passive",
+          "gen_text": " The static failover cluster operates in active-passive mode.\n\n",
+          "k_edits": 1
+        },
+        {
+          "answer": "unit and fuzz",
+          "gen_text": " The static CI policy mandates unit and fuzz checks.\n",
+          "k_edits": 1
+        },
+        {
+          "answer": "dual-region-mesh",
+          "gen_text": " The approved deployment state for Altair is\n",
+          "k_edits": 1
+        }
+      ]
+    },
+    "oracle_abc_budget": {
+      "A_raw_text_base_frozen": {
+        "k=1": 0.6667,
+        "k=2": 0.75,
+        "k=3": 0.75,
+        "k=5": 0.6667
+      },
+      "A_raw_text": {
+        "k=1": 0.6667,
+        "k=2": 0.75,
+        "k=3": 0.75,
+        "k=5": 0.6667
+      },
+      "B_reencode_scratch": {
+        "k=1": 0.75,
+        "k=2": 0.8333,
+        "k=3": 0.9167,
+        "k=5": 0.75
+      },
+      "C_delta_updater": {
+        "k=1": 0.5,
+        "k=2": 0.6667,
+        "k=3": 0.8333,
+        "k=5": 0.5833
+      },
+      "a_failed_samples": [
+        {
+          "answer": "five hundred rps",
+          "gen_text": " The static default API rate limit is 500 requests per second.\n",
+          "k_edits": 1
+        },
+        {
+          "answer": "ten percent",
+          "gen_text": " The answer is: \\boxed{10\\%}\n",
+          "k_edits": 1
+        },
+        {
+          "answer": "29M",
+          "gen_text": " The approved budget for Lyra is $29,000,000.\n",
+          "k_edits": 1
+        }
+      ]
+    },
+    "page_scaling": {
+      "P=4": {
+        "clone_ms": 33.449,
+        "in_place_ms": 6.706,
+        "clone_peak_mb": 3459.39,
+        "in_place_peak_mb": 3459.361
+      },
+      "P=128": {
+        "clone_ms": 6.448,
+        "in_place_ms": 6.363,
+        "clone_peak_mb": 3467.086,
+        "in_place_peak_mb": 3468.168
+      },
+      "P=1024": {
+        "clone_ms": 6.319,
+        "in_place_ms": 6.252,
+        "clone_peak_mb": 3533.515,
+        "in_place_peak_mb": 3531.866
+      }
+    },
+    "q_breakeven": {
+      "lora_merged_for_timing": false,
+      "timing_salience_route_weight": 2.0,
+      "single_page_reencode_ms": 8.095,
+      "local_write_ms": 7.341,
+      "contextual_encode_ms": 44.446,
+      "end_to_end_edit_ms": 51.787,
+      "lslc_per_query_ms": 46.997,
+      "lslc_per_query_ms_dense_w0": 46.47,
+      "rag_edit_ms": 0.98,
+      "rag_per_query_ms": 60.162,
+      "full_context_per_query_ms": 438.633,
+      "q_star_vs_rag_bm25": 4,
+      "q_star_vs_full_context": 1,
+      "by_q": {
+        "Q=1": {
+          "lslc_total_ms": 98.784,
+          "rag_bm25_total_ms": 61.142,
+          "full_context_total_ms": 438.633,
+          "speedup_vs_rag_x": 0.619,
+          "speedup_vs_full_x": 4.44
+        },
+        "Q=10": {
+          "lslc_total_ms": 521.753,
+          "rag_bm25_total_ms": 602.604,
+          "full_context_total_ms": 4386.328,
+          "speedup_vs_rag_x": 1.155,
+          "speedup_vs_full_x": 8.407
+        },
+        "Q=100": {
+          "lslc_total_ms": 4751.445,
+          "rag_bm25_total_ms": 6017.221,
+          "full_context_total_ms": 43863.281,
+          "speedup_vs_rag_x": 1.266,
+          "speedup_vs_full_x": 9.232
+        }
+      },
+      "by_k_deep": {
+        "k_deep=2": {
+          "k_deep": 2,
+          "k_skim": 2,
+          "lslc_prefix_tokens": 116,
+          "rag_prefix_tokens": 512,
+          "lslc_per_query_ms": 47.864,
+          "rag_per_query_ms": 58.886,
+          "per_query_speedup_vs_rag_x": 1.23,
+          "q_star_vs_rag_bm25": 5,
+          "by_q": {
+            "Q=1": {
+              "lslc_total_ms": 99.651,
+              "rag_bm25_total_ms": 59.866,
+              "speedup_vs_rag_x": 0.601
+            },
+            "Q=10": {
+              "lslc_total_ms": 530.428,
+              "rag_bm25_total_ms": 589.842,
+              "speedup_vs_rag_x": 1.112
+            },
+            "Q=100": {
+              "lslc_total_ms": 4838.191,
+              "rag_bm25_total_ms": 5889.602,
+              "speedup_vs_rag_x": 1.217
+            }
+          }
+        },
+        "k_deep=8": {
+          "k_deep": 8,
+          "k_skim": 2,
+          "lslc_prefix_tokens": 398,
+          "rag_prefix_tokens": 2048,
+          "lslc_per_query_ms": 47.832,
+          "rag_per_query_ms": 213.648,
+          "per_query_speedup_vs_rag_x": 4.467,
+          "q_star_vs_rag_bm25": 1,
+          "by_q": {
+            "Q=1": {
+              "lslc_total_ms": 99.619,
+              "rag_bm25_total_ms": 214.627,
+              "speedup_vs_rag_x": 2.154
+            },
+            "Q=10": {
+              "lslc_total_ms": 530.102,
+              "rag_bm25_total_ms": 2137.455,
+              "speedup_vs_rag_x": 4.032
+            },
+            "Q=100": {
+              "lslc_total_ms": 4834.94,
+              "rag_bm25_total_ms": 21365.737,
+              "speedup_vs_rag_x": 4.419
+            }
+          }
+        }
+      }
+    },
+    "analytical_memory_4k": {
+      "num_tokens": 4096,
+      "pages": 16,
+      "k_toc": 12,
+      "k_skim": 2,
+      "k_deep": 2,
+      "active_dense_tokens": 68,
+      "active_exact_tokens": 48,
+      "active_total_tokens": 116,
+      "kv_kib_per_token": 112.0,
+      "book_mib": 0.1875,
+      "exact_bank_mib": 0.0029296875,
+      "active_kv_mib": 12.6875,
+      "lslc_net_mib": 12.8779296875,
+      "full_fp16_kv_mib": 448.0,
+      "int4_kv_mib": 112.0,
+      "h2o_20pct_mib": 89.60000038146973,
+      "ratio_vs_fp16": 34.78820050049291,
+      "ratio_vs_int4": 8.697050125123228
+    },
+    "sample_page_size": 256
+  }
+}

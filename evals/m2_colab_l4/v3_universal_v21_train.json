@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0-universal-checkpoint",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/v3_g2_cond_b_ckpt.safetensors",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "saved_checkpoint": "/content/lslc_results/lslc_universal_v21_qwen3_1.7b.safetensors",
+  "checkpoint_sha256": "bd1b2183377a0f9656bbebd3ea57d5e74024677d124a4a2a6d33a669e379469b",
+  "config": {
+    "page_size": 256,
+    "k_exact": 48,
+    "salience_span_len": 16,
+    "router_mode": "content_attn",
+    "salience_mode": "learned_surprisal",
+    "delta_pooling_mode": "cross_attn",
+    "contextual_edit_layer": 14,
+    "exact_bank_attenuation": "none",
+    "frozen_mode_a_lora_r": 0,
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "salience_route_weight": 1.5
+  },
+  "train": {
+    "steps": 400,
+    "elapsed_sec": 77.21,
+    "python_corpus_source": "hf_ungated:Nan-Do/code-search-net-python",
+    "num_python_snippets": 128,
+    "domain_weights": {
+      "prose_revision": 0.3,
+      "span16_salience": 0.25,
+      "chatml_qa_dialogue": 0.25,
+      "natural_python": 0.2
+    },
+    "domain_stats": {
+      "prose_revision": {
+        "steps": 122,
+        "initial_loss": 0.3292,
+        "final_loss": 0.0035,
+        "mean_loss": 0.3147
+      },
+      "span16_salience": {
+        "steps": 103,
+        "initial_loss": 2.2419,
+        "final_loss": 0.068,
+        "mean_loss": 0.2334
+      },
+      "chatml_qa_dialogue": {
+        "steps": 94,
+        "initial_loss": 7.541,
+        "final_loss": 1.1031,
+        "mean_loss": 2.8954
+      },
+      "natural_python": {
+        "steps": 81,
+        "initial_loss": 14.908,
+        "final_loss": 0.1241,
+        "mean_loss": 2.9226
+      }
+    },
+    "encoder_frozen": false,
+    "encoder_lr": 1.5e-05,
+    "multiscale_page_counts": {
+      "8": 101,
+      "24": 110,
+      "48": 86
+    },
+    "python_mode_counts": {
+      "qa": 49,
+      "code_fence": 32
+    },
+    "gate_bce_steps": 56,
+    "mean_gate_bce_loss": 0.4713,
+    "disjointness_audit": {
+      "verified": true,
+      "checked_items_by_domain": {
+        "prose_and_state_revision": 80,
+        "span16_factual_clauses": 160,
+        "wikitext_qa_and_dialogue": 80,
+        "natural_python_code": 64
+      },
+      "forbidden_term_counts": {
+        "gate2_holdout": 26,
+        "gate3_eval_repo": 78,
+        "ruler_eval": 8,
+        "longmemeval_eval": 7
+      }
+    },
+    "max_frozen_param_diff": 0.0,
+    "max_toc_diff": 0.0,
+    "special_tokens_in_bank": 0,
+    "trainable_lslc_params": 41506827
+  }
+}

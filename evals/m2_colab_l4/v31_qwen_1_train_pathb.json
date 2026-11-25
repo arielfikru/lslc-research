@@ -1,0 +1,76 @@
+{
+  "version": "3.1.0-path-tiebreaker-audit-hardened",
+  "git_sha": "unknown",
+  "git_dirty": null,
+  "checkpoint_sha256": null,
+  "pathb_checkpoint_sha256": "94cc5270b441a55aa87f8d99af8ca248d1f0ac465cf4aa4852acb92f915613d0",
+  "trainable_param_breakdown": {
+    "salience_gate_params": 182533,
+    "edit_gate_params": 143874,
+    "hw_coord_embed_params": 0,
+    "layered_latent_encoder_params": 0,
+    "spatial_projector_params": 0,
+    "delta_updater_params": 0,
+    "total_pathb_trainable_params": 326407,
+    "bge_router_frozen_params": 33360000,
+    "frozen_llm_params": 1720574976
+  },
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/lslc_universal_v2_qwen3_1.7b.safetensors",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "pathb_checkpoint": null,
+  "saved_pathb_checkpoint": {
+    "path": "/content/lslc_results/lslc_pathb_qwen3_1.7b.safetensors",
+    "bytes": 1307884,
+    "sha256": "94cc5270b441a55aa87f8d99af8ca248d1f0ac465cf4aa4852acb92f915613d0",
+    "num_tensors": 25
+  },
+  "config": {
+    "page_size": 256,
+    "k_exact": 48,
+    "salience_span_len": 16,
+    "salience_route_weight": 1.5,
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "seeds": [
+      2026,
+      2027,
+      2028
+    ],
+    "span_aligned_overwrite": true,
+    "true_two_bank_layout": true,
+    "edit_gate_hidden_dim": 64
+  },
+  "train_pathb_qwen": {
+    "elapsed_sec": 24.04,
+    "edit_gate_layer": 14,
+    "edit_gate_steps": 200,
+    "num_edit_turns": 384,
+    "initial_loss": 0.6999,
+    "final_loss": 0.0003,
+    "train_acc": 1.0,
+    "max_frozen_param_diff": 0.0,
+    "trainable_param_breakdown": {
+      "salience_gate_params": 182533,
+      "edit_gate_params": 143874,
+      "hw_coord_embed_params": 0,
+      "layered_latent_encoder_params": 0,
+      "spatial_projector_params": 0,
+      "delta_updater_params": 0,
+      "total_pathb_trainable_params": 326407,
+      "bge_router_frozen_params": 33360000,
+      "frozen_llm_params": 1720574976
+    }
+  },
+  "gate2_tiebreaker_n200": null,
+  "coding_tiebreaker_n24": null,
+  "ruler_bge_and_unified_profile": null,
+  "ood_kv_baselines": null,
+  "longmemeval_discrete_probe": null,
+  "ablation_edit_masked_old": null
+}

@@ -1,0 +1,1270 @@
+{
+  "version": "3.0.0-gerbang4-community",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/v3_g3_aligned_ckpt.safetensors",
+    "missing_keys": [
+      "router.q_ctx_gate.weight",
+      "router.q_ctx_gate.bias",
+      "router.q_ctx_mlp.0.weight",
+      "router.q_ctx_mlp.0.bias",
+      "router.q_ctx_mlp.2.weight",
+      "router.q_ctx_mlp.2.bias",
+      "router.q_ctx_mlp.4.weight",
+      "router.q_ctx_mlp.4.bias",
+      "router.k_ctx_mlp.0.weight",
+      "router.k_ctx_mlp.0.bias",
+      "router.k_ctx_mlp.2.weight",
+      "router.k_ctx_mlp.2.bias",
+      "router.k_ctx_mlp.4.weight",
+      "router.k_ctx_mlp.4.bias",
+      "router.k_toc_mlp.0.weight",
+      "router.k_toc_mlp.0.bias",
+      "router.k_toc_mlp.2.weight",
+      "router.k_toc_mlp.2.bias",
+      "router.k_toc_mlp.4.weight",
+      "router.k_toc_mlp.4.bias",
+      "router.k_bank_mlp.0.weight",
+      "router.k_bank_mlp.0.bias",
+      "router.k_bank_mlp.2.weight",
+      "router.k_bank_mlp.2.bias",
+      "router.k_bank_mlp.4.weight",
+      "router.k_bank_mlp.4.bias"
+    ],
+    "unexpected_keys": []
+  },
+  "save_checkpoint": "/content/lslc_results/v3_g4_p4a_4span_ckpt.safetensors",
+  "config": {
+    "page_size": 256,
+    "k_exact": 24,
+    "salience_span_len": 1,
+    "contextual_page_spans": 4,
+    "router_mode": "content_attn",
+    "salience_mode": "learned_surprisal",
+    "delta_pooling_mode": "cross_attn",
+    "use_contextual_query_encoding": true,
+    "contextual_query_layer": 14,
+    "lslc_k_deep": 4,
+    "lslc_k_skim": 2,
+    "chapter_size": 16
+  },
+  "pilar4a": {
+    "step0_zero_shot_eval": {
+      "P=16": {
+        "num_episodes": 72,
+        "num_pages": 16,
+        "num_distractor_topics": 7,
+        "peak_vram_mb": 4100.76,
+        "bm25_cpu": {
+          "top1_recall": 0.0556,
+          "top1_ci95": [
+            0.0218,
+            0.1343
+          ],
+          "top2_recall": 0.1389,
+          "top2_ci95": [
+            0.0772,
+            0.2371
+          ],
+          "per_query_ms": 3.399
+        },
+        "lslc_dense_w0": {
+          "top1_recall": 0.0972,
+          "top1_ci95": [
+            0.0479,
+            0.1874
+          ],
+          "top2_recall": 0.1667,
+          "top2_ci95": [
+            0.098,
+            0.2691
+          ],
+          "per_query_ms": 6.907
+        },
+        "lslc_hybrid_w2": {
+          "top1_recall": 0.0833,
+          "top1_ci95": [
+            0.0388,
+            0.1701
+          ],
+          "top2_recall": 0.1667,
+          "top2_ci95": [
+            0.098,
+            0.2691
+          ],
+          "per_query_ms": 7.447
+        }
+      },
+      "P=64": {
+        "num_episodes": 72,
+        "num_pages": 64,
+        "num_distractor_topics": 15,
+        "peak_vram_mb": 4600.7,
+        "bm25_cpu": {
+          "top1_recall": 0.0278,
+          "top1_ci95": [
+            0.0077,
+            0.0957
+          ],
+          "top2_recall": 0.0694,
+          "top2_ci95": [
+            0.03,
+            0.1525
+          ],
+          "per_query_ms": 8.255
+        },
+        "lslc_dense_w0": {
+          "top1_recall": 0.0139,
+          "top1_ci95": [
+            0.0025,
+            0.0746
+          ],
+          "top2_recall": 0.0417,
+          "top2_ci95": [
+            0.0143,
+            0.1155
+          ],
+          "per_query_ms": 6.59
+        },
+        "lslc_hybrid_w2": {
+          "top1_recall": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.0507
+          ],
+          "top2_recall": 0.0139,
+          "top2_ci95": [
+            0.0025,
+            0.0746
+          ],
+          "per_query_ms": 7.546
+        }
+      }
+    },
+    "train": {
+      "steps": 300,
+      "batch_size": 8,
+      "lr": 0.0002,
+      "num_cached_items": 496,
+      "num_paraphrase_items": 192,
+      "num_wikitext_items": 256,
+      "num_entity_items": 48,
+      "elapsed_sec": 12.64,
+      "step1_loss": 6.0547,
+      "last_step_loss": 1.0902,
+      "initial_loss_mean": 4.3479,
+      "final_loss_mean": 1.1418,
+      "final_intra_top1": 0.9875,
+      "final_inbatch_top1": 0.8812,
+      "trainable_router_params": 3440645,
+      "max_frozen_param_diff": 0.0
+    },
+    "zero_overlap_eval": {
+      "P=16": {
+        "num_episodes": 72,
+        "num_pages": 16,
+        "num_distractor_topics": 7,
+        "peak_vram_mb": 3523.65,
+        "bm25_cpu": {
+          "top1_recall": 0.0556,
+          "top1_ci95": [
+            0.0218,
+            0.1343
+          ],
+          "top2_recall": 0.1389,
+          "top2_ci95": [
+            0.0772,
+            0.2371
+          ],
+          "per_query_ms": 3.399
+        },
+        "lslc_dense_w0": {
+          "top1_recall": 0.1806,
+          "top1_ci95": [
+            0.1087,
+            0.2848
+          ],
+          "top2_recall": 0.2917,
+          "top2_ci95": [
+            0.1994,
+            0.4051
+          ],
+          "per_query_ms": 6.043
+        },
+        "lslc_hybrid_w2": {
+          "top1_recall": 0.1528,
+          "top1_ci95": [
+            0.0875,
+            0.2532
+          ],
+          "top2_recall": 0.2917,
+          "top2_ci95": [
+            0.1994,
+            0.4051
+          ],
+          "per_query_ms": 7.488
+        }
+      },
+      "P=64": {
+        "num_episodes": 72,
+        "num_pages": 64,
+        "num_distractor_topics": 15,
+        "peak_vram_mb": 3531.91,
+        "bm25_cpu": {
+          "top1_recall": 0.0278,
+          "top1_ci95": [
+            0.0077,
+            0.0957
+          ],
+          "top2_recall": 0.0694,
+          "top2_ci95": [
+            0.03,
+            0.1525
+          ],
+          "per_query_ms": 8.255
+        },
+        "lslc_dense_w0": {
+          "top1_recall": 0.0556,
+          "top1_ci95": [
+            0.0218,
+            0.1343
+          ],
+          "top2_recall": 0.125,
+          "top2_ci95": [
+            0.0672,
+            0.2208
+          ],
+          "per_query_ms": 6.024
+        },
+        "lslc_hybrid_w2": {
+          "top1_recall": 0.0139,
+          "top1_ci95": [
+            0.0025,
+            0.0746
+          ],
+          "top2_recall": 0.0833,
+          "top2_ci95": [
+            0.0388,
+            0.1701
+          ],
+          "per_query_ms": 7.479
+        }
+      }
+    },
+    "router_stress_regression": {
+      "router_stress_p64": {
+        "num_pages": 64,
+        "num_entity_pages": 12,
+        "dense_w0_top1_recall": 0.0833,
+        "dense_w0_top2_recall": 0.1667,
+        "hybrid_w2_top1_recall": 1.0,
+        "hybrid_w2_top2_recall": 1.0
+      },
+      "router_stress_p128": {
+        "num_pages": 128,
+        "num_entity_pages": 20,
+        "dense_w0_top1_recall": 0.05,
+        "dense_w0_top2_recall": 0.1,
+        "hybrid_w2_top1_recall": 0.9,
+        "hybrid_w2_top2_recall": 0.9
+      }
+    }
+  },
+  "ruler": null,
+  "longmemeval": null,
+  "diag_probe": null,
+  "span_salience_probe": {
+    "context_length": 4096,
+    "configs": {
+      "span8_k24": {
+        "salience_span_len": 8,
+        "k_exact": 24,
+        "g2_checkpoint": {
+          "path": "/content/v3_g2_cond_b_ckpt.safetensors",
+          "missing_keys": [],
+          "unexpected_keys": []
+        },
+        "exact_bank_audit": {
+          "overall": {
+            "num_episodes": 8,
+            "all_7_digits_contiguous_rate": 0.0,
+            "all_7_digits_multiset_rate": 0.0,
+            "digit_token_recall_mean": 0.4821,
+            "key_in_bank_rate": 0.125,
+            "special_tokens_in_bank_total": 0
+          },
+          "by_task": {
+            "s_niah": {
+              "num_episodes": 4,
+              "all_7_digits_contiguous_rate": 0.0,
+              "all_7_digits_multiset_rate": 0.0,
+              "digit_token_recall_mean": 0.4643,
+              "key_in_bank_rate": 0.25,
+              "special_tokens_in_bank_total": 0,
+              "examples": [
+                {
+                  "gold": "2753069",
+                  "key": "amber-88",
+                  "all_7_digits_contiguous": 0.0,
+                  "digit_token_recall": 0.4286,
+                  "bank_decoded": "069.\n time riff was sampled \" Thirty @-@ Eight Snub @-@ platform video game Tony Hawk"
+                },
+                {
+                  "gold": "3747839",
+                  "key": "basalt-99",
+                  "all_7_digits_contiguous": 0.0,
+                  "digit_token_recall": 0.7143,
+                  "bank_decoded": " island has several Neolithic burial chamber sites47839.\n the island o da Papa Men by Vagaland"
+                }
+              ]
+            },
+            "mk_niah": {
+              "num_episodes": 4,
+              "all_7_digits_contiguous_rate": 0.0,
+              "all_7_digits_multiset_rate": 0.0,
+              "digit_token_recall_mean": 0.5,
+              "key_in_bank_rate": 0.0,
+              "special_tokens_in_bank_total": 0,
+              "examples": [
+                {
+                  "gold": "4639262",
+                  "key": "ember-node-04",
+                  "all_7_digits_contiguous": 0.0,
+                  "digit_token_recall": 0.7143,
+                  "bank_decoded": "9262.\ngraded Beatriz492.\n-@ E on7454.\n San Telmo"
+                },
+                {
+                  "gold": "5979380",
+                  "key": "agate-node-45",
+                  "all_7_digits_contiguous": 0.0,
+                  "digit_token_recall": 0.5714,
+                  "bank_decoded": " magic numbers for falcon-node-0 numbers for pebble-node-3780.\n H. gammarus"
+                }
+              ]
+            }
+          }
+        },
+        "ruler_modes": {
+          "plain_stage1_full": {
+            "overall": {
+              "num_episodes": 8,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.3244
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.3244
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  0.4292,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 210.0,
+              "memory_update_ms": 14.1245,
+              "per_query_ms": 472.0785,
+              "peak_vram_mb": 3738.42,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.75
+            },
+            "by_task": {
+              "s_niah": {
+                "num_episodes": 4,
+                "extracted_em": 0.0,
+                "token_f1": 0.0,
+                "substring_match": 0.0,
+                "token_recall": 0.0,
+                "ci95": {
+                  "extracted_em": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_f1": [
+                    0.0,
+                    0.0
+                  ],
+                  "substring_match": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_recall": [
+                    0.0,
+                    0.0
+                  ],
+                  "router_hit_rate": [
+                    1.0,
+                    1.0
+                  ]
+                },
+                "active_prefix_tokens": 210.0,
+                "memory_update_ms": 15.801,
+                "per_query_ms": 495.166,
+                "peak_vram_mb": 3738.3,
+                "max_toc_diff": 0.0,
+                "router_hit_rate": 1.0,
+                "samples": [
+                  {
+                    "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                    "gold": "2753069",
+                    "pred": " 3097-8879\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                    "gold": "3747839",
+                    "pred": " 478397\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                    "gold": "7414158",
+                    "pred": " 9741-7823\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for delta-35 mentioned in the provided text?",
+                    "gold": "5701630",
+                    "pred": " 35-7811\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  }
+                ]
+              },
+              "mk_niah": {
+                "num_episodes": 4,
+                "extracted_em": 0.0,
+                "token_f1": 0.0,
+                "substring_match": 0.0,
+                "token_recall": 0.0,
+                "ci95": {
+                  "extracted_em": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_f1": [
+                    0.0,
+                    0.0
+                  ],
+                  "substring_match": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_recall": [
+                    0.0,
+                    0.0
+                  ],
+                  "router_hit_rate": [
+                    0.0,
+                    1.0
+                  ]
+                },
+                "active_prefix_tokens": 210.0,
+                "memory_update_ms": 12.448,
+                "per_query_ms": 448.991,
+                "peak_vram_mb": 3738.42,
+                "max_toc_diff": 0.0,
+                "router_hit_rate": 0.5,
+                "samples": [
+                  {
+                    "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                    "gold": "4639262",
+                    "pred": " 3531\n",
+                    "router_hit": 0.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                    "gold": "5979380",
+                    "pred": " 4578976321\n",
+                    "router_hit": 0.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                    "gold": "1993560",
+                    "pred": " 47-305960\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for delta-node-03 mentioned in the provided text?",
+                    "gold": "9130257",
+                    "pred": " 7647\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  }
+                ]
+              }
+            }
+          },
+          "chatml_exact_only": {
+            "overall": {
+              "num_episodes": 8,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.3244
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.3244
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  0.4292,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 96.0,
+              "memory_update_ms": 14.1245,
+              "per_query_ms": 361.1533,
+              "peak_vram_mb": 3700.41,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.75
+            },
+            "by_task": {
+              "s_niah": {
+                "num_episodes": 4,
+                "extracted_em": 0.0,
+                "token_f1": 0.0,
+                "substring_match": 0.0,
+                "token_recall": 0.0,
+                "ci95": {
+                  "extracted_em": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_f1": [
+                    0.0,
+                    0.0
+                  ],
+                  "substring_match": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_recall": [
+                    0.0,
+                    0.0
+                  ],
+                  "router_hit_rate": [
+                    1.0,
+                    1.0
+                  ]
+                },
+                "active_prefix_tokens": 96.0,
+                "memory_update_ms": 15.801,
+                "per_query_ms": 374.216,
+                "peak_vram_mb": 3700.0,
+                "max_toc_diff": 0.0,
+                "router_hit_rate": 1.0,
+                "samples": [
+                  {
+                    "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                    "gold": "2753069",
+                    "pred": "20",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                    "gold": "3747839",
+                    "pred": "The special magic number for basalt-99 is not mentioned in the provided text.",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                    "gold": "7414158",
+                    "pred": "cedar-47",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for delta-35 mentioned in the provided text?",
+                    "gold": "5701630",
+                    "pred": "delta-35",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  }
+                ]
+              },
+              "mk_niah": {
+                "num_episodes": 4,
+                "extracted_em": 0.0,
+                "token_f1": 0.0,
+                "substring_match": 0.0,
+                "token_recall": 0.0,
+                "ci95": {
+                  "extracted_em": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_f1": [
+                    0.0,
+                    0.0
+                  ],
+                  "substring_match": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_recall": [
+                    0.0,
+                    0.0
+                  ],
+                  "router_hit_rate": [
+                    0.0,
+                    1.0
+                  ]
+                },
+                "active_prefix_tokens": 96.0,
+                "memory_update_ms": 12.448,
+                "per_query_ms": 348.0905,
+                "peak_vram_mb": 3700.41,
+                "max_toc_diff": 0.0,
+                "router_hit_rate": 0.5,
+                "samples": [
+                  {
+                    "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                    "gold": "4639262",
+                    "pred": "5331",
+                    "router_hit": 0.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                    "gold": "5979380",
+                    "pred": "special magic numbers for agate-node-45 is: 47677.",
+                    "router_hit": 0.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                    "gold": "1993560",
+                    "pred": "da tide",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for delta-node-03 mentioned in the provided text?",
+                    "gold": "9130257",
+                    "pred": "95",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "router_stress_g2": {
+          "router_stress_p64": {
+            "num_pages": 64,
+            "num_entity_pages": 12,
+            "dense_w0_top1_recall": 0.0833,
+            "dense_w0_top2_recall": 0.25,
+            "hybrid_w2_top1_recall": 0.9167,
+            "hybrid_w2_top2_recall": 0.9167
+          },
+          "router_stress_p128": {
+            "num_pages": 128,
+            "num_entity_pages": 20,
+            "dense_w0_top1_recall": 0.05,
+            "dense_w0_top2_recall": 0.1,
+            "hybrid_w2_top1_recall": 0.95,
+            "hybrid_w2_top2_recall": 0.95
+          }
+        },
+        "router_stress_active_router": {
+          "router_stress_p64": {
+            "num_pages": 64,
+            "num_entity_pages": 12,
+            "dense_w0_top1_recall": 0.1667,
+            "dense_w0_top2_recall": 0.1667,
+            "hybrid_w2_top1_recall": 0.9167,
+            "hybrid_w2_top2_recall": 0.9167
+          },
+          "router_stress_p128": {
+            "num_pages": 128,
+            "num_entity_pages": 20,
+            "dense_w0_top1_recall": 0.1,
+            "dense_w0_top2_recall": 0.15,
+            "hybrid_w2_top1_recall": 0.9,
+            "hybrid_w2_top2_recall": 0.9
+          }
+        }
+      },
+      "span8_k48": {
+        "salience_span_len": 8,
+        "k_exact": 48,
+        "g2_checkpoint": {
+          "path": "/content/v3_g2_cond_b_ckpt.safetensors",
+          "missing_keys": [],
+          "unexpected_keys": []
+        },
+        "exact_bank_audit": {
+          "overall": {
+            "num_episodes": 8,
+            "all_7_digits_contiguous_rate": 0.0,
+            "all_7_digits_multiset_rate": 0.0,
+            "digit_token_recall_mean": 0.6429,
+            "key_in_bank_rate": 0.375,
+            "special_tokens_in_bank_total": 0
+          },
+          "by_task": {
+            "s_niah": {
+              "num_episodes": 4,
+              "all_7_digits_contiguous_rate": 0.0,
+              "all_7_digits_multiset_rate": 0.0,
+              "digit_token_recall_mean": 0.6429,
+              "key_in_bank_rate": 0.25,
+              "special_tokens_in_bank_total": 0,
+              "examples": [
+                {
+                  "gold": "2753069",
+                  "key": "amber-88",
+                  "all_7_digits_contiguous": 0.0,
+                  "digit_token_recall": 0.5714,
+                  "bank_decoded": "5 Iraq War documentary Soundtrack to War069.\n time riff was sampled song \" She Watch Channel Zero ? ! \" Thirty @-@ Eight Snub @-@ platform video game Tony Hawk Slayer tribute band called Dead Skin Mask released"
+                },
+                {
+                  "gold": "3747839",
+                  "key": "basalt-99",
+                  "all_7_digits_contiguous": 0.0,
+                  "digit_token_recall": 0.7143,
+                  "bank_decoded": " island has several Neolithic burial chamber sites special magic numbers for basalt-947839.\n the islandetland Mainland . Crofting \n\n Numerous shipwrecks have occurred o da Papa Men by Vagaland"
+                }
+              ]
+            },
+            "mk_niah": {
+              "num_episodes": 4,
+              "all_7_digits_contiguous_rate": 0.0,
+              "all_7_digits_multiset_rate": 0.0,
+              "digit_token_recall_mean": 0.6429,
+              "key_in_bank_rate": 0.5,
+              "special_tokens_in_bank_total": 0,
+              "examples": [
+                {
+                  "gold": "4639262",
+                  "key": "ember-node-04",
+                  "all_7_digits_contiguous": 0.0,
+                  "digit_token_recall": 0.8571,
+                  "bank_decoded": "9262.\ngraded Beatriz8.\n remnants persisted for several more hours magic numbers for kelp-node-3492.\n-@ E on special magic numbers for dusk-node-47454.\n San Telmo"
+                },
+                {
+                  "gold": "5979380",
+                  "key": "agate-node-45",
+                  "all_7_digits_contiguous": 0.0,
+                  "digit_token_recall": 0.8571,
+                  "bank_decoded": " magic numbers for falcon-node-0971.\n \n\n The rostr numbers for pebble-node-37 white or white @-@ tipped . agate-node-45 is:80.\n H. gammarus"
+                }
+              ]
+            }
+          }
+        },
+        "ruler_modes": {
+          "plain_stage1_full": {
+            "overall": {
+              "num_episodes": 8,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.3244
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.3244
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  0.63,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 306.0,
+              "memory_update_ms": 14.0499,
+              "per_query_ms": 506.5141,
+              "peak_vram_mb": 3779.11,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.875
+            },
+            "by_task": {
+              "s_niah": {
+                "num_episodes": 4,
+                "extracted_em": 0.0,
+                "token_f1": 0.0,
+                "substring_match": 0.0,
+                "token_recall": 0.0,
+                "ci95": {
+                  "extracted_em": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_f1": [
+                    0.0,
+                    0.0
+                  ],
+                  "substring_match": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_recall": [
+                    0.0,
+                    0.0
+                  ],
+                  "router_hit_rate": [
+                    1.0,
+                    1.0
+                  ]
+                },
+                "active_prefix_tokens": 306.0,
+                "memory_update_ms": 14.2628,
+                "per_query_ms": 389.324,
+                "peak_vram_mb": 3778.9,
+                "max_toc_diff": 0.0,
+                "router_hit_rate": 1.0,
+                "samples": [
+                  {
+                    "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                    "gold": "2753069",
+                    "pred": " 765-200\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                    "gold": "3747839",
+                    "pred": " 947839\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                    "gold": "7414158",
+                    "pred": " 474158\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for delta-35 mentioned in the provided text?",
+                    "gold": "5701630",
+                    "pred": " 630\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  }
+                ]
+              },
+              "mk_niah": {
+                "num_episodes": 4,
+                "extracted_em": 0.0,
+                "token_f1": 0.0,
+                "substring_match": 0.0,
+                "token_recall": 0.0,
+                "ci95": {
+                  "extracted_em": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_f1": [
+                    0.0,
+                    0.0
+                  ],
+                  "substring_match": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_recall": [
+                    0.0,
+                    0.0
+                  ],
+                  "router_hit_rate": [
+                    0.26,
+                    1.0
+                  ]
+                },
+                "active_prefix_tokens": 306.0,
+                "memory_update_ms": 13.837,
+                "per_query_ms": 623.7043,
+                "peak_vram_mb": 3779.11,
+                "max_toc_diff": 0.0,
+                "router_hit_rate": 0.75,
+                "samples": [
+                  {
+                    "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                    "gold": "4639262",
+                    "pred": " 39.478672\n",
+                    "router_hit": 0.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                    "gold": "5979380",
+                    "pred": " 80.70.34.12.12.12.12.12.12.12.1",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                    "gold": "1993560",
+                    "pred": " 47\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for delta-node-03 mentioned in the provided text?",
+                    "gold": "9130257",
+                    "pred": " 468\n",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  }
+                ]
+              }
+            }
+          },
+          "chatml_exact_only": {
+            "overall": {
+              "num_episodes": 8,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.3244
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.3244
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  0.63,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 192.0,
+              "memory_update_ms": 14.0499,
+              "per_query_ms": 185.1425,
+              "peak_vram_mb": 3740.51,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.875
+            },
+            "by_task": {
+              "s_niah": {
+                "num_episodes": 4,
+                "extracted_em": 0.0,
+                "token_f1": 0.0,
+                "substring_match": 0.0,
+                "token_recall": 0.0,
+                "ci95": {
+                  "extracted_em": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_f1": [
+                    0.0,
+                    0.0
+                  ],
+                  "substring_match": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_recall": [
+                    0.0,
+                    0.0
+                  ],
+                  "router_hit_rate": [
+                    1.0,
+                    1.0
+                  ]
+                },
+                "active_prefix_tokens": 192.0,
+                "memory_update_ms": 14.2628,
+                "per_query_ms": 229.2032,
+                "peak_vram_mb": 3739.69,
+                "max_toc_diff": 0.0,
+                "router_hit_rate": 1.0,
+                "samples": [
+                  {
+                    "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                    "gold": "2753069",
+                    "pred": "9",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                    "gold": "3747839",
+                    "pred": "947839",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                    "gold": "7414158",
+                    "pred": "474158",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for delta-35 mentioned in the provided text?",
+                    "gold": "5701630",
+                    "pred": "630",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  }
+                ]
+              },
+              "mk_niah": {
+                "num_episodes": 4,
+                "extracted_em": 0.0,
+                "token_f1": 0.0,
+                "substring_match": 0.0,
+                "token_recall": 0.0,
+                "ci95": {
+                  "extracted_em": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_f1": [
+                    0.0,
+                    0.0
+                  ],
+                  "substring_match": [
+                    0.0,
+                    0.4899
+                  ],
+                  "token_recall": [
+                    0.0,
+                    0.0
+                  ],
+                  "router_hit_rate": [
+                    0.26,
+                    1.0
+                  ]
+                },
+                "active_prefix_tokens": 192.0,
+                "memory_update_ms": 13.837,
+                "per_query_ms": 141.0817,
+                "peak_vram_mb": 3740.51,
+                "max_toc_diff": 0.0,
+                "router_hit_rate": 0.75,
+                "samples": [
+                  {
+                    "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                    "gold": "4639262",
+                    "pred": "39",
+                    "router_hit": 0.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                    "gold": "5979380",
+                    "pred": "80",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                    "gold": "1993560",
+                    "pred": "47",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  },
+                  {
+                    "question": "What is the special magic number for delta-node-03 mentioned in the provided text?",
+                    "gold": "9130257",
+                    "pred": "73",
+                    "router_hit": 1.0,
+                    "extracted_em": 0.0,
+                    "token_f1": 0.0,
+                    "substring_match": 0.0,
+                    "token_recall": 0.0
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "router_stress_g2": {
+          "router_stress_p64": {
+            "num_pages": 64,
+            "num_entity_pages": 12,
+            "dense_w0_top1_recall": 0.0833,
+            "dense_w0_top2_recall": 0.1667,
+            "hybrid_w2_top1_recall": 1.0,
+            "hybrid_w2_top2_recall": 1.0
+          },
+          "router_stress_p128": {
+            "num_pages": 128,
+            "num_entity_pages": 20,
+            "dense_w0_top1_recall": 0.05,
+            "dense_w0_top2_recall": 0.1,
+            "hybrid_w2_top1_recall": 1.0,
+            "hybrid_w2_top2_recall": 1.0
+          }
+        },
+        "router_stress_active_router": {
+          "router_stress_p64": {
+            "num_pages": 64,
+            "num_entity_pages": 12,
+            "dense_w0_top1_recall": 0.0833,
+            "dense_w0_top2_recall": 0.1667,
+            "hybrid_w2_top1_recall": 1.0,
+            "hybrid_w2_top2_recall": 1.0
+          },
+          "router_stress_p128": {
+            "num_pages": 128,
+            "num_entity_pages": 20,
+            "dense_w0_top1_recall": 0.05,
+            "dense_w0_top2_recall": 0.15,
+            "hybrid_w2_top1_recall": 1.0,
+            "hybrid_w2_top2_recall": 1.0
+          }
+        }
+      }
+    }
+  }
+}

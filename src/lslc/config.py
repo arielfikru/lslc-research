@@ -61,7 +61,29 @@ class LSLCConfig:
     allow_entity_update: bool = False
     delta_gate_bias_init: float = -1.5
 
+    # v3.0.0 optional contextual edit encoding, Condition-B distillation, and tokenizer-agnostic / position-agnostic modes
+    use_contextual_edit_encoding: bool = False
+    contextual_edit_layer: int | None = None
+    lambda_cond_b_distill: float = 0.0
+    salience_mode: str = "v2_legacy"
+    delta_pooling_mode: str = "v2_tail"
+    router_mode: str = "v2_legacy"
+    use_contextual_query_encoding: bool = False
+    contextual_query_layer: int | None = None
+    contextual_page_spans: int = 1
+    salience_span_len: int = 1
+
     def __post_init__(self) -> None:
+        if self.salience_span_len < 1:
+            raise ValueError(f"salience_span_len must be >= 1, got {self.salience_span_len}.")
+        if self.contextual_page_spans < 1:
+            raise ValueError(f"contextual_page_spans must be >= 1, got {self.contextual_page_spans}.")
+        if self.salience_mode not in ("v2_legacy", "learned_surprisal"):
+            raise ValueError(f"salience_mode must be 'v2_legacy' or 'learned_surprisal', got {self.salience_mode!r}.")
+        if self.delta_pooling_mode not in ("v2_tail", "cross_attn"):
+            raise ValueError(f"delta_pooling_mode must be 'v2_tail' or 'cross_attn', got {self.delta_pooling_mode!r}.")
+        if self.router_mode not in ("v2_legacy", "content_attn"):
+            raise ValueError(f"router_mode must be 'v2_legacy' or 'content_attn', got {self.router_mode!r}.")
         if self.page_size % (self.grid_h * self.grid_w) != 0:
             raise ValueError(
                 f"page_size ({self.page_size}) must be divisible by grid_h * grid_w ({self.grid_h * self.grid_w})."
@@ -70,9 +92,10 @@ class LSLCConfig:
             raise ValueError(f"LSLC v1 requires exactly 3 semantic layers (Static, Entity, Dynamic); got {self.num_layers}.")
         if self.d_enc % self.enc_heads != 0:
             raise ValueError(f"d_enc ({self.d_enc}) must be divisible by enc_heads ({self.enc_heads}).")
-        expected_k = max(1, int(round(self.page_size * self.exact_ratio)))
-        if self.k_exact != expected_k and self.exact_ratio == 0.0625:
-            self.k_exact = expected_k
+        if self.k_exact != 16 and self.exact_ratio == 0.0625:
+            self.exact_ratio = self.k_exact / float(self.page_size)
+        elif self.k_exact == 16 and self.exact_ratio != 0.0625:
+            self.k_exact = max(1, int(round(self.page_size * self.exact_ratio)))
 
     @property
     def num_spatial_slots(self) -> int:
@@ -134,6 +157,19 @@ class LSLCConfig:
         return cls(**params)
 
     @classmethod
+    def llama31_8b(cls, **overrides) -> "LSLCConfig":
+        """Cross-family 8B replication backbone preset: Llama-3.1-8B-Instruct (128 KiB/tok FP16 KV)."""
+        params = dict(
+            model_name="meta-llama/Llama-3.1-8B-Instruct",
+            d_llm=4096,
+            num_llm_layers=32,
+            num_kv_heads=8,
+            llm_head_dim=128,
+        )
+        params.update(overrides)
+        return cls(**params)
+
+    @classmethod
     def tiny_mock(cls, **overrides) -> "LSLCConfig":
         """Fast offline CPU/MPS mock preset preserving exact LSLC page/layer geometry."""
         params = dict(
@@ -153,6 +189,8 @@ class LSLCConfig:
     @classmethod
     def from_model_name(cls, model_name: str, **overrides) -> "LSLCConfig":
         lowered = model_name.lower()
+        if "llama" in lowered or "8b" in lowered:
+            return cls.llama31_8b(model_name=model_name, **overrides)
         if "4b" in lowered:
             return cls.qwen3_4b(model_name=model_name, **overrides)
         if "mock" in lowered or "tiny" in lowered:
@@ -171,6 +209,8 @@ class LSLCConfig:
             self.llm_head_dim = int(hf_config.head_dim)
         elif hasattr(hf_config, "num_attention_heads"):
             self.llm_head_dim = int(self.d_llm // int(hf_config.num_attention_heads))
+        if self.use_contextual_edit_encoding and self.contextual_edit_layer is None:
+            self.contextual_edit_layer = max(1, self.num_llm_layers // 2)
 
 
 def select_amp_dtype(device: torch.device | str) -> tuple[torch.dtype, bool]:

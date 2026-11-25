@@ -1,0 +1,508 @@
+{
+  "version": "3.0.0-gerbang4-community",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/lslc_results/lslc_universal_v2_qwen3_1.7b.safetensors",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "save_checkpoint": null,
+  "config": {
+    "page_size": 256,
+    "k_exact": 48,
+    "salience_span_len": 16,
+    "contextual_page_spans": 1,
+    "router_mode": "content_attn",
+    "salience_mode": "learned_surprisal",
+    "delta_pooling_mode": "cross_attn",
+    "use_contextual_query_encoding": false,
+    "contextual_query_layer": null,
+    "use_bge_toc": true,
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "salience_route_weight": 1.5,
+    "lslc_k_deep": 4,
+    "lslc_k_skim": 2,
+    "chapter_size": 16
+  },
+  "realign": null,
+  "pilar4a": null,
+  "bge_pilar4a": null,
+  "ruler": null,
+  "longmemeval": {
+    "dataset": {
+      "repo_id": "xiaowu0162/longmemeval-cleaned",
+      "filename": "longmemeval_s_cleaned.json",
+      "categories": [
+        "knowledge-update",
+        "single-session-user",
+        "multi-session"
+      ],
+      "seed": 2026,
+      "dataset_source": "hf_hub:xiaowu0162/longmemeval-cleaned/longmemeval_s_cleaned.json",
+      "resolved_path": "/root/.cache/huggingface/hub/datasets--xiaowu0162--longmemeval-cleaned/snapshots/98d7416c24c778c2fee6e6f3006e7a073259d48f/longmemeval_s_cleaned.json",
+      "raw_total_items": 500,
+      "selected_total": 9,
+      "counts_by_category": {
+        "knowledge-update": 3,
+        "single-session-user": 3,
+        "multi-session": 3
+      },
+      "max_pages": 64,
+      "mean_num_sessions": 7.67,
+      "mean_num_pages": 63.89,
+      "mean_content_tokens": 15403.6
+    },
+    "systems": {
+      "bm25_rag_k2": {
+        "overall": {
+          "num_episodes": 9,
+          "extracted_em": 0.3333,
+          "em": 0.3333,
+          "token_f1": 0.5179,
+          "f1": 0.5179,
+          "substring_match": 0.3333,
+          "token_recall": 0.5778,
+          "ci95": {
+            "extracted_em": [
+              0.1206,
+              0.6458
+            ],
+            "token_f1": [
+              0.2188,
+              0.817
+            ],
+            "token_f1_bootstrap": [
+              0.2266,
+              0.7731
+            ],
+            "substring_match": [
+              0.1206,
+              0.6458
+            ],
+            "token_recall": [
+              0.2819,
+              0.8736
+            ]
+          },
+          "active_prefix_tokens": 513.6667,
+          "active_tokens_mean": 513.6667,
+          "memory_update_ms": 6.6119,
+          "update_latency_ms": 6.6119,
+          "per_query_ms": 497.08,
+          "peak_vram_mb": 3754.99,
+          "max_toc_diff": 0.0,
+          "session_hit_at_k": 1.0,
+          "gold_session_hit_rate": 1.0,
+          "answer_substr_in_chosen_pages_rate": 0.6667
+        },
+        "by_category": {
+          "knowledge-update": {
+            "num_episodes": 3,
+            "extracted_em": 0.6667,
+            "em": 0.6667,
+            "token_f1": 0.9573,
+            "f1": 0.9573,
+            "substring_match": 0.6667,
+            "token_recall": 0.95,
+            "ci95": {
+              "extracted_em": [
+                0.2077,
+                0.9385
+              ],
+              "token_f1": [
+                0.8735,
+                1.0
+              ],
+              "token_f1_bootstrap": [
+                0.8718,
+                1.0
+              ],
+              "substring_match": [
+                0.2077,
+                0.9385
+              ],
+              "token_recall": [
+                0.852,
+                1.0
+              ]
+            },
+            "active_prefix_tokens": 514.0,
+            "active_tokens_mean": 514.0,
+            "memory_update_ms": 6.566,
+            "update_latency_ms": 6.566,
+            "per_query_ms": 727.17,
+            "peak_vram_mb": 3754.0,
+            "max_toc_diff": 0.0
+          },
+          "multi-session": {
+            "num_episodes": 3,
+            "extracted_em": 0.0,
+            "em": 0.0,
+            "token_f1": 0.0,
+            "f1": 0.0,
+            "substring_match": 0.0,
+            "token_recall": 0.0,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.5615
+              ],
+              "token_f1": [
+                0.0,
+                0.0
+              ],
+              "token_f1_bootstrap": [
+                0.0,
+                0.0
+              ],
+              "substring_match": [
+                0.0,
+                0.5615
+              ],
+              "token_recall": [
+                0.0,
+                0.0
+              ]
+            },
+            "active_prefix_tokens": 514.0,
+            "active_tokens_mean": 514.0,
+            "memory_update_ms": 6.573,
+            "update_latency_ms": 6.573,
+            "per_query_ms": 424.058,
+            "peak_vram_mb": 3754.99,
+            "max_toc_diff": 0.0
+          },
+          "single-session-user": {
+            "num_episodes": 3,
+            "extracted_em": 0.3333,
+            "em": 0.3333,
+            "token_f1": 0.5963,
+            "f1": 0.5963,
+            "substring_match": 0.3333,
+            "token_recall": 0.7833,
+            "ci95": {
+              "extracted_em": [
+                0.0615,
+                0.7923
+              ],
+              "token_f1": [
+                0.1856,
+                1.0
+              ],
+              "token_f1_bootstrap": [
+                0.1818,
+                0.8571
+              ],
+              "substring_match": [
+                0.0615,
+                0.7923
+              ],
+              "token_recall": [
+                0.5547,
+                1.0
+              ]
+            },
+            "active_prefix_tokens": 513.0,
+            "active_tokens_mean": 513.0,
+            "memory_update_ms": 6.6967,
+            "update_latency_ms": 6.6967,
+            "per_query_ms": 340.012,
+            "peak_vram_mb": 3752.25,
+            "max_toc_diff": 0.0
+          }
+        },
+        "samples": [
+          {
+            "question_id": "031748ae",
+            "question_type": "knowledge-update",
+            "question": "How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?",
+            "gold": "When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers",
+            "pred": "You lead 4 engineers when you started your new role as Senior Software Engineer. Now, you lead 4 engineers.",
+            "extracted_em": 0.0,
+            "token_f1": 0.8717948717948718,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "dd2973ad",
+            "question_type": "multi-session",
+            "question": "What time did I go to bed on the day before I had a doctor's appointment?",
+            "gold": "2 AM",
+            "pred": "The user went to bed at 11:00 PM on the day before their doctor's appointment.",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "311778f1",
+            "question_type": "single-session-user",
+            "question": "How many hours did I spend watching documentaries on Netflix last month?",
+            "gold": "10",
+            "pred": "You spent 10 hours watching documentaries on Netflix last month.",
+            "extracted_em": 1.0,
+            "token_f1": 0.18181818181818182,
+            "substring_match": 1.0
+          },
+          {
+            "question_id": "852ce960",
+            "question_type": "knowledge-update",
+            "question": "What was the amount I was pre-approved for when I got my mortgage from Wells Fargo?",
+            "gold": "$400,000",
+            "pred": "$400,000.",
+            "extracted_em": 1.0,
+            "token_f1": 1.0,
+            "substring_match": 1.0
+          },
+          {
+            "question_id": "59524333",
+            "question_type": "knowledge-update",
+            "question": "What time do I usually go to the gym?",
+            "gold": "6:00 pm",
+            "pred": "6:00 pm.",
+            "extracted_em": 1.0,
+            "token_f1": 1.0,
+            "substring_match": 1.0
+          },
+          {
+            "question_id": "3b6f954b",
+            "question_type": "single-session-user",
+            "question": "Where did I attend for my study abroad program?",
+            "gold": "University of Melbourne in Australia",
+            "pred": "University of Melbourne",
+            "extracted_em": 0.0,
+            "token_f1": 0.7499999999999999,
+            "substring_match": 0.0
+          }
+        ]
+      },
+      "lslc_v3_e2e_gpu": {
+        "overall": {
+          "num_episodes": 9,
+          "extracted_em": 0.1111,
+          "em": 0.1111,
+          "token_f1": 0.1111,
+          "f1": 0.1111,
+          "substring_match": 0.1111,
+          "token_recall": 0.1111,
+          "ci95": {
+            "extracted_em": [
+              0.0199,
+              0.435
+            ],
+            "token_f1": [
+              0.0,
+              0.3289
+            ],
+            "token_f1_bootstrap": [
+              0.0,
+              0.3333
+            ],
+            "substring_match": [
+              0.0199,
+              0.435
+            ],
+            "token_recall": [
+              0.0,
+              0.3289
+            ]
+          },
+          "active_prefix_tokens": 331.8889,
+          "active_tokens_mean": 331.8889,
+          "memory_update_ms": 772.6242,
+          "update_latency_ms": 772.6242,
+          "per_query_ms": 219.7797,
+          "peak_vram_mb": 3689.76,
+          "max_toc_diff": 0.0,
+          "session_hit_at_k": 1.0,
+          "gold_session_hit_rate": 1.0,
+          "answer_substr_in_chosen_pages_rate": 0.6667,
+          "mean_strip_gate": 0.0939,
+          "num_bank_writes_mean": 1.111
+        },
+        "by_category": {
+          "knowledge-update": {
+            "num_episodes": 3,
+            "extracted_em": 0.3333,
+            "em": 0.3333,
+            "token_f1": 0.3333,
+            "f1": 0.3333,
+            "substring_match": 0.3333,
+            "token_recall": 0.3333,
+            "ci95": {
+              "extracted_em": [
+                0.0615,
+                0.7923
+              ],
+              "token_f1": [
+                0.0,
+                0.9867
+              ],
+              "token_f1_bootstrap": [
+                0.0,
+                1.0
+              ],
+              "substring_match": [
+                0.0615,
+                0.7923
+              ],
+              "token_recall": [
+                0.0,
+                0.9867
+              ]
+            },
+            "active_prefix_tokens": 332.0,
+            "active_tokens_mean": 332.0,
+            "memory_update_ms": 912.4357,
+            "update_latency_ms": 912.4357,
+            "per_query_ms": 228.952,
+            "peak_vram_mb": 3680.21,
+            "max_toc_diff": 0.0
+          },
+          "multi-session": {
+            "num_episodes": 3,
+            "extracted_em": 0.0,
+            "em": 0.0,
+            "token_f1": 0.0,
+            "f1": 0.0,
+            "substring_match": 0.0,
+            "token_recall": 0.0,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.5615
+              ],
+              "token_f1": [
+                0.0,
+                0.0
+              ],
+              "token_f1_bootstrap": [
+                0.0,
+                0.0
+              ],
+              "substring_match": [
+                0.0,
+                0.5615
+              ],
+              "token_recall": [
+                0.0,
+                0.0
+              ]
+            },
+            "active_prefix_tokens": 337.0,
+            "active_tokens_mean": 337.0,
+            "memory_update_ms": 739.0423,
+            "update_latency_ms": 739.0423,
+            "per_query_ms": 243.4997,
+            "peak_vram_mb": 3689.76,
+            "max_toc_diff": 0.0
+          },
+          "single-session-user": {
+            "num_episodes": 3,
+            "extracted_em": 0.0,
+            "em": 0.0,
+            "token_f1": 0.0,
+            "f1": 0.0,
+            "substring_match": 0.0,
+            "token_recall": 0.0,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.5615
+              ],
+              "token_f1": [
+                0.0,
+                0.0
+              ],
+              "token_f1_bootstrap": [
+                0.0,
+                0.0
+              ],
+              "substring_match": [
+                0.0,
+                0.5615
+              ],
+              "token_recall": [
+                0.0,
+                0.0
+              ]
+            },
+            "active_prefix_tokens": 326.6667,
+            "active_tokens_mean": 326.6667,
+            "memory_update_ms": 666.3947,
+            "update_latency_ms": 666.3947,
+            "per_query_ms": 186.8873,
+            "peak_vram_mb": 3674.41,
+            "max_toc_diff": 0.0
+          }
+        },
+        "samples": [
+          {
+            "question_id": "031748ae",
+            "question_type": "knowledge-update",
+            "question": "How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?",
+            "gold": "When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers",
+            "pred": "10",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "dd2973ad",
+            "question_type": "multi-session",
+            "question": "What time did I go to bed on the day before I had a doctor's appointment?",
+            "gold": "2 AM",
+            "pred": "10:30 PM",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "311778f1",
+            "question_type": "single-session-user",
+            "question": "How many hours did I spend watching documentaries on Netflix last month?",
+            "gold": "10",
+            "pred": "123 hours",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "852ce960",
+            "question_type": "knowledge-update",
+            "question": "What was the amount I was pre-approved for when I got my mortgage from Wells Fargo?",
+            "gold": "$400,000",
+            "pred": "$3750",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "59524333",
+            "question_type": "knowledge-update",
+            "question": "What time do I usually go to the gym?",
+            "gold": "6:00 pm",
+            "pred": "6:00 pm",
+            "extracted_em": 1.0,
+            "token_f1": 1.0,
+            "substring_match": 1.0
+          },
+          {
+            "question_id": "3b6f954b",
+            "question_type": "single-session-user",
+            "question": "Where did I attend for my study abroad program?",
+            "gold": "University of Melbourne in Australia",
+            "pred": "Great Ocean Road",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          }
+        ]
+      }
+    }
+  },
+  "diag_probe": null,
+  "span_salience_probe": null,
+  "span16_bge_probe": null
+}

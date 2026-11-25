@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import inspect
 import json
 import math
 from pathlib import Path
@@ -59,7 +60,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 
 def _quantize_int4_groupwise(x: torch.Tensor, group_size: int = 64) -> torch.Tensor:
-    """Simulate group-wise symmetric INT4 quantization (-7..+7) for Track 0B baseline."""
+    """Group-wise symmetric INT4 quantization (-8..+7) applied to KV cache tensors."""
     orig_shape = x.shape
     orig_dtype = x.dtype
     flat = x.float().reshape(-1, group_size) if x.numel() % group_size == 0 else x.float().reshape(1, -1)
@@ -68,15 +69,580 @@ def _quantize_int4_groupwise(x: torch.Tensor, group_size: int = 64) -> torch.Ten
     return (q * scale).reshape(orig_shape).to(orig_dtype)
 
 
-def _h2o_select_tokens(flat_ids: torch.Tensor, embed_fn, budget_ratio: float = 0.20, recent_ratio: float = 0.10) -> torch.Tensor:
-    """Compute heavy-hitter cumulative attention proxy scores and select top 20% tokens (Track 0D)."""
-    emb = embed_fn(flat_ids).float()  # [1, N, D]
-    # Fast causal attention-sink + norm centrality proxy for Heavy-Hitter scoring
-    mean_k = F.normalize(emb.mean(dim=1, keepdim=True), dim=-1)
-    tok_n = F.normalize(emb, dim=-1)
-    scores = (tok_n * mean_k).sum(dim=-1).squeeze(0) + 0.5 * emb.norm(dim=-1).squeeze(0)
-    keep = h2o_evict_keep_indices(scores, budget_ratio=budget_ratio, recent_ratio=recent_ratio).to(flat_ids.device)
-    return flat_ids[:, keep]
+def _extract_kv_pairs(past_key_values) -> list[tuple[torch.Tensor, torch.Tensor]]:
+    """Extract per-layer (K, V) tensors from HF DynamicCache (v4/v5) or legacy tuple caches."""
+    if hasattr(past_key_values, "key_cache") and hasattr(past_key_values, "value_cache"):
+        return [(k, v) for k, v in zip(past_key_values.key_cache, past_key_values.value_cache)]
+    if hasattr(past_key_values, "layers"):
+        pairs: list[tuple[torch.Tensor, torch.Tensor]] = []
+        for layer_cache in past_key_values.layers:
+            k = getattr(layer_cache, "keys", None)
+            v = getattr(layer_cache, "values", None)
+            if k is not None and v is not None:
+                pairs.append((k, v))
+        if pairs:
+            return pairs
+    return [(k, v) for (k, v) in past_key_values]
+
+
+def _rebuild_kv_cache(template_cache, pairs: list[tuple[torch.Tensor, torch.Tensor]]):
+    """Rebuild a KV cache matching template_cache's container class (DynamicCache or tuple)."""
+    if hasattr(template_cache, "key_cache") and hasattr(template_cache, "value_cache"):
+        new_cache = template_cache.__class__()
+        for layer_idx, (k, v) in enumerate(pairs):
+            new_cache.update(k.contiguous(), v.contiguous(), layer_idx)
+        return new_cache
+    if hasattr(template_cache, "layers"):
+        try:
+            new_cache = template_cache.__class__()
+            for layer_idx, (k, v) in enumerate(pairs):
+                new_cache.update(k.contiguous(), v.contiguous(), layer_idx)
+            return new_cache
+        except Exception:
+            pass
+    return tuple((k.contiguous(), v.contiguous()) for k, v in pairs)
+
+
+def quantize_past_key_values_int4(past_key_values, group_size: int = 64):
+    """True INT4 KV Cache baseline: quantize/dequantize directly on past_key_values (NEVER inputs_embeds)."""
+    pairs = _extract_kv_pairs(past_key_values)
+    q_pairs = [
+        (_quantize_int4_groupwise(k.clone(), group_size=group_size), _quantize_int4_groupwise(v.clone(), group_size=group_size))
+        for k, v in pairs
+    ]
+    return _rebuild_kv_cache(past_key_values, q_pairs)
+
+
+@torch.no_grad()
+def compute_real_attention_scores_and_kv(
+    llm: nn.Module,
+    context_embeds: torch.Tensor,
+    *,
+    obs_window: int = 32,
+) -> tuple[object, torch.Tensor]:
+    """Run real LLM prefill with output_attentions=True and accumulate actual attention scores over observation window."""
+    bsz, seq_len, _ = context_embeds.shape
+    device = context_embeds.device
+    attn_mask = torch.ones((bsz, seq_len), device=device, dtype=torch.long)
+
+    cfg = getattr(llm, "config", None)
+    prev_attn_impl = getattr(cfg, "_attn_implementation", None) if cfg is not None else None
+    prev_use_cache = getattr(cfg, "use_cache", False) if cfg is not None else False
+    switched_eager = False
+    try:
+        if cfg is not None:
+            cfg.use_cache = True
+            if prev_attn_impl is not None and prev_attn_impl != "eager":
+                try:
+                    if hasattr(llm, "set_attn_implementation"):
+                        llm.set_attn_implementation("eager")
+                    else:
+                        cfg._attn_implementation = "eager"
+                    switched_eager = True
+                except Exception:
+                    pass
+        out = llm(
+            inputs_embeds=context_embeds,
+            attention_mask=attn_mask,
+            use_cache=True,
+            output_attentions=True,
+        )
+    finally:
+        if cfg is not None:
+            cfg.use_cache = prev_use_cache
+            if switched_eager and prev_attn_impl is not None:
+                try:
+                    if hasattr(llm, "set_attn_implementation"):
+                        llm.set_attn_implementation(prev_attn_impl)
+                    else:
+                        cfg._attn_implementation = prev_attn_impl
+                except Exception:
+                    pass
+
+    pkv = getattr(out, "past_key_values", None)
+    attns = getattr(out, "attentions", None)
+    if pkv is None:
+        raise RuntimeError("LLM forward with use_cache=True did not return past_key_values.")
+    if not attns or attns[0] is None:
+        raise RuntimeError("LLM forward with output_attentions=True did not return real attention weights.")
+
+    # Accumulate actual post-softmax attention mass over the observation window [B, H, Q_obs, K] -> [K]
+    obs = min(max(1, int(obs_window)), seq_len)
+    acc = torch.zeros((seq_len,), device=device, dtype=torch.float32)
+    for layer_attn in attns:
+        if layer_attn is None:
+            continue
+        # layer_attn: [B, H, Q, K]
+        w_obs = layer_attn[0, :, -obs:, :seq_len].float()
+        acc = acc + w_obs.sum(dim=(0, 1))
+    del out, attns
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
+    return pkv, acc
+
+
+def _apply_rotary_half_m3(x: torch.Tensor, cos: torch.Tensor, sin: torch.Tensor) -> torch.Tensor:
+    """Standard Llama/Qwen3 rotate_half RoPE application on [B, H, S, D]."""
+    half = x.shape[-1] // 2
+    x_rot = torch.cat((-x[..., half:], x[..., :half]), dim=-1)
+    if cos.dim() == 3:
+        cos = cos.unsqueeze(1)
+        sin = sin.unsqueeze(1)
+    return (x * cos) + (x_rot * sin)
+
+
+@torch.no_grad()
+def compute_memory_safe_obs_attention_and_kv(
+    llm: nn.Module,
+    context_embeds: torch.Tensor,
+    *,
+    query_embeds: torch.Tensor | None = None,
+    obs_window: int = 32,
+    per_head: bool = True,
+) -> tuple[object, torch.Tensor, float]:
+    """Memory-safe exact observation-window attention over context keys [:ctx_len] (works on 1.7B & 8B BF16 without OOM).
+
+    - If `query_embeds is not None`: Query-Aware SnapKV (observation window = query rows `[ctx_len : ctx_len+q_len]`).
+    - If `query_embeds is None`: Query-Agnostic H2O (observation window = last `obs_window` context rows).
+    - If `per_head=True`: returns exact per-layer, per-KV-head (GQA-grouped) scores `[L, num_kv_heads, ctx_len]`.
+    - If `per_head=False`: returns legacy summed 1D scores `[ctx_len]`.
+    """
+    bsz, ctx_len, _ = context_embeds.shape
+    device = context_embeds.device
+
+    def _sync() -> None:
+        if device.type == "cuda":
+            torch.cuda.synchronize(device)
+
+    backbone = getattr(llm, "model", None)
+    layers = getattr(backbone, "layers", None) if backbone is not None else None
+    rotary_emb = getattr(backbone, "rotary_emb", None) if backbone is not None else None
+    if rotary_emb is None and layers is not None and len(layers) > 0:
+        rotary_emb = getattr(getattr(layers[0], "self_attn", None), "rotary_emb", None)
+
+    can_use_layerwise = (
+        layers is not None
+        and rotary_emb is not None
+        and len(layers) > 0
+        and hasattr(layers[0], "self_attn")
+        and hasattr(layers[0].self_attn, "q_proj")
+        and hasattr(layers[0], "input_layernorm")
+    )
+
+    _sync()
+    t0 = time.perf_counter()
+    if query_embeds is not None:
+        q_len = int(query_embeds.shape[1])
+        full_embeds = torch.cat((context_embeds, query_embeds), dim=1)
+        obs_start, obs_end = ctx_len, ctx_len + q_len
+    else:
+        full_embeds = context_embeds
+        obs_len = min(max(1, int(obs_window)), ctx_len)
+        obs_start, obs_end = ctx_len - obs_len, ctx_len
+
+    total_len = int(full_embeds.shape[1])
+    attn_mask = torch.ones((bsz, total_len), device=device, dtype=torch.long)
+
+    if not can_use_layerwise:
+        cfg = getattr(llm, "config", None)
+        prev_attn_impl = getattr(cfg, "_attn_implementation", None) if cfg is not None else None
+        prev_use_cache = getattr(cfg, "use_cache", False) if cfg is not None else False
+        switched_eager = False
+        try:
+            if cfg is not None:
+                cfg.use_cache = True
+                if prev_attn_impl is not None and prev_attn_impl != "eager":
+                    try:
+                        if hasattr(llm, "set_attn_implementation"):
+                            llm.set_attn_implementation("eager")
+                        else:
+                            cfg._attn_implementation = "eager"
+                        switched_eager = True
+                    except Exception:
+                        pass
+            out = llm(
+                inputs_embeds=full_embeds,
+                attention_mask=attn_mask,
+                use_cache=True,
+                output_attentions=True,
+            )
+        finally:
+            if cfg is not None:
+                cfg.use_cache = prev_use_cache
+                if switched_eager and prev_attn_impl is not None:
+                    try:
+                        if hasattr(llm, "set_attn_implementation"):
+                            llm.set_attn_implementation(prev_attn_impl)
+                        else:
+                            cfg._attn_implementation = prev_attn_impl
+                    except Exception:
+                        pass
+        pkv = getattr(out, "past_key_values", None)
+        attns = getattr(out, "attentions", None)
+        if pkv is None or not attns or attns[0] is None:
+            raise RuntimeError("Attention extraction requires past_key_values and output_attentions=True.")
+        kv_pairs = _extract_kv_pairs(pkv)
+        num_kv_heads = int(kv_pairs[0][0].shape[1])
+
+        per_layer_scores: list[torch.Tensor] = []
+        acc_1d = torch.zeros((ctx_len,), device=device, dtype=torch.float32)
+        for layer_attn in attns:
+            if layer_attn is None:
+                continue
+            obs_w = layer_attn[0, :, obs_start:obs_end, :ctx_len].float()  # [H_q, obs, ctx_len]
+            if per_head:
+                q_sum = obs_w.sum(dim=1)  # [H_q, ctx_len]
+                h_q = int(q_sum.shape[0])
+                gqa_r = max(1, h_q // max(1, num_kv_heads))
+                if h_q == num_kv_heads * gqa_r and gqa_r > 1:
+                    kv_s = q_sum.view(num_kv_heads, gqa_r, ctx_len).mean(dim=1)
+                elif h_q == num_kv_heads:
+                    kv_s = q_sum
+                else:
+                    kv_s = q_sum.mean(dim=0, keepdim=True).expand(num_kv_heads, ctx_len).contiguous()
+                per_layer_scores.append(kv_s)
+            else:
+                acc_1d = acc_1d + obs_w.sum(dim=(0, 1))
+
+        if query_embeds is not None:
+            ctx_pairs = [(k[:, :, :ctx_len, :].clone(), v[:, :, :ctx_len, :].clone()) for k, v in kv_pairs]
+            ctx_pkv = _rebuild_kv_cache(pkv, ctx_pairs)
+        else:
+            ctx_pkv = pkv
+        del out, attns
+        if device.type == "cuda":
+            torch.cuda.empty_cache()
+        _sync()
+        scores_out = torch.stack(per_layer_scores, dim=0) if per_head else acc_1d
+        return ctx_pkv, scores_out, (time.perf_counter() - t0) * 1000.0
+
+    # Memory-safe exact SDPA prefill + layer-by-layer Q_obs @ K^T (18 GB vs 50.4 GB OOM on 8B!)
+    prev_use_cache = getattr(llm.config, "use_cache", False) if hasattr(llm, "config") else False
+    if hasattr(llm, "config"):
+        llm.config.use_cache = True
+    try:
+        out = llm(
+            inputs_embeds=full_embeds,
+            attention_mask=attn_mask,
+            use_cache=True,
+            output_attentions=False,
+            output_hidden_states=True,
+        )
+    finally:
+        if hasattr(llm, "config"):
+            llm.config.use_cache = prev_use_cache
+
+    pkv = out.past_key_values
+    hs = out.hidden_states
+    kv_pairs = _extract_kv_pairs(pkv)
+    num_q_heads = int(getattr(llm.config, "num_attention_heads", 32))
+    num_kv_heads = int(getattr(llm.config, "num_key_value_heads", kv_pairs[0][0].shape[1]))
+    head_dim = int(getattr(llm.config, "head_dim", int(llm.config.hidden_size) // num_q_heads))
+    gqa_rep = max(1, num_q_heads // max(1, num_kv_heads))
+
+    obs_pos_ids = torch.arange(obs_start, obs_end, device=device, dtype=torch.long).unsqueeze(0)
+    k_pos_ids = torch.arange(total_len, device=device, dtype=torch.long).unsqueeze(0)
+    causal_mask = k_pos_ids > obs_pos_ids.transpose(0, 1)  # [obs_len, total_len]
+
+    scale = head_dim ** -0.5
+    per_layer_lh: list[torch.Tensor] = []
+    acc_1d = torch.zeros((ctx_len,), device=device, dtype=torch.float32)
+
+    for l_idx, layer in enumerate(layers):
+        h_in = hs[l_idx][:, obs_start:obs_end, :]
+        h_norm = layer.input_layernorm(h_in)
+        q_raw = layer.self_attn.q_proj(h_norm).view(bsz, obs_end - obs_start, num_q_heads, head_dim).transpose(1, 2)
+        if hasattr(layer.self_attn, "q_norm") and layer.self_attn.q_norm is not None:
+            q_raw = layer.self_attn.q_norm(q_raw)
+        cos, sin = rotary_emb(q_raw, obs_pos_ids)
+        q_rot = _apply_rotary_half_m3(q_raw, cos.to(q_raw.dtype), sin.to(q_raw.dtype))
+
+        k_full = kv_pairs[l_idx][0]  # [1, num_kv_heads, total_len, head_dim]
+        k_exp = k_full.repeat_interleave(gqa_rep, dim=1) if gqa_rep > 1 else k_full
+
+        scores = torch.matmul(q_rot.float(), k_exp.float().transpose(-2, -1)) * scale
+        scores = scores.masked_fill(causal_mask.unsqueeze(0).unsqueeze(0), float("-inf"))
+        attn_w = F.softmax(scores, dim=-1)  # [1, H_q, obs_len, total_len]
+        ctx_w = attn_w[0, :, :, :ctx_len]  # [H_q, obs_len, ctx_len]
+        if per_head:
+            q_sum = ctx_w.sum(dim=1)  # [H_q, ctx_len]
+            if gqa_rep > 1:
+                kv_s = q_sum.view(num_kv_heads, gqa_rep, ctx_len).mean(dim=1)
+            else:
+                kv_s = q_sum
+            per_layer_lh.append(kv_s)
+        else:
+            acc_1d = acc_1d + ctx_w.sum(dim=(0, 1))
+
+    if query_embeds is not None:
+        ctx_pairs = [(k[:, :, :ctx_len, :].clone(), v[:, :, :ctx_len, :].clone()) for k, v in kv_pairs]
+        ctx_pkv = _rebuild_kv_cache(pkv, ctx_pairs)
+    else:
+        ctx_pkv = pkv
+
+    del out, hs
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
+    _sync()
+    scores_out = torch.stack(per_layer_lh, dim=0) if per_head else acc_1d
+    return ctx_pkv, scores_out, (time.perf_counter() - t0) * 1000.0
+
+
+def evict_past_key_values_h2o_attention(
+    past_key_values,
+    attn_scores: torch.Tensor,
+    *,
+    keep_budget: int | None = None,
+    budget_ratio: float = 0.20,
+    sink_tokens: int = 4,
+    recent_ratio: float = 0.10,
+    pool_kernel_size: int = 0,
+    pool_mode: str = "avg",
+) -> tuple[object, torch.Tensor]:
+    """True attention-based H2O / per-head 1D-pooled SnapKV eviction directly on `past_key_values`.
+
+    - Respects `recent_ratio` faithfully (NO `max(recent_ratio, 0.25)` override!).
+    - Accepts EITHER 1D `attn_scores [ctx_len]` (shared H2O indices) OR 3D `attn_scores [L, num_kv_heads, ctx_len]`
+      (true per-layer, per-KV-head GQA SnapKV selection!).
+    - When `pool_kernel_size > 1` (e.g. `5` for official SnapKV), applies 1D avg/max pooling along `ctx_len`
+      before per-head `topk` so multi-token numeric/entity clusters stay contiguous.
+    """
+    pairs = _extract_kv_pairs(past_key_values)
+    num_layers = len(pairs)
+    bsz, num_kv_heads, seq_len, head_dim = pairs[0][0].shape
+    device = pairs[0][0].device
+
+    if keep_budget is None:
+        budget = max(1, int(round(seq_len * budget_ratio)))
+    else:
+        budget = max(1, min(seq_len, int(keep_budget)))
+
+    if budget >= seq_len:
+        if attn_scores.dim() == 3:
+            keep_all = (
+                torch.arange(seq_len, device=device, dtype=torch.long)
+                .view(1, 1, seq_len)
+                .expand(num_layers, num_kv_heads, seq_len)
+                .contiguous()
+            )
+            return past_key_values, keep_all
+        return past_key_values, torch.arange(seq_len, device=device, dtype=torch.long)
+
+    sinks = min(max(0, int(sink_tokens)), max(0, budget // 4))
+    # Honor caller's exact recent_ratio (no hardcoded 0.25 floor!)
+    recent = min(max(0, int(round(budget * float(recent_ratio)))), max(0, budget - sinks))
+    hh_budget = max(0, budget - sinks - recent)
+    recent_start = max(sinks, seq_len - recent)
+
+    def _pool_1d(x: torch.Tensor) -> torch.Tensor:
+        if pool_kernel_size is None or int(pool_kernel_size) <= 1:
+            return x.float()
+        ks = int(pool_kernel_size)
+        pad_l = ks // 2
+        pad_r = ks - 1 - pad_l
+        xf = x.float()
+        orig_shape = xf.shape
+        flat = xf.reshape(-1, 1, orig_shape[-1])
+        flat_pad = F.pad(flat, (pad_l, pad_r), mode="replicate")
+        if pool_mode == "max":
+            pooled = F.max_pool1d(flat_pad, kernel_size=ks, stride=1)
+        else:
+            pooled = F.avg_pool1d(flat_pad, kernel_size=ks, stride=1)
+        return pooled.reshape(orig_shape)
+
+    # Path A: True per-layer, per-KV-head (GQA) selection [L, H_kv, ctx_len]
+    if attn_scores.dim() == 3:
+        pooled_lh = _pool_1d(attn_scores.to(device))  # [L, H_kv, seq_len]
+        sink_idx = torch.arange(sinks, device=device, dtype=torch.long)
+        rec_idx = torch.arange(recent_start, seq_len, device=device, dtype=torch.long)
+
+        evicted_pairs: list[tuple[torch.Tensor, torch.Tensor]] = []
+        keep_lh = torch.empty((num_layers, num_kv_heads, budget), device=device, dtype=torch.long)
+
+        for l_idx, (k_t, v_t) in enumerate(pairs):
+            layer_idx_list: list[torch.Tensor] = []
+            for h_idx in range(num_kv_heads):
+                parts: list[torch.Tensor] = []
+                if sinks > 0:
+                    parts.append(sink_idx)
+                if hh_budget > 0 and recent_start > sinks:
+                    mid = pooled_lh[l_idx, h_idx, sinks:recent_start]
+                    k_hh = min(hh_budget, int(mid.numel()))
+                    top_rel = torch.topk(mid, k=k_hh, dim=0, largest=True).indices + sinks
+                    parts.append(top_rel)
+                if recent > 0:
+                    parts.append(rec_idx)
+                comb = torch.cat(parts, dim=0)
+                if comb.numel() > budget:
+                    comb = comb[:budget]
+                sorted_idx, _ = torch.sort(comb, dim=0)
+                layer_idx_list.append(sorted_idx)
+            l_keep = torch.stack(layer_idx_list, dim=0)  # [H_kv, budget]
+            keep_lh[l_idx] = l_keep
+            gather_idx = l_keep.view(1, num_kv_heads, budget, 1).expand(bsz, num_kv_heads, budget, head_dim)
+            k_ev = torch.gather(k_t, dim=2, index=gather_idx).clone()
+            v_ev = torch.gather(v_t, dim=2, index=gather_idx).clone()
+            evicted_pairs.append((k_ev, v_ev))
+
+        return _rebuild_kv_cache(past_key_values, evicted_pairs), keep_lh
+
+    # Path B: Legacy 1D shared eviction scores [ctx_len]
+    pooled_1d = _pool_1d(attn_scores.to(device))
+    keep_set: set[int] = set(range(sinks))
+    keep_set.update(range(recent_start, seq_len))
+
+    if hh_budget > 0 and recent_start > sinks:
+        mid_scores = pooled_1d[sinks:recent_start].float()
+        k_hh = min(hh_budget, int(mid_scores.numel()))
+        top_rel = torch.topk(mid_scores, k=k_hh, dim=0, largest=True).indices
+        for idx_r in top_rel.tolist():
+            keep_set.add(sinks + int(idx_r))
+
+    keep_idx = torch.tensor(sorted(keep_set)[:budget], device=device, dtype=torch.long)
+    evicted_pairs = [
+        (k.index_select(2, keep_idx).clone(), v.index_select(2, keep_idx).clone())
+        for k, v in pairs
+    ]
+    return _rebuild_kv_cache(past_key_values, evicted_pairs), keep_idx
+
+
+def _llm_accepts_position_ids(llm: nn.Module) -> bool:
+    try:
+        sig = inspect.signature(llm.forward)
+    except (TypeError, ValueError):
+        return False
+    if "position_ids" in sig.parameters:
+        return True
+    return any(p.kind == inspect.Parameter.VAR_KEYWORD for p in sig.parameters.values())
+
+
+@torch.no_grad()
+def compute_nll_and_tok_acc_from_kv(
+    llm: nn.Module,
+    past_key_values,
+    kv_seq_len: int,
+    q_ids: torch.Tensor,
+    a_ids: torch.Tensor,
+    orig_seq_len: int | None = None,
+) -> tuple[float, float]:
+    """Score answer NLL and teacher-forced token accuracy directly from a prepared past_key_values cache."""
+    # Deep-copy KV cache so forward mutation (DynamicCache.update) never corrupts caller's cache
+    pairs_copy = [(k.clone(), v.clone()) for k, v in _extract_kv_pairs(past_key_values)]
+    kv_work = _rebuild_kv_cache(past_key_values, pairs_copy)
+    turn_ids = torch.cat((q_ids, a_ids), dim=1)
+    bsz, turn_len = turn_ids.shape
+    attn_mask = torch.ones((bsz, kv_seq_len + turn_len), device=turn_ids.device, dtype=torch.long)
+    start_pos = int(kv_seq_len if orig_seq_len is None else orig_seq_len)
+    fwd_kwargs: dict[str, object] = {
+        "input_ids": turn_ids,
+        "attention_mask": attn_mask,
+        "past_key_values": kv_work,
+        "use_cache": True,
+    }
+    if _llm_accepts_position_ids(llm):
+        fwd_kwargs["position_ids"] = (
+            torch.arange(start_pos, start_pos + turn_len, device=turn_ids.device, dtype=torch.long)
+            .unsqueeze(0)
+            .expand(bsz, -1)
+        )
+    out = llm(**fwd_kwargs)
+    start = q_ids.shape[1] - 1
+    ans_logits = out.logits[:, start : start + a_ids.shape[1], :].float()
+    nll = float(F.cross_entropy(ans_logits.reshape(-1, ans_logits.shape[-1]), a_ids.reshape(-1)).item())
+    tok_acc = float((ans_logits.argmax(dim=-1) == a_ids).float().mean().item())
+    return nll, tok_acc
+
+
+@torch.no_grad()
+def greedy_generate_from_kv_cache(
+    llm: nn.Module,
+    past_key_values,
+    kv_seq_len: int,
+    q_ids: torch.Tensor,
+    max_new_tokens: int = 48,
+    eos_token_id: int | set[int] | list[int] | tuple[int, ...] | None = None,
+    orig_seq_len: int | None = None,
+    tokenizer=None,
+    stop_on_newline: bool = False,
+    return_timing: bool = False,
+):
+    """Autoregressive greedy decode starting directly from a quantized or H2O/SnapKV-evicted past_key_values cache."""
+    if eos_token_id is None:
+        eos_set: set[int] = set()
+    elif isinstance(eos_token_id, (set, list, tuple)):
+        eos_set = {int(x) for x in eos_token_id if x is not None}
+    else:
+        eos_set = {int(eos_token_id)}
+    pairs_copy = [(k.clone(), v.clone()) for k, v in _extract_kv_pairs(past_key_values)]
+    kv_work = _rebuild_kv_cache(past_key_values, pairs_copy)
+    bsz, q_len = q_ids.shape
+    device = q_ids.device
+
+    def _sync() -> None:
+        if device.type == "cuda":
+            torch.cuda.synchronize(device)
+
+    start_pos = int(kv_seq_len if orig_seq_len is None else orig_seq_len)
+    use_pos_ids = _llm_accepts_position_ids(llm)
+    attn_mask = torch.ones((bsz, kv_seq_len + q_len), device=device, dtype=torch.long)
+    prefill_kwargs: dict[str, object] = {
+        "input_ids": q_ids,
+        "attention_mask": attn_mask,
+        "past_key_values": kv_work,
+        "use_cache": True,
+    }
+    if use_pos_ids:
+        prefill_kwargs["position_ids"] = (
+            torch.arange(start_pos, start_pos + q_len, device=device, dtype=torch.long).unsqueeze(0).expand(bsz, -1)
+        )
+    _sync()
+    t_pf0 = time.perf_counter()
+    out = llm(**prefill_kwargs)
+    _sync()
+    prefill_ms = (time.perf_counter() - t_pf0) * 1000.0
+
+    pkv = getattr(out, "past_key_values", None)
+    next_tok = out.logits[:, -1, :].argmax(dim=-1, keepdim=True)
+    gen: list[torch.Tensor] = []
+    gen_ids_py: list[int] = []
+    decode_steps = 0
+    _sync()
+    t_dec0 = time.perf_counter()
+    for step_i in range(max_new_tokens):
+        gen.append(next_tok)
+        tok_i = int(next_tok[0, 0].item())
+        gen_ids_py.append(tok_i)
+        if eos_set and tok_i in eos_set:
+            break
+        if stop_on_newline and tokenizer is not None:
+            dec = tokenizer.decode(gen_ids_py, skip_special_tokens=True)
+            if "\n" in dec.lstrip():
+                break
+        attn_mask = torch.cat((attn_mask, torch.ones((bsz, 1), device=device, dtype=torch.long)), dim=1)
+        dec_kwargs: dict[str, object] = {
+            "input_ids": next_tok,
+            "attention_mask": attn_mask,
+            "past_key_values": pkv,
+            "use_cache": True,
+        }
+        if use_pos_ids:
+            dec_kwargs["position_ids"] = torch.full((bsz, 1), start_pos + q_len + step_i, device=device, dtype=torch.long)
+        out = llm(**dec_kwargs)
+        decode_steps += 1
+        pkv = getattr(out, "past_key_values", None)
+        next_tok = out.logits[:, -1, :].argmax(dim=-1, keepdim=True)
+    _sync()
+    decode_ms = (time.perf_counter() - t_dec0) * 1000.0
+    out_tensor = torch.cat(gen, dim=1) if gen else torch.empty((bsz, 0), dtype=torch.long, device=device)
+    if return_timing:
+        n_tok = max(1, decode_steps if decode_steps > 0 else len(gen))
+        return out_tensor, {
+            "prefill_ms": round(prefill_ms, 3),
+            "decode_ms": round(decode_ms, 3),
+            "num_gen_tokens": len(gen),
+            "decode_ms_per_tok": round(decode_ms / n_tok, 3),
+        }
+    return out_tensor
 
 
 @torch.no_grad()
@@ -88,52 +654,45 @@ def evaluate_baseline_0b_0d(
     device: torch.device,
     mode: str,  # "int4_kv" or "h2o_20pct"
 ) -> dict[str, float]:
+    """Fixed Track 0B (true INT4 past_key_values) and Track 0D (true attention-based H2O/SnapKV)."""
     embed_fn = wrapper.llm.get_input_embeddings()
     llm_dtype = embed_fn.weight.dtype
+
+    def _prepare_kv(flat_ids: torch.Tensor) -> tuple[object, int, int]:
+        ctx_emb = embed_fn(flat_ids).to(llm_dtype)
+        seq_len = int(ctx_emb.shape[1])
+        if mode == "int4_kv":
+            attn_m = torch.ones((1, seq_len), device=device, dtype=torch.long)
+            out_pre = wrapper.llm(inputs_embeds=ctx_emb, attention_mask=attn_m, use_cache=True)
+            q_kv = quantize_past_key_values_int4(out_pre.past_key_values, group_size=64)
+            return q_kv, seq_len, seq_len
+        if mode == "h2o_20pct":
+            pkv, attn_scores = compute_real_attention_scores_and_kv(wrapper.llm, ctx_emb, obs_window=32)
+            ev_kv, keep_idx = evict_past_key_values_h2o_attention(
+                pkv, attn_scores, budget_ratio=0.20, sink_tokens=4, recent_ratio=0.25
+            )
+            return ev_kv, int(keep_idx.numel()), seq_len
+        raise ValueError(mode)
+
     nlls = []
     for ep in ppl_eps:
         pages = ep.context_pages.unsqueeze(0).to(device)
         q_ids = ep.query_ids.unsqueeze(0).to(device)
         a_ids = ep.answer_ids.unsqueeze(0).to(device)
-        flat = pages.reshape(1, -1)
-        if mode == "int4_kv":
-            prefix_llm = _quantize_int4_groupwise(embed_fn(flat)).to(llm_dtype)
-        elif mode == "h2o_20pct":
-            kept_ids = _h2o_select_tokens(flat, embed_fn, budget_ratio=0.20, recent_ratio=0.10)
-            prefix_llm = embed_fn(kept_ids).to(llm_dtype)
-        else:
-            raise ValueError(mode)
-        turn_ids = torch.cat((q_ids, a_ids), dim=1)
-        inp = torch.cat((prefix_llm, embed_fn(turn_ids).to(llm_dtype)), dim=1)
-        attn = torch.ones((1, inp.shape[1]), device=device, dtype=torch.long)
-        logits = wrapper.llm(inputs_embeds=inp, attention_mask=attn).logits
-        start = prefix_llm.shape[1] + q_ids.shape[1] - 1
-        ans_logits = logits[:, start : start + a_ids.shape[1], :]
-        nlls.append(float(F.cross_entropy(ans_logits.reshape(-1, ans_logits.shape[-1]), a_ids.reshape(-1)).item()))
-    ppl = round(math.exp(min(20.0, sum(nlls) / len(nlls))), 4)
+        kv_cache, kv_len, orig_len = _prepare_kv(pages.reshape(1, -1))
+        nll, _ = compute_nll_and_tok_acc_from_kv(wrapper.llm, kv_cache, kv_len, q_ids, a_ids, orig_seq_len=orig_len)
+        nlls.append(nll)
+    ppl = round(math.exp(min(20.0, sum(nlls) / max(1, len(nlls)))), 4)
 
     exact_em, exact_tok, sem_em, sem_tok = [], [], [], []
     for ep in niah_ds:
         pages = ep.context_pages.unsqueeze(0).to(device)
         q_ids = ep.query_ids.unsqueeze(0).to(device)
         a_ids = ep.answer_ids.unsqueeze(0).to(device)
-        flat = pages.reshape(1, -1)
-        if mode == "int4_kv":
-            prefix_llm = _quantize_int4_groupwise(embed_fn(flat)).to(llm_dtype)
-        else:
-            kept_ids = _h2o_select_tokens(flat, embed_fn, budget_ratio=0.20, recent_ratio=0.10)
-            prefix_llm = embed_fn(kept_ids).to(llm_dtype)
-
-        turn_ids = torch.cat((q_ids, a_ids), dim=1)
-        inp = torch.cat((prefix_llm, embed_fn(turn_ids).to(llm_dtype)), dim=1)
-        attn = torch.ones((1, inp.shape[1]), device=device, dtype=torch.long)
-        logits = wrapper.llm(inputs_embeds=inp, attention_mask=attn).logits
-        start = prefix_llm.shape[1] + q_ids.shape[1] - 1
-        ans_logits = logits[:, start : start + a_ids.shape[1], :]
-        tok_acc = float((ans_logits.argmax(dim=-1) == a_ids).float().mean().item())
-
-        gen_ids = greedy_generate_from_prefix(
-            wrapper.llm, prefix_llm, q_ids, max_new_tokens=48, eos_token_id=tokenizer.eos_token_id
+        kv_cache, kv_len, orig_len = _prepare_kv(pages.reshape(1, -1))
+        _, tok_acc = compute_nll_and_tok_acc_from_kv(wrapper.llm, kv_cache, kv_len, q_ids, a_ids, orig_seq_len=orig_len)
+        gen_ids = greedy_generate_from_kv_cache(
+            wrapper.llm, kv_cache, kv_len, q_ids, max_new_tokens=48, eos_token_id=tokenizer.eos_token_id, orig_seq_len=orig_len
         )
         gen_text = tokenizer.decode(gen_ids[0], skip_special_tokens=True)
         em = 1.0 if ep.metadata["answer_str"].lower() in gen_text.lower() else 0.0

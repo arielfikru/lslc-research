@@ -1,0 +1,1647 @@
+{
+  "version": "3.0.0-gerbang4-community",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/lslc_results/v3_g4_router_ckpt.safetensors",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "save_checkpoint": null,
+  "config": {
+    "page_size": 256,
+    "k_exact": 24,
+    "router_mode": "content_attn",
+    "salience_mode": "learned_surprisal",
+    "delta_pooling_mode": "cross_attn",
+    "use_contextual_query_encoding": true,
+    "contextual_query_layer": 14,
+    "lslc_k_deep": 4,
+    "lslc_k_skim": 2,
+    "chapter_size": 16
+  },
+  "pilar4a": {
+    "train": {
+      "steps": 300,
+      "batch_size": 8,
+      "lr": 0.0003,
+      "num_cached_items": 496,
+      "num_paraphrase_items": 192,
+      "num_wikitext_items": 256,
+      "num_entity_items": 48,
+      "elapsed_sec": 13.68,
+      "step1_loss": 4.8159,
+      "last_step_loss": 0.7165,
+      "initial_loss_mean": 3.8088,
+      "final_loss_mean": 0.6882,
+      "final_intra_top1": 1.0,
+      "final_inbatch_top1": 0.9563,
+      "trainable_router_params": 2846213,
+      "max_frozen_param_diff": 0.0
+    },
+    "zero_overlap_eval": {
+      "P=16": {
+        "num_episodes": 72,
+        "num_pages": 16,
+        "num_distractor_topics": 7,
+        "peak_vram_mb": 3577.28,
+        "bm25_cpu": {
+          "top1_recall": 0.0556,
+          "top1_ci95": [
+            0.0218,
+            0.1343
+          ],
+          "top2_recall": 0.1389,
+          "top2_ci95": [
+            0.0772,
+            0.2371
+          ],
+          "per_query_ms": 2.8
+        },
+        "lslc_dense_w0": {
+          "top1_recall": 0.1667,
+          "top1_ci95": [
+            0.098,
+            0.2691
+          ],
+          "top2_recall": 0.3333,
+          "top2_ci95": [
+            0.2353,
+            0.4482
+          ],
+          "per_query_ms": 48.998
+        },
+        "lslc_hybrid_w2": {
+          "top1_recall": 0.1389,
+          "top1_ci95": [
+            0.0772,
+            0.2371
+          ],
+          "top2_recall": 0.2917,
+          "top2_ci95": [
+            0.1994,
+            0.4051
+          ],
+          "per_query_ms": 49.975
+        }
+      },
+      "P=64": {
+        "num_episodes": 72,
+        "num_pages": 64,
+        "num_distractor_topics": 15,
+        "peak_vram_mb": 3685.8,
+        "bm25_cpu": {
+          "top1_recall": 0.0278,
+          "top1_ci95": [
+            0.0077,
+            0.0957
+          ],
+          "top2_recall": 0.0694,
+          "top2_ci95": [
+            0.03,
+            0.1525
+          ],
+          "per_query_ms": 8.251
+        },
+        "lslc_dense_w0": {
+          "top1_recall": 0.0417,
+          "top1_ci95": [
+            0.0143,
+            0.1155
+          ],
+          "top2_recall": 0.0417,
+          "top2_ci95": [
+            0.0143,
+            0.1155
+          ],
+          "per_query_ms": 49.359
+        },
+        "lslc_hybrid_w2": {
+          "top1_recall": 0.0139,
+          "top1_ci95": [
+            0.0025,
+            0.0746
+          ],
+          "top2_recall": 0.0417,
+          "top2_ci95": [
+            0.0143,
+            0.1155
+          ],
+          "per_query_ms": 50.681
+        }
+      }
+    },
+    "router_stress_regression": {
+      "router_stress_p64": {
+        "num_pages": 64,
+        "num_entity_pages": 12,
+        "dense_w0_top1_recall": 0.0833,
+        "dense_w0_top2_recall": 0.1667,
+        "hybrid_w2_top1_recall": 1.0,
+        "hybrid_w2_top2_recall": 1.0
+      },
+      "router_stress_p128": {
+        "num_pages": 128,
+        "num_entity_pages": 20,
+        "dense_w0_top1_recall": 0.05,
+        "dense_w0_top2_recall": 0.1,
+        "hybrid_w2_top1_recall": 0.9,
+        "hybrid_w2_top2_recall": 0.9
+      }
+    }
+  },
+  "ruler": {
+    "lengths": [
+      4096
+    ],
+    "tasks": [
+      "s_niah",
+      "mk_niah",
+      "vt"
+    ],
+    "by_length": {
+      "4K": {
+        "by_task": {
+          "s_niah": {
+            "full_context_bf16": {
+              "num_episodes": 4,
+              "extracted_em": 1.0,
+              "token_f1": 1.0,
+              "substring_match": 1.0,
+              "token_recall": 1.0,
+              "ci95": {
+                "extracted_em": [
+                  0.5101,
+                  1.0
+                ],
+                "token_f1": [
+                  1.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.5101,
+                  1.0
+                ],
+                "token_recall": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 4096.0,
+              "memory_update_ms": 0.0,
+              "per_query_ms": 797.005,
+              "peak_vram_mb": 5159.76,
+              "max_toc_diff": 0.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                  "gold": "2753069",
+                  "pred": "2753069",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                  "gold": "3747839",
+                  "pred": "3747839",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                  "gold": "7414158",
+                  "pred": "7414158",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "bm25_rag_k2": {
+              "num_episodes": 4,
+              "extracted_em": 1.0,
+              "token_f1": 1.0,
+              "substring_match": 1.0,
+              "token_recall": 1.0,
+              "ci95": {
+                "extracted_em": [
+                  0.5101,
+                  1.0
+                ],
+                "token_f1": [
+                  1.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.5101,
+                  1.0
+                ],
+                "token_recall": [
+                  1.0,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 513.25,
+              "memory_update_ms": 2.0152,
+              "per_query_ms": 374.0722,
+              "peak_vram_mb": 3689.91,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                  "gold": "2753069",
+                  "pred": "2753069",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                  "gold": "3747839",
+                  "pred": "3747839",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                  "gold": "7414158",
+                  "pred": "7414158",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "bm25_rag_k4": {
+              "num_episodes": 4,
+              "extracted_em": 1.0,
+              "token_f1": 1.0,
+              "substring_match": 1.0,
+              "token_recall": 1.0,
+              "ci95": {
+                "extracted_em": [
+                  0.5101,
+                  1.0
+                ],
+                "token_f1": [
+                  1.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.5101,
+                  1.0
+                ],
+                "token_recall": [
+                  1.0,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 1027.0,
+              "memory_update_ms": 2.0077,
+              "per_query_ms": 393.503,
+              "peak_vram_mb": 3899.17,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                  "gold": "2753069",
+                  "pred": "2753069",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                  "gold": "3747839",
+                  "pred": "3747839",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                  "gold": "7414158",
+                  "pred": "7414158",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "lslc_v3_e2e_gpu": {
+              "num_episodes": 4,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.4899
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.4899
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  0.26,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 210.0,
+              "memory_update_ms": 93.6552,
+              "per_query_ms": 436.9362,
+              "peak_vram_mb": 3570.3,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.75,
+              "samples": [
+                {
+                  "question": "What is the special magic number for amber-88 mentioned in the provided text?",
+                  "gold": "2753069",
+                  "pred": "30987",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "What is the special magic number for basalt-99 mentioned in the provided text?",
+                  "gold": "3747839",
+                  "pred": "basalt7839",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "What is the special magic number for cedar-47 mentioned in the provided text?",
+                  "gold": "7414158",
+                  "pred": "cedar-47 is 47",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                }
+              ]
+            }
+          },
+          "mk_niah": {
+            "full_context_bf16": {
+              "num_episodes": 4,
+              "extracted_em": 1.0,
+              "token_f1": 1.0,
+              "substring_match": 1.0,
+              "token_recall": 1.0,
+              "ci95": {
+                "extracted_em": [
+                  0.5101,
+                  1.0
+                ],
+                "token_f1": [
+                  1.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.5101,
+                  1.0
+                ],
+                "token_recall": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 4096.0,
+              "memory_update_ms": 0.0,
+              "per_query_ms": 718.0583,
+              "peak_vram_mb": 5162.82,
+              "max_toc_diff": 0.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                  "gold": "4639262",
+                  "pred": "4639262",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                  "gold": "5979380",
+                  "pred": "5979380",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                  "gold": "1993560",
+                  "pred": "1993560",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "bm25_rag_k2": {
+              "num_episodes": 4,
+              "extracted_em": 0.75,
+              "token_f1": 0.75,
+              "substring_match": 0.75,
+              "token_recall": 0.75,
+              "ci95": {
+                "extracted_em": [
+                  0.3006,
+                  0.9544
+                ],
+                "token_f1": [
+                  0.26,
+                  1.0
+                ],
+                "substring_match": [
+                  0.3006,
+                  0.9544
+                ],
+                "token_recall": [
+                  0.26,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 511.25,
+              "memory_update_ms": 1.806,
+              "per_query_ms": 369.1662,
+              "peak_vram_mb": 3692.63,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                  "gold": "4639262",
+                  "pred": "4639262",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                  "gold": "5979380",
+                  "pred": "8113963",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                  "gold": "1993560",
+                  "pred": "1993560",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "bm25_rag_k4": {
+              "num_episodes": 4,
+              "extracted_em": 1.0,
+              "token_f1": 1.0,
+              "substring_match": 1.0,
+              "token_recall": 1.0,
+              "ci95": {
+                "extracted_em": [
+                  0.5101,
+                  1.0
+                ],
+                "token_f1": [
+                  1.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.5101,
+                  1.0
+                ],
+                "token_recall": [
+                  1.0,
+                  1.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 1023.5,
+              "memory_update_ms": 1.7715,
+              "per_query_ms": 400.6988,
+              "peak_vram_mb": 3900.2,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                  "gold": "4639262",
+                  "pred": "4639262",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                  "gold": "5979380",
+                  "pred": "5979380",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                  "gold": "1993560",
+                  "pred": "1993560",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "lslc_v3_e2e_gpu": {
+              "num_episodes": 4,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.4899
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.4899
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 210.0,
+              "memory_update_ms": 11.1095,
+              "per_query_ms": 701.2225,
+              "peak_vram_mb": 3570.09,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 1.0,
+              "samples": [
+                {
+                  "question": "What is the special magic number for ember-node-04 mentioned in the provided text?",
+                  "gold": "4639262",
+                  "pred": "ember-node-04 4293784293",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "What is the special magic number for agate-node-45 mentioned in the provided text?",
+                  "gold": "5979380",
+                  "pred": "95478954",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "What is the special magic number for cinder-node-47 mentioned in the provided text?",
+                  "gold": "1993560",
+                  "pred": "cinder-node-47 magic number is 57\u00b0",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                }
+              ]
+            }
+          },
+          "vt": {
+            "full_context_bf16": {
+              "num_episodes": 4,
+              "extracted_em": 0.5,
+              "token_f1": 0.5,
+              "substring_match": 0.5,
+              "token_recall": 0.5,
+              "ci95": {
+                "extracted_em": [
+                  0.15,
+                  0.85
+                ],
+                "token_f1": [
+                  0.0,
+                  1.0
+                ],
+                "substring_match": [
+                  0.15,
+                  0.85
+                ],
+                "token_recall": [
+                  0.0,
+                  1.0
+                ]
+              },
+              "active_prefix_tokens": 4096.0,
+              "memory_update_ms": 0.0,
+              "per_query_ms": 632.1043,
+              "peak_vram_mb": 5162.82,
+              "max_toc_diff": 0.0,
+              "samples": [
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_Z0?",
+                  "gold": "81917",
+                  "pred": "81917",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_N1?",
+                  "gold": "80912",
+                  "pred": "37806",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_H2?",
+                  "gold": "91678",
+                  "pred": "94218",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                }
+              ]
+            },
+            "bm25_rag_k2": {
+              "num_episodes": 4,
+              "extracted_em": 0.25,
+              "token_f1": 0.25,
+              "substring_match": 0.25,
+              "token_recall": 0.25,
+              "ci95": {
+                "extracted_em": [
+                  0.0456,
+                  0.6994
+                ],
+                "token_f1": [
+                  0.0,
+                  0.74
+                ],
+                "substring_match": [
+                  0.0456,
+                  0.6994
+                ],
+                "token_recall": [
+                  0.0,
+                  0.74
+                ],
+                "router_hit_rate": [
+                  0.19,
+                  0.435
+                ]
+              },
+              "active_prefix_tokens": 514.25,
+              "memory_update_ms": 1.9923,
+              "per_query_ms": 211.7223,
+              "peak_vram_mb": 3692.76,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.3125,
+              "samples": [
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_Z0?",
+                  "gold": "81917",
+                  "pred": "64967",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_N1?",
+                  "gold": "80912",
+                  "pred": "8",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_H2?",
+                  "gold": "91678",
+                  "pred": "91678",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "bm25_rag_k4": {
+              "num_episodes": 4,
+              "extracted_em": 0.25,
+              "token_f1": 0.25,
+              "substring_match": 0.25,
+              "token_recall": 0.25,
+              "ci95": {
+                "extracted_em": [
+                  0.0456,
+                  0.6994
+                ],
+                "token_f1": [
+                  0.0,
+                  0.74
+                ],
+                "substring_match": [
+                  0.0456,
+                  0.6994
+                ],
+                "token_recall": [
+                  0.0,
+                  0.74
+                ],
+                "router_hit_rate": [
+                  0.2542,
+                  0.8708
+                ]
+              },
+              "active_prefix_tokens": 1027.5,
+              "memory_update_ms": 1.9892,
+              "per_query_ms": 437.6488,
+              "peak_vram_mb": 3902.61,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.5625,
+              "samples": [
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_Z0?",
+                  "gold": "81917",
+                  "pred": "64967",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_N1?",
+                  "gold": "80912",
+                  "pred": "37806",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_H2?",
+                  "gold": "91678",
+                  "pred": "91678",
+                  "extracted_em": 1.0,
+                  "token_f1": 1.0,
+                  "substring_match": 1.0
+                }
+              ]
+            },
+            "lslc_v3_e2e_gpu": {
+              "num_episodes": 4,
+              "extracted_em": 0.0,
+              "token_f1": 0.0,
+              "substring_match": 0.0,
+              "token_recall": 0.0,
+              "ci95": {
+                "extracted_em": [
+                  0.0,
+                  0.4899
+                ],
+                "token_f1": [
+                  0.0,
+                  0.0
+                ],
+                "substring_match": [
+                  0.0,
+                  0.4899
+                ],
+                "token_recall": [
+                  0.0,
+                  0.0
+                ],
+                "router_hit_rate": [
+                  0.2029,
+                  0.6721
+                ]
+              },
+              "active_prefix_tokens": 210.0,
+              "memory_update_ms": 11.015,
+              "per_query_ms": 246.9363,
+              "peak_vram_mb": 3569.58,
+              "max_toc_diff": 0.0,
+              "router_hit_rate": 0.4375,
+              "samples": [
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_Z0?",
+                  "gold": "81917",
+                  "pred": "VAR_Z0 = VAR_A",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_N1?",
+                  "gold": "80912",
+                  "pred": "19",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                },
+                {
+                  "question": "Trace the variable assignments in the text above. What numeric value is assigned to VAR_H2?",
+                  "gold": "91678",
+                  "pred": "8",
+                  "extracted_em": 0.0,
+                  "token_f1": 0.0,
+                  "substring_match": 0.0
+                }
+              ]
+            }
+          }
+        },
+        "summary": {
+          "full_context_bf16": {
+            "num_episodes": 12,
+            "extracted_em": 0.8333,
+            "token_f1": 0.8333,
+            "substring_match": 0.8333,
+            "token_recall": 0.8333,
+            "ci95": {
+              "extracted_em": [
+                0.5519,
+                0.953
+              ],
+              "token_f1": [
+                0.6131,
+                1.0
+              ],
+              "substring_match": [
+                0.5519,
+                0.953
+              ],
+              "token_recall": [
+                0.6131,
+                1.0
+              ]
+            },
+            "active_prefix_tokens": 4096.0,
+            "memory_update_ms": 0.0,
+            "per_query_ms": 715.7225,
+            "peak_vram_mb": 5162.82,
+            "max_toc_diff": 0.0
+          },
+          "bm25_rag_k2": {
+            "num_episodes": 12,
+            "extracted_em": 0.6667,
+            "token_f1": 0.6667,
+            "substring_match": 0.6667,
+            "token_recall": 0.6667,
+            "ci95": {
+              "extracted_em": [
+                0.3907,
+                0.8619
+              ],
+              "token_f1": [
+                0.3881,
+                0.9452
+              ],
+              "substring_match": [
+                0.3907,
+                0.8619
+              ],
+              "token_recall": [
+                0.3881,
+                0.9452
+              ],
+              "router_hit_rate": [
+                0.5758,
+                0.9659
+              ]
+            },
+            "active_prefix_tokens": 512.9167,
+            "memory_update_ms": 1.9378,
+            "per_query_ms": 318.3202,
+            "peak_vram_mb": 3692.76,
+            "max_toc_diff": 0.0,
+            "router_hit_rate": 0.7708
+          },
+          "bm25_rag_k4": {
+            "num_episodes": 12,
+            "extracted_em": 0.75,
+            "token_f1": 0.75,
+            "substring_match": 0.75,
+            "token_recall": 0.75,
+            "ci95": {
+              "extracted_em": [
+                0.4677,
+                0.9111
+              ],
+              "token_f1": [
+                0.4941,
+                1.0
+              ],
+              "substring_match": [
+                0.4677,
+                0.9111
+              ],
+              "token_recall": [
+                0.4941,
+                1.0
+              ],
+              "router_hit_rate": [
+                0.7009,
+                1.0
+              ]
+            },
+            "active_prefix_tokens": 1026.0,
+            "memory_update_ms": 1.9228,
+            "per_query_ms": 410.6168,
+            "peak_vram_mb": 3902.61,
+            "max_toc_diff": 0.0,
+            "router_hit_rate": 0.8542
+          },
+          "lslc_v3_e2e_gpu": {
+            "num_episodes": 12,
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0,
+            "token_recall": 0.0,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.2425
+              ],
+              "token_f1": [
+                0.0,
+                0.0
+              ],
+              "substring_match": [
+                0.0,
+                0.2425
+              ],
+              "token_recall": [
+                0.0,
+                0.0
+              ],
+              "router_hit_rate": [
+                0.5163,
+                0.9421
+              ]
+            },
+            "active_prefix_tokens": 210.0,
+            "memory_update_ms": 38.5933,
+            "per_query_ms": 461.6983,
+            "peak_vram_mb": 3570.3,
+            "max_toc_diff": 0.0,
+            "router_hit_rate": 0.7292
+          }
+        }
+      }
+    }
+  },
+  "longmemeval": {
+    "dataset": {
+      "repo_id": "xiaowu0162/longmemeval-cleaned",
+      "filename": "longmemeval_s_cleaned.json",
+      "categories": [
+        "knowledge-update",
+        "single-session-user",
+        "multi-session"
+      ],
+      "seed": 2026,
+      "dataset_source": "hf_hub:xiaowu0162/longmemeval-cleaned/longmemeval_s_cleaned.json",
+      "resolved_path": "/root/.cache/huggingface/hub/datasets--xiaowu0162--longmemeval-cleaned/snapshots/98d7416c24c778c2fee6e6f3006e7a073259d48f/longmemeval_s_cleaned.json",
+      "raw_total_items": 500,
+      "selected_total": 6,
+      "counts_by_category": {
+        "knowledge-update": 2,
+        "single-session-user": 2,
+        "multi-session": 2
+      },
+      "max_pages": 64,
+      "mean_num_sessions": 7.33,
+      "mean_num_pages": 63.83,
+      "mean_content_tokens": 15417.0
+    },
+    "systems": {
+      "bm25_rag_k4": {
+        "overall": {
+          "num_episodes": 6,
+          "extracted_em": 0.3333,
+          "token_f1": 0.5566,
+          "substring_match": 0.3333,
+          "token_recall": 0.5833,
+          "ci95": {
+            "extracted_em": [
+              0.0968,
+              0.7
+            ],
+            "token_f1": [
+              0.1988,
+              0.9145
+            ],
+            "substring_match": [
+              0.0968,
+              0.7
+            ],
+            "token_recall": [
+              0.2032,
+              0.9634
+            ]
+          },
+          "active_prefix_tokens": 1027.6667,
+          "memory_update_ms": 6.5658,
+          "per_query_ms": 450.9013,
+          "peak_vram_mb": 3904.28,
+          "max_toc_diff": 0.0,
+          "gold_session_hit_rate": 1.0
+        },
+        "by_category": {
+          "knowledge-update": {
+            "num_episodes": 2,
+            "extracted_em": 0.5,
+            "token_f1": 0.9615,
+            "substring_match": 0.5,
+            "token_recall": 0.95,
+            "ci95": {
+              "extracted_em": [
+                0.0945,
+                0.9055
+              ],
+              "token_f1": [
+                0.8862,
+                1.0
+              ],
+              "substring_match": [
+                0.0945,
+                0.9055
+              ],
+              "token_recall": [
+                0.852,
+                1.0
+              ]
+            },
+            "active_prefix_tokens": 1028.0,
+            "memory_update_ms": 6.419,
+            "per_query_ms": 855.3235,
+            "peak_vram_mb": 3904.27,
+            "max_toc_diff": 0.0
+          },
+          "multi-session": {
+            "num_episodes": 2,
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0,
+            "token_recall": 0.0,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.6576
+              ],
+              "token_f1": [
+                0.0,
+                0.0
+              ],
+              "substring_match": [
+                0.0,
+                0.6576
+              ],
+              "token_recall": [
+                0.0,
+                0.0
+              ]
+            },
+            "active_prefix_tokens": 1028.5,
+            "memory_update_ms": 6.6735,
+            "per_query_ms": 225.0215,
+            "peak_vram_mb": 3904.28,
+            "max_toc_diff": 0.0
+          },
+          "single-session-user": {
+            "num_episodes": 2,
+            "extracted_em": 0.5,
+            "token_f1": 0.7083,
+            "substring_match": 0.5,
+            "token_recall": 0.8,
+            "ci95": {
+              "extracted_em": [
+                0.0945,
+                0.9055
+              ],
+              "token_f1": [
+                0.6267,
+                0.79
+              ],
+              "substring_match": [
+                0.0945,
+                0.9055
+              ],
+              "token_recall": [
+                0.408,
+                1.0
+              ]
+            },
+            "active_prefix_tokens": 1026.5,
+            "memory_update_ms": 6.605,
+            "per_query_ms": 272.359,
+            "peak_vram_mb": 3900.75,
+            "max_toc_diff": 0.0
+          }
+        },
+        "samples": [
+          {
+            "question_id": "031748ae",
+            "question_type": "knowledge-update",
+            "question": "How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?",
+            "gold": "When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers",
+            "pred": "When you started your new role as Senior Software Engineer, you led 0 engineers. Now, you lead 4 engineers.",
+            "extracted_em": 0.0,
+            "token_f1": 0.9230769230769231,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "dd2973ad",
+            "question_type": "multi-session",
+            "question": "What time did I go to bed on the day before I had a doctor's appointment?",
+            "gold": "2 AM",
+            "pred": "8:00 PM",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "311778f1",
+            "question_type": "single-session-user",
+            "question": "How many hours did I spend watching documentaries on Netflix last month?",
+            "gold": "10",
+            "pred": "10 hours.",
+            "extracted_em": 1.0,
+            "token_f1": 0.6666666666666666,
+            "substring_match": 1.0
+          },
+          {
+            "question_id": "852ce960",
+            "question_type": "knowledge-update",
+            "question": "What was the amount I was pre-approved for when I got my mortgage from Wells Fargo?",
+            "gold": "$400,000",
+            "pred": "$400,000.",
+            "extracted_em": 1.0,
+            "token_f1": 1.0,
+            "substring_match": 1.0
+          },
+          {
+            "question_id": "3b6f954b",
+            "question_type": "single-session-user",
+            "question": "Where did I attend for my study abroad program?",
+            "gold": "University of Melbourne in Australia",
+            "pred": "University of Melbourne.",
+            "extracted_em": 0.0,
+            "token_f1": 0.7499999999999999,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "b5ef892d",
+            "question_type": "multi-session",
+            "question": "How many days did I spend on camping trips in the United States this year?",
+            "gold": "8 days.",
+            "pred": "3",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          }
+        ]
+      },
+      "llm_auto_compact": {
+        "overall": {
+          "num_episodes": 6,
+          "extracted_em": 0.0,
+          "token_f1": 0.0256,
+          "substring_match": 0.0,
+          "token_recall": 0.0333,
+          "ci95": {
+            "extracted_em": [
+              0.0,
+              0.3903
+            ],
+            "token_f1": [
+              0.0,
+              0.0759
+            ],
+            "substring_match": [
+              0.0,
+              0.3903
+            ],
+            "token_recall": [
+              0.0,
+              0.0987
+            ]
+          },
+          "active_prefix_tokens": 250.0,
+          "memory_update_ms": 54291.1978,
+          "per_query_ms": 340.9958,
+          "peak_vram_mb": 4419.6,
+          "max_toc_diff": 0.0
+        },
+        "by_category": {
+          "knowledge-update": {
+            "num_episodes": 2,
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0,
+            "token_recall": 0.0,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.6576
+              ],
+              "token_f1": [
+                0.0,
+                0.0
+              ],
+              "substring_match": [
+                0.0,
+                0.6576
+              ],
+              "token_recall": [
+                0.0,
+                0.0
+              ]
+            },
+            "active_prefix_tokens": 255.5,
+            "memory_update_ms": 49106.8235,
+            "per_query_ms": 516.5645,
+            "peak_vram_mb": 4418.83,
+            "max_toc_diff": 0.0
+          },
+          "multi-session": {
+            "num_episodes": 2,
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0,
+            "token_recall": 0.0,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.6576
+              ],
+              "token_f1": [
+                0.0,
+                0.0
+              ],
+              "substring_match": [
+                0.0,
+                0.6576
+              ],
+              "token_recall": [
+                0.0,
+                0.0
+              ]
+            },
+            "active_prefix_tokens": 241.5,
+            "memory_update_ms": 64277.758,
+            "per_query_ms": 183.702,
+            "peak_vram_mb": 4419.6,
+            "max_toc_diff": 0.0
+          },
+          "single-session-user": {
+            "num_episodes": 2,
+            "extracted_em": 0.0,
+            "token_f1": 0.0769,
+            "substring_match": 0.0,
+            "token_recall": 0.1,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.6576
+              ],
+              "token_f1": [
+                0.0,
+                0.2277
+              ],
+              "substring_match": [
+                0.0,
+                0.6576
+              ],
+              "token_recall": [
+                0.0,
+                0.296
+              ]
+            },
+            "active_prefix_tokens": 253.0,
+            "memory_update_ms": 49489.012,
+            "per_query_ms": 322.721,
+            "peak_vram_mb": 4419.11,
+            "max_toc_diff": 0.0
+          }
+        },
+        "samples": [
+          {
+            "question_id": "031748ae",
+            "question_type": "knowledge-update",
+            "question": "How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?",
+            "gold": "When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers",
+            "pred": "0",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "dd2973ad",
+            "question_type": "multi-session",
+            "question": "What time did I go to bed on the day before I had a doctor's appointment?",
+            "gold": "2 AM",
+            "pred": "11:15",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "311778f1",
+            "question_type": "single-session-user",
+            "question": "How many hours did I spend watching documentaries on Netflix last month?",
+            "gold": "10",
+            "pred": "0",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "852ce960",
+            "question_type": "knowledge-update",
+            "question": "What was the amount I was pre-approved for when I got my mortgage from Wells Fargo?",
+            "gold": "$400,000",
+            "pred": "The amount pre-approved for when obtaining a mortgage from Wells Fargo was not provided in the reference memory.",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "3b6f954b",
+            "question_type": "single-session-user",
+            "question": "Where did I attend for my study abroad program?",
+            "gold": "University of Melbourne in Australia",
+            "pred": "The exact answer is not provided in the reference memory.",
+            "extracted_em": 0.0,
+            "token_f1": 0.15384615384615385,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "b5ef892d",
+            "question_type": "multi-session",
+            "question": "How many days did I spend on camping trips in the United States this year?",
+            "gold": "8 days.",
+            "pred": "2",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          }
+        ]
+      },
+      "lslc_v3_e2e_gpu": {
+        "overall": {
+          "num_episodes": 6,
+          "extracted_em": 0.0,
+          "token_f1": 0.0638,
+          "substring_match": 0.0,
+          "token_recall": 0.1083,
+          "ci95": {
+            "extracted_em": [
+              0.0,
+              0.3903
+            ],
+            "token_f1": [
+              0.0,
+              0.1466
+            ],
+            "substring_match": [
+              0.0,
+              0.3903
+            ],
+            "token_recall": [
+              0.0,
+              0.2692
+            ]
+          },
+          "active_prefix_tokens": 241.3333,
+          "memory_update_ms": 808.886,
+          "per_query_ms": 659.2635,
+          "peak_vram_mb": 3584.17,
+          "max_toc_diff": 0.007812,
+          "gold_session_hit_rate": 0.8333,
+          "mean_strip_gate": 0.073,
+          "num_bank_writes_mean": 0.667
+        },
+        "by_category": {
+          "knowledge-update": {
+            "num_episodes": 2,
+            "extracted_em": 0.0,
+            "token_f1": 0.12,
+            "substring_match": 0.0,
+            "token_recall": 0.075,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.6576
+              ],
+              "token_f1": [
+                0.0,
+                0.3552
+              ],
+              "substring_match": [
+                0.0,
+                0.6576
+              ],
+              "token_recall": [
+                0.0,
+                0.222
+              ]
+            },
+            "active_prefix_tokens": 231.0,
+            "memory_update_ms": 805.175,
+            "per_query_ms": 729.5095,
+            "peak_vram_mb": 3580.73,
+            "max_toc_diff": 0.007812
+          },
+          "multi-session": {
+            "num_episodes": 2,
+            "extracted_em": 0.0,
+            "token_f1": 0.0714,
+            "substring_match": 0.0,
+            "token_recall": 0.25,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.6576
+              ],
+              "token_f1": [
+                0.0,
+                0.2114
+              ],
+              "substring_match": [
+                0.0,
+                0.6576
+              ],
+              "token_recall": [
+                0.0,
+                0.74
+              ]
+            },
+            "active_prefix_tokens": 246.5,
+            "memory_update_ms": 876.4325,
+            "per_query_ms": 622.2095,
+            "peak_vram_mb": 3584.17,
+            "max_toc_diff": 0.003906
+          },
+          "single-session-user": {
+            "num_episodes": 2,
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0,
+            "token_recall": 0.0,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.6576
+              ],
+              "token_f1": [
+                0.0,
+                0.0
+              ],
+              "substring_match": [
+                0.0,
+                0.6576
+              ],
+              "token_recall": [
+                0.0,
+                0.0
+              ]
+            },
+            "active_prefix_tokens": 246.5,
+            "memory_update_ms": 745.0505,
+            "per_query_ms": 626.0715,
+            "peak_vram_mb": 3581.55,
+            "max_toc_diff": 0.003906
+          }
+        },
+        "samples": [
+          {
+            "question_id": "031748ae",
+            "question_type": "knowledge-update",
+            "question": "How many engineers do I lead when I just started my new role as Senior Software Engineer? How many engineers do I lead now?",
+            "gold": "When you just started your new role as Senior Software Engineer, you led 4 engineers. Now, you lead 5 engineers",
+            "pred": "I lead 100 engineers now.",
+            "extracted_em": 0.0,
+            "token_f1": 0.24,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "dd2973ad",
+            "question_type": "multi-session",
+            "question": "What time did I go to bed on the day before I had a doctor's appointment?",
+            "gold": "2 AM",
+            "pred": "seven plus seven equals fourteen.",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "311778f1",
+            "question_type": "single-session-user",
+            "question": "How many hours did I spend watching documentaries on Netflix last month?",
+            "gold": "10",
+            "pred": "I spent 12 hours watching documentaries on Netflix last month.",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "852ce960",
+            "question_type": "knowledge-update",
+            "question": "What was the amount I was pre-approved for when I got my mortgage from Wells Fargo?",
+            "gold": "$400,000",
+            "pred": "I was pre-approved for $125k when I got my mortgage from Wells Fargo.",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "3b6f954b",
+            "question_type": "single-session-user",
+            "question": "Where did I attend for my study abroad program?",
+            "gold": "University of Melbourne in Australia",
+            "pred": "Where did I attend for my study abroad program?",
+            "extracted_em": 0.0,
+            "token_f1": 0.0,
+            "substring_match": 0.0
+          },
+          {
+            "question_id": "b5ef892d",
+            "question_type": "multi-session",
+            "question": "How many days did I spend on camping trips in the United States this year?",
+            "gold": "8 days.",
+            "pred": "I spent 123 days on camping trips in the United States this year.",
+            "extracted_em": 0.0,
+            "token_f1": 0.14285714285714285,
+            "substring_match": 0.0
+          }
+        ]
+      }
+    }
+  },
+  "tahap1_init_checkpoint": {
+    "path": "/content/v3_g3_aligned_ckpt.safetensors",
+    "missing_keys": [
+      "router.q_ctx_gate.weight",
+      "router.q_ctx_gate.bias",
+      "router.q_ctx_mlp.0.weight",
+      "router.q_ctx_mlp.0.bias",
+      "router.q_ctx_mlp.2.weight",
+      "router.q_ctx_mlp.2.bias",
+      "router.q_ctx_mlp.4.weight",
+      "router.q_ctx_mlp.4.bias",
+      "router.k_toc_mlp.0.weight",
+      "router.k_toc_mlp.0.bias",
+      "router.k_toc_mlp.2.weight",
+      "router.k_toc_mlp.2.bias",
+      "router.k_toc_mlp.4.weight",
+      "router.k_toc_mlp.4.bias",
+      "router.k_bank_mlp.0.weight",
+      "router.k_bank_mlp.0.bias",
+      "router.k_bank_mlp.2.weight",
+      "router.k_bank_mlp.2.bias",
+      "router.k_bank_mlp.4.weight",
+      "router.k_bank_mlp.4.bias"
+    ],
+    "unexpected_keys": []
+  },
+  "tahap1_saved_checkpoint": "/content/lslc_results/v3_g4_router_ckpt.safetensors"
+}

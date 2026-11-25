@@ -1,0 +1,3413 @@
+{
+  "version": "3.1.0-gerbang6-llama8b-pathb-hardened",
+  "git_sha": "unknown",
+  "git_dirty": null,
+  "checkpoint_sha256": "17c7918a6d9da31c0640c94e902b8e4a84d31264bbbd459797b250b5d06300fb",
+  "trainable_param_breakdown": {
+    "salience_gate_params": 315653,
+    "edit_gate_params": 279042,
+    "hw_coord_embed_params": 0,
+    "layered_latent_encoder_params": 0,
+    "spatial_projector_params": 0,
+    "delta_updater_params": 0,
+    "total_pathb_trainable_params": 594695,
+    "bge_router_frozen_params": 33360000,
+    "frozen_llm_params": 8030261248
+  },
+  "storage_bytes": {
+    "exact_bank_bytes_per_page_before_edit": 192,
+    "base_token_ids_extra_bytes_per_page_after_edit": 192,
+    "exact_bank_bytes_per_page_after_edit": 384,
+    "bge_4span_bf16_bytes_per_page": 3072,
+    "stored_bytes_per_page_before_edit": 3264,
+    "stored_bytes_per_page_after_edit": 3456,
+    "total_stored_bytes_per_page": 3456
+  },
+  "requested_model": "meta-llama/Llama-3.1-8B-Instruct",
+  "resolved_model_id": "unsloth/Meta-Llama-3.1-8B-Instruct",
+  "model_load_attempts": [
+    {
+      "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+      "status": "failed: OSError: You are trying to access a gated repo.\nMake sure to have access to it at https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct.\n401 Client Error. (Request ID: Root=1-6b06e862-575"
+    },
+    {
+      "model_id": "unsloth/Meta-Llama-3.1-8B-Instruct",
+      "status": "loaded"
+    }
+  ],
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/lslc_results/lslc_pathb_llama31_8b.safetensors",
+    "sha256": "17c7918a6d9da31c0640c94e902b8e4a84d31264bbbd459797b250b5d06300fb",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "saved_checkpoint": null,
+  "config": {
+    "d_llm": 4096,
+    "num_llm_layers": 32,
+    "num_kv_heads": 8,
+    "llm_head_dim": 128,
+    "contextual_edit_layer": 16,
+    "page_size": 256,
+    "k_exact": 48,
+    "salience_span_len": 16,
+    "salience_route_weight": 1.5,
+    "edit_gate_hidden_dim": 64,
+    "span_aligned_overwrite": true,
+    "true_two_bank_layout": true,
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "has_layered_latent_encoder": false,
+    "has_z_book": false,
+    "has_hw_coord_embed": false,
+    "prompt_format": "llama-3.1-instruct"
+  },
+  "train_pathb": null,
+  "llama_gate2_n200": null,
+  "llama_coding_n24": null,
+  "llama_ood_kv_4k": null,
+  "llama_ruler_16k_32k_and_profile": null,
+  "llama_zbook_probe": {
+    "elapsed_sec": 88.81,
+    "zbook_adapter_trainable_params": 109660171,
+    "zbook_train_steps": 120,
+    "zbook_train_initial_loss": 6.376,
+    "zbook_train_final_loss": 3.5172,
+    "max_frozen_param_diff": 0.0,
+    "edit_ablation_5cell": {
+      "iso_token_verified": true,
+      "arms": {
+        "deltaZ_ON_bank_ON": {
+          "continuous_delta_z": true,
+          "bank_mode": "upd",
+          "overall": {
+            "num_episodes": 48,
+            "ci95": {
+              "em": [
+                0.4836,
+                0.7478
+              ],
+              "semantic_acc": [
+                0.4836,
+                0.7478
+              ],
+              "num_masked_old_tokens": [
+                0.0,
+                0.0741
+              ],
+              "active_prefix_tokens": [
+                298.0,
+                298.0
+              ]
+            },
+            "em": 0.625,
+            "semantic_acc": 0.625,
+            "num_masked_old_tokens": 0.0,
+            "active_prefix_tokens": 298.0
+          },
+          "by_suite": {
+            "verbatim": {
+              "num_episodes": 24,
+              "ci95": {
+                "em": [
+                  0.2447,
+                  0.6117
+                ],
+                "semantic_acc": [
+                  0.2447,
+                  0.6117
+                ],
+                "num_masked_old_tokens": [
+                  0.0,
+                  0.138
+                ],
+                "active_prefix_tokens": [
+                  298.0,
+                  298.0
+                ]
+              },
+              "em": 0.4167,
+              "semantic_acc": 0.4167,
+              "num_masked_old_tokens": 0.0,
+              "active_prefix_tokens": 298.0,
+              "episodes": [
+                {
+                  "episode_idx": 0,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.3",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 1,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "45",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 2,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "5",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 3,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "6",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 4,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "alpine-south",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 5,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "zstd",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 6,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "360",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 7,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "64",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 8,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.3",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 9,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "45",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 10,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "5",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 11,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "6",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 12,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "alpine-south",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 13,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "zstd",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 14,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "360",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 15,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "64",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 16,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.3",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 17,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "45 days",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 18,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "5",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 19,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "6",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 20,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "alpine-south",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 21,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "zstd",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 22,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "360",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 23,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "64",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                }
+              ]
+            },
+            "implicit": {
+              "num_episodes": 24,
+              "ci95": {
+                "em": [
+                  0.6415,
+                  0.9332
+                ],
+                "semantic_acc": [
+                  0.6415,
+                  0.9332
+                ],
+                "num_masked_old_tokens": [
+                  0.0,
+                  0.138
+                ],
+                "active_prefix_tokens": [
+                  298.0,
+                  298.0
+                ]
+              },
+              "em": 0.8333,
+              "semantic_acc": 0.8333,
+              "num_masked_old_tokens": 0.0,
+              "active_prefix_tokens": 298.0,
+              "episodes": [
+                {
+                  "episode_idx": 0,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 1,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 2,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 3,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 4,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 5,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 6,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 7,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 8,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 9,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 10,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 11,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 12,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 13,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 14,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 15,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 16,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 17,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 18,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 19,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 20,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 21,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 22,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 23,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                }
+              ]
+            }
+          }
+        },
+        "deltaZ_OFF_bank_ON": {
+          "continuous_delta_z": false,
+          "bank_mode": "upd",
+          "overall": {
+            "num_episodes": 48,
+            "ci95": {
+              "em": [
+                0.5467,
+                0.8005
+              ],
+              "semantic_acc": [
+                0.5467,
+                0.8005
+              ],
+              "num_masked_old_tokens": [
+                0.0,
+                0.0741
+              ],
+              "active_prefix_tokens": [
+                298.0,
+                298.0
+              ]
+            },
+            "em": 0.6875,
+            "semantic_acc": 0.6875,
+            "num_masked_old_tokens": 0.0,
+            "active_prefix_tokens": 298.0
+          },
+          "by_suite": {
+            "verbatim": {
+              "num_episodes": 24,
+              "ci95": {
+                "em": [
+                  0.3143,
+                  0.6857
+                ],
+                "semantic_acc": [
+                  0.3143,
+                  0.6857
+                ],
+                "num_masked_old_tokens": [
+                  0.0,
+                  0.138
+                ],
+                "active_prefix_tokens": [
+                  298.0,
+                  298.0
+                ]
+              },
+              "em": 0.5,
+              "semantic_acc": 0.5,
+              "num_masked_old_tokens": 0.0,
+              "active_prefix_tokens": 298.0,
+              "episodes": [
+                {
+                  "episode_idx": 0,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.3",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 1,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "45",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 2,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "5",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 3,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "6",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 4,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "alpine-south",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 5,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "zstd",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 6,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "360",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 7,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "64",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 8,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.3",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 9,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "45 days",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 10,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "5 seconds",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 11,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "6",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 12,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "alpine-south",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 13,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "zstd",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 14,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "360",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 15,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "64",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 16,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.3",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 17,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "45 days",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 18,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "5",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 19,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "6",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 20,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "alpine-south",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 21,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "zstd",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 22,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "360",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 23,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "64",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                }
+              ]
+            },
+            "implicit": {
+              "num_episodes": 24,
+              "ci95": {
+                "em": [
+                  0.69,
+                  0.9566
+                ],
+                "semantic_acc": [
+                  0.69,
+                  0.9566
+                ],
+                "num_masked_old_tokens": [
+                  0.0,
+                  0.138
+                ],
+                "active_prefix_tokens": [
+                  298.0,
+                  298.0
+                ]
+              },
+              "em": 0.875,
+              "semantic_acc": 0.875,
+              "num_masked_old_tokens": 0.0,
+              "active_prefix_tokens": 298.0,
+              "episodes": [
+                {
+                  "episode_idx": 0,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 1,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 2,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 3,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 4,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 5,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 6,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 7,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 8,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 9,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 10,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 11,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 12,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 13,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 14,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 15,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 16,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 17,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 18,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 19,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 20,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 21,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 22,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 23,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                }
+              ]
+            }
+          }
+        },
+        "deltaZ_ON_bank_masked_old": {
+          "continuous_delta_z": true,
+          "bank_mode": "masked_old",
+          "overall": {
+            "num_episodes": 48,
+            "ci95": {
+              "em": [
+                0.2168,
+                0.4746
+              ],
+              "semantic_acc": [
+                0.2168,
+                0.4746
+              ],
+              "num_masked_old_tokens": [
+                0.8958,
+                1.7917
+              ],
+              "active_prefix_tokens": [
+                298.0,
+                298.0
+              ]
+            },
+            "em": 0.3333,
+            "semantic_acc": 0.3333,
+            "num_masked_old_tokens": 1.3333,
+            "active_prefix_tokens": 298.0
+          },
+          "by_suite": {
+            "verbatim": {
+              "num_episodes": 24,
+              "ci95": {
+                "em": [
+                  0.0,
+                  0.138
+                ],
+                "semantic_acc": [
+                  0.0,
+                  0.138
+                ],
+                "num_masked_old_tokens": [
+                  2.2083,
+                  3.2083
+                ],
+                "active_prefix_tokens": [
+                  298.0,
+                  298.0
+                ]
+              },
+              "em": 0.0,
+              "semantic_acc": 0.0,
+              "num_masked_old_tokens": 2.6667,
+              "active_prefix_tokens": 298.0,
+              "episodes": [
+                {
+                  "episode_idx": 0,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "10",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 5.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 1,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": ",,",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 2,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": ",,",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 3,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "0",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 4,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "nordic@82",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 5,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "7",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 1.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 6,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "1967",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 7,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "256",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 8,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "18",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 5.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 9,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "12",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 10,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "1",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 11,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "100",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 12,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "22",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 13,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "th",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 1.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 14,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": ",,",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 15,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "100",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 16,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "M @-@ 82",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 5.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 17,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "1 week",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 1.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 18,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "1",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 19,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "300",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 20,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "30",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 21,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "LZMA",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 1.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 22,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": ",,",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 23,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "900",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 3.0,
+                  "active_prefix_tokens": 298.0
+                }
+              ]
+            },
+            "implicit": {
+              "num_episodes": 24,
+              "ci95": {
+                "em": [
+                  0.4671,
+                  0.8203
+                ],
+                "semantic_acc": [
+                  0.4671,
+                  0.8203
+                ],
+                "num_masked_old_tokens": [
+                  0.0,
+                  0.138
+                ],
+                "active_prefix_tokens": [
+                  298.0,
+                  298.0
+                ]
+              },
+              "em": 0.6667,
+              "semantic_acc": 0.6667,
+              "num_masked_old_tokens": 0.0,
+              "active_prefix_tokens": 298.0,
+              "episodes": [
+                {
+                  "episode_idx": 0,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 1,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 2,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 3,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 4,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 5,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 6,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 7,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 8,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 9,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 10,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 11,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 12,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 13,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 14,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 15,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 16,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 17,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 18,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 19,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 20,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 21,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 22,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 23,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                }
+              ]
+            }
+          }
+        },
+        "deltaZ_ON_bank_OFF": {
+          "continuous_delta_z": true,
+          "bank_mode": "orig",
+          "overall": {
+            "num_episodes": 48,
+            "ci95": {
+              "em": [
+                0.2168,
+                0.4746
+              ],
+              "semantic_acc": [
+                0.2168,
+                0.4746
+              ],
+              "num_masked_old_tokens": [
+                0.0,
+                0.0741
+              ],
+              "active_prefix_tokens": [
+                298.0,
+                298.0
+              ]
+            },
+            "em": 0.3333,
+            "semantic_acc": 0.3333,
+            "num_masked_old_tokens": 0.0,
+            "active_prefix_tokens": 298.0
+          },
+          "by_suite": {
+            "verbatim": {
+              "num_episodes": 24,
+              "ci95": {
+                "em": [
+                  0.0,
+                  0.138
+                ],
+                "semantic_acc": [
+                  0.0,
+                  0.138
+                ],
+                "num_masked_old_tokens": [
+                  0.0,
+                  0.138
+                ],
+                "active_prefix_tokens": [
+                  298.0,
+                  298.0
+                ]
+              },
+              "em": 0.0,
+              "semantic_acc": 0.0,
+              "num_masked_old_tokens": 0.0,
+              "active_prefix_tokens": 298.0,
+              "episodes": [
+                {
+                  "episode_idx": 0,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.2",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 1,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "14",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 2,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "30",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 3,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "2",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 4,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "nordic@82",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 5,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "gzip 7",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 6,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "120",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 7,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "16",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 8,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.2",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 9,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "14",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 10,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "30",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 11,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "2",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 12,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "nordic-west",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 13,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "gzipth",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 14,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "120",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 15,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "16",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 16,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.2",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 17,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "14",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 18,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "1",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 19,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "2",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 20,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "nordic-west",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 21,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "gzip",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 22,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "120",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 23,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "16",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                }
+              ]
+            },
+            "implicit": {
+              "num_episodes": 24,
+              "ci95": {
+                "em": [
+                  0.4671,
+                  0.8203
+                ],
+                "semantic_acc": [
+                  0.4671,
+                  0.8203
+                ],
+                "num_masked_old_tokens": [
+                  0.0,
+                  0.138
+                ],
+                "active_prefix_tokens": [
+                  298.0,
+                  298.0
+                ]
+              },
+              "em": 0.6667,
+              "semantic_acc": 0.6667,
+              "num_masked_old_tokens": 0.0,
+              "active_prefix_tokens": 298.0,
+              "episodes": [
+                {
+                  "episode_idx": 0,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 1,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 2,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 3,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 4,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 5,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 6,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 7,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 8,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 9,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 10,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 11,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 12,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 13,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 14,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 15,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 16,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 17,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 18,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 19,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 20,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 21,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 22,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 23,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                }
+              ]
+            }
+          }
+        },
+        "deltaZ_OFF_bank_OFF": {
+          "continuous_delta_z": false,
+          "bank_mode": "orig",
+          "overall": {
+            "num_episodes": 48,
+            "ci95": {
+              "em": [
+                0.2522,
+                0.5164
+              ],
+              "semantic_acc": [
+                0.2522,
+                0.5164
+              ],
+              "num_masked_old_tokens": [
+                0.0,
+                0.0741
+              ],
+              "active_prefix_tokens": [
+                298.0,
+                298.0
+              ]
+            },
+            "em": 0.375,
+            "semantic_acc": 0.375,
+            "num_masked_old_tokens": 0.0,
+            "active_prefix_tokens": 298.0
+          },
+          "by_suite": {
+            "verbatim": {
+              "num_episodes": 24,
+              "ci95": {
+                "em": [
+                  0.0074,
+                  0.2024
+                ],
+                "semantic_acc": [
+                  0.0074,
+                  0.2024
+                ],
+                "num_masked_old_tokens": [
+                  0.0,
+                  0.138
+                ],
+                "active_prefix_tokens": [
+                  298.0,
+                  298.0
+                ]
+              },
+              "em": 0.0417,
+              "semantic_acc": 0.0417,
+              "num_masked_old_tokens": 0.0,
+              "active_prefix_tokens": 298.0,
+              "episodes": [
+                {
+                  "episode_idx": 0,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.2",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 1,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "14 days",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 2,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "30",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 3,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "2",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 4,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "nordic@82",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 5,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "gzip 7",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 6,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "120",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 7,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "16",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 8,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.3",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 9,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "14 days",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 10,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "30",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 11,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "2",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 12,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "nordic-west",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 13,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "gzipth",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 14,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "120",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 15,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "16",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 16,
+                  "suite": "verbatim",
+                  "gold": "TLS-1.3",
+                  "old_answer": "TLS-1.2",
+                  "pred": "TLS-1.2",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 17,
+                  "suite": "verbatim",
+                  "gold": "45 days",
+                  "old_answer": "14 days",
+                  "pred": "14",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 18,
+                  "suite": "verbatim",
+                  "gold": "5 seconds",
+                  "old_answer": "30 seconds",
+                  "pred": "1",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 19,
+                  "suite": "verbatim",
+                  "gold": "6 attempts",
+                  "old_answer": "2 attempts",
+                  "pred": "2",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 20,
+                  "suite": "verbatim",
+                  "gold": "alpine-south",
+                  "old_answer": "nordic-west",
+                  "pred": "nordic-west",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 21,
+                  "suite": "verbatim",
+                  "gold": "zstd",
+                  "old_answer": "gzip",
+                  "pred": "gzip",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 22,
+                  "suite": "verbatim",
+                  "gold": "360 rpm",
+                  "old_answer": "120 rpm",
+                  "pred": "120",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 23,
+                  "suite": "verbatim",
+                  "gold": "64 items",
+                  "old_answer": "16 items",
+                  "pred": "16",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                }
+              ]
+            },
+            "implicit": {
+              "num_episodes": 24,
+              "ci95": {
+                "em": [
+                  0.5083,
+                  0.8509
+                ],
+                "semantic_acc": [
+                  0.5083,
+                  0.8509
+                ],
+                "num_masked_old_tokens": [
+                  0.0,
+                  0.138
+                ],
+                "active_prefix_tokens": [
+                  298.0,
+                  298.0
+                ]
+              },
+              "em": 0.7083,
+              "semantic_acc": 0.7083,
+              "num_masked_old_tokens": 0.0,
+              "active_prefix_tokens": 298.0,
+              "episodes": [
+                {
+                  "episode_idx": 0,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 1,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 2,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 3,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 4,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 5,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 6,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 7,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 8,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 9,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 10,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 11,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 12,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 13,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 14,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 15,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 16,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 17,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 18,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 19,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "Yes",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 20,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 21,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 22,
+                  "suite": "implicit",
+                  "gold": "No",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 1.0,
+                  "semantic_acc": 1.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                },
+                {
+                  "episode_idx": 23,
+                  "suite": "implicit",
+                  "gold": "Yes",
+                  "old_answer": "",
+                  "pred": "No",
+                  "em": 0.0,
+                  "semantic_acc": 0.0,
+                  "num_masked_old_tokens": 0.0,
+                  "active_prefix_tokens": 298.0
+                }
+              ]
+            }
+          }
+        }
+      },
+      "pairwise_overall_semantic_acc": {
+        "deltaZ_ON_bank_masked_old__vs__deltaZ_ON_bank_OFF": {
+          "n": 48,
+          "mean_a": 0.3333,
+          "mean_b": 0.3333,
+          "mean_diff": 0.0,
+          "paired_diff_ci95": [
+            0.0,
+            0.0
+          ],
+          "mcnemar": {
+            "n": 48,
+            "n11_both_correct": 16,
+            "n10_a_only": 0,
+            "n01_b_only": 0,
+            "n00_both_wrong": 32,
+            "discordant": 0,
+            "diff_a_minus_b": 0.0,
+            "p_value_exact": 1.0
+          }
+        },
+        "deltaZ_ON_bank_masked_old__vs__deltaZ_OFF_bank_OFF": {
+          "n": 48,
+          "mean_a": 0.3333,
+          "mean_b": 0.375,
+          "mean_diff": -0.0417,
+          "paired_diff_ci95": [
+            -0.125,
+            0.0417
+          ],
+          "mcnemar": {
+            "n": 48,
+            "n11_both_correct": 15,
+            "n10_a_only": 1,
+            "n01_b_only": 3,
+            "n00_both_wrong": 29,
+            "discordant": 4,
+            "diff_a_minus_b": -0.0417,
+            "p_value_exact": 0.625
+          }
+        },
+        "deltaZ_ON_bank_ON__vs__deltaZ_OFF_bank_ON": {
+          "n": 48,
+          "mean_a": 0.625,
+          "mean_b": 0.6875,
+          "mean_diff": -0.0625,
+          "paired_diff_ci95": [
+            -0.1458,
+            0.0
+          ],
+          "mcnemar": {
+            "n": 48,
+            "n11_both_correct": 30,
+            "n10_a_only": 0,
+            "n01_b_only": 3,
+            "n00_both_wrong": 15,
+            "discordant": 3,
+            "diff_a_minus_b": -0.0625,
+            "p_value_exact": 0.25
+          }
+        },
+        "deltaZ_ON_bank_ON__vs__deltaZ_ON_bank_masked_old": {
+          "n": 48,
+          "mean_a": 0.625,
+          "mean_b": 0.3333,
+          "mean_diff": 0.2917,
+          "paired_diff_ci95": [
+            0.1042,
+            0.4583
+          ],
+          "mcnemar": {
+            "n": 48,
+            "n11_both_correct": 12,
+            "n10_a_only": 18,
+            "n01_b_only": 4,
+            "n00_both_wrong": 14,
+            "discordant": 22,
+            "diff_a_minus_b": 0.2917,
+            "p_value_exact": 0.004344
+          }
+        }
+      },
+      "pairwise_verbatim_semantic_acc": {
+        "deltaZ_ON_bank_masked_old__vs__deltaZ_ON_bank_OFF": {
+          "n": 24,
+          "mean_a": 0.0,
+          "mean_b": 0.0,
+          "mean_diff": 0.0,
+          "paired_diff_ci95": [
+            0.0,
+            0.0
+          ],
+          "mcnemar": {
+            "n": 24,
+            "n11_both_correct": 0,
+            "n10_a_only": 0,
+            "n01_b_only": 0,
+            "n00_both_wrong": 24,
+            "discordant": 0,
+            "diff_a_minus_b": 0.0,
+            "p_value_exact": 1.0
+          }
+        },
+        "deltaZ_ON_bank_masked_old__vs__deltaZ_OFF_bank_OFF": {
+          "n": 24,
+          "mean_a": 0.0,
+          "mean_b": 0.0417,
+          "mean_diff": -0.0417,
+          "paired_diff_ci95": [
+            -0.125,
+            0.0
+          ],
+          "mcnemar": {
+            "n": 24,
+            "n11_both_correct": 0,
+            "n10_a_only": 0,
+            "n01_b_only": 1,
+            "n00_both_wrong": 23,
+            "discordant": 1,
+            "diff_a_minus_b": -0.0417,
+            "p_value_exact": 1.0
+          }
+        },
+        "deltaZ_ON_bank_ON__vs__deltaZ_OFF_bank_ON": {
+          "n": 24,
+          "mean_a": 0.4167,
+          "mean_b": 0.5,
+          "mean_diff": -0.0833,
+          "paired_diff_ci95": [
+            -0.2083,
+            0.0
+          ],
+          "mcnemar": {
+            "n": 24,
+            "n11_both_correct": 10,
+            "n10_a_only": 0,
+            "n01_b_only": 2,
+            "n00_both_wrong": 12,
+            "discordant": 2,
+            "diff_a_minus_b": -0.0833,
+            "p_value_exact": 0.5
+          }
+        },
+        "deltaZ_ON_bank_ON__vs__deltaZ_ON_bank_masked_old": {
+          "n": 24,
+          "mean_a": 0.4167,
+          "mean_b": 0.0,
+          "mean_diff": 0.4167,
+          "paired_diff_ci95": [
+            0.25,
+            0.625
+          ],
+          "mcnemar": {
+            "n": 24,
+            "n11_both_correct": 0,
+            "n10_a_only": 10,
+            "n01_b_only": 0,
+            "n00_both_wrong": 14,
+            "discordant": 10,
+            "diff_a_minus_b": 0.4167,
+            "p_value_exact": 0.001953
+          }
+        }
+      },
+      "pairwise_implicit_semantic_acc": {
+        "deltaZ_ON_bank_masked_old__vs__deltaZ_ON_bank_OFF": {
+          "n": 24,
+          "mean_a": 0.6667,
+          "mean_b": 0.6667,
+          "mean_diff": 0.0,
+          "paired_diff_ci95": [
+            0.0,
+            0.0
+          ],
+          "mcnemar": {
+            "n": 24,
+            "n11_both_correct": 16,
+            "n10_a_only": 0,
+            "n01_b_only": 0,
+            "n00_both_wrong": 8,
+            "discordant": 0,
+            "diff_a_minus_b": 0.0,
+            "p_value_exact": 1.0
+          }
+        },
+        "deltaZ_ON_bank_masked_old__vs__deltaZ_OFF_bank_OFF": {
+          "n": 24,
+          "mean_a": 0.6667,
+          "mean_b": 0.7083,
+          "mean_diff": -0.0417,
+          "paired_diff_ci95": [
+            -0.1667,
+            0.0833
+          ],
+          "mcnemar": {
+            "n": 24,
+            "n11_both_correct": 15,
+            "n10_a_only": 1,
+            "n01_b_only": 2,
+            "n00_both_wrong": 6,
+            "discordant": 3,
+            "diff_a_minus_b": -0.0417,
+            "p_value_exact": 1.0
+          }
+        },
+        "deltaZ_ON_bank_ON__vs__deltaZ_OFF_bank_ON": {
+          "n": 24,
+          "mean_a": 0.8333,
+          "mean_b": 0.875,
+          "mean_diff": -0.0417,
+          "paired_diff_ci95": [
+            -0.125,
+            0.0
+          ],
+          "mcnemar": {
+            "n": 24,
+            "n11_both_correct": 20,
+            "n10_a_only": 0,
+            "n01_b_only": 1,
+            "n00_both_wrong": 3,
+            "discordant": 1,
+            "diff_a_minus_b": -0.0417,
+            "p_value_exact": 1.0
+          }
+        },
+        "deltaZ_ON_bank_ON__vs__deltaZ_ON_bank_masked_old": {
+          "n": 24,
+          "mean_a": 0.8333,
+          "mean_b": 0.6667,
+          "mean_diff": 0.1667,
+          "paired_diff_ci95": [
+            -0.125,
+            0.4167
+          ],
+          "mcnemar": {
+            "n": 24,
+            "n11_both_correct": 12,
+            "n10_a_only": 8,
+            "n01_b_only": 4,
+            "n00_both_wrong": 0,
+            "discordant": 12,
+            "diff_a_minus_b": 0.1667,
+            "p_value_exact": 0.387695
+          }
+        }
+      }
+    },
+    "wikitext_ppl_comparison_4k": {
+      "full_kv_bf16": {
+        "wikitext_ppl": 7.719,
+        "mean_nll": 2.0437,
+        "num_episodes": 15
+      },
+      "pathb_discrete_192tok": {
+        "wikitext_ppl": 14.077,
+        "mean_nll": 2.6445,
+        "num_episodes": 15
+      },
+      "llama_lslc_zbook_full": {
+        "wikitext_ppl": 17.8856,
+        "mean_nll": 2.884,
+        "num_episodes": 15
+      }
+    }
+  }
+}

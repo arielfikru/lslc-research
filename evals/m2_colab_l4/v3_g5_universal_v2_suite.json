@@ -1,0 +1,3027 @@
+{
+  "version": "3.0.0-gerbang5-ablations",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/lslc_results/lslc_universal_v2_qwen3_1.7b.safetensors",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "config": {
+    "page_size": 256,
+    "k_exact": 48,
+    "salience_span_len": 16,
+    "salience_route_weight": 1.5,
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "eval_n": 48
+  },
+  "ablation_2x2_edit": {
+    "deltaZ_ON_bank_ON": {
+      "continuous_delta_z": true,
+      "discrete_exact_bank": true,
+      "overall": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.8602,
+            0.9885
+          ],
+          "f1": [
+            0.8602,
+            0.9885
+          ],
+          "semantic_acc": [
+            0.8602,
+            0.9885
+          ],
+          "edit_latency_ms": [
+            51.4161,
+            66.6662
+          ],
+          "mean_strip_gate": [
+            0.8242,
+            0.8534
+          ],
+          "bank_write_rate": [
+            0.9259,
+            1.0
+          ],
+          "active_prefix_tokens": [
+            298.0,
+            298.0
+          ]
+        },
+        "em": 0.9583,
+        "f1": 0.9583,
+        "semantic_acc": 0.9583,
+        "edit_latency_ms": 56.662,
+        "mean_strip_gate": 0.8402,
+        "bank_write_rate": 1.0,
+        "active_prefix_tokens": 298.0,
+        "max_toc_diff": 0.0
+      },
+      "by_suite": {
+        "verbatim": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.862,
+              1.0
+            ],
+            "f1": [
+              0.862,
+              1.0
+            ],
+            "semantic_acc": [
+              0.862,
+              1.0
+            ],
+            "edit_latency_ms": [
+              51.3734,
+              81.7726
+            ],
+            "mean_strip_gate": [
+              0.8636,
+              0.8711
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 1.0,
+          "f1": 1.0,
+          "semantic_acc": 1.0,
+          "edit_latency_ms": 61.6859,
+          "mean_strip_gate": 0.8675,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "What is the updated protocol for Service HarborGate-10?",
+              "edit": "Approved revision: Service HarborGate-10 updated its protocol from TLS-1.2 to TLS-1.3.",
+              "gold": "TLS-1.3",
+              "pred": "TLS-1.3",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 291.851,
+              "mean_strip_gate": 0.8684,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated retention window for Service CloudVault-11?",
+              "edit": "Approved revision: Service CloudVault-11 updated its retention window from 14 days to 45 days.",
+              "gold": "45 days",
+              "pred": "45 days",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 53.092,
+              "mean_strip_gate": 0.8775,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated sampling interval for Service MetricPulse-12?",
+              "edit": "Approved revision: Service MetricPulse-12 updated its sampling interval from 30 seconds to 5 seconds.",
+              "gold": "5 seconds",
+              "pred": "5 seconds",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 51.218,
+              "mean_strip_gate": 0.8721,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        },
+        "implicit": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.7416,
+              0.9769
+            ],
+            "f1": [
+              0.7416,
+              0.9769
+            ],
+            "semantic_acc": [
+              0.7416,
+              0.9769
+            ],
+            "edit_latency_ms": [
+              51.1136,
+              52.1739
+            ],
+            "mean_strip_gate": [
+              0.7914,
+              0.8343
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.9167,
+          "f1": 0.9167,
+          "semantic_acc": 0.9167,
+          "edit_latency_ms": 51.6381,
+          "mean_strip_gate": 0.8129,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "Can the TokyoBilling-1 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Asia region switch to read-only mode tomorrow.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 53.083,
+              "mean_strip_gate": 0.8608,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Can the SeoulLedger-2 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Nordic region are promoted to full read-write mode tomorrow.",
+              "gold": "Yes",
+              "pred": "Yes",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 52.945,
+              "mean_strip_gate": 0.8497,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Is contractor OsakaPay-3 permitted to enter the Archive Room? Answer Yes or No.",
+              "edit": "Security update: Entering the Archive Room strictly requires Tier-A clearance.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 52.803,
+              "mean_strip_gate": 0.7604,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        }
+      }
+    },
+    "deltaZ_ON_bank_OFF": {
+      "continuous_delta_z": true,
+      "discrete_exact_bank": false,
+      "overall": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.1492,
+            0.3878
+          ],
+          "f1": [
+            0.3021,
+            0.5208
+          ],
+          "semantic_acc": [
+            0.1492,
+            0.3878
+          ],
+          "edit_latency_ms": [
+            51.3559,
+            51.7282
+          ],
+          "mean_strip_gate": [
+            0.8242,
+            0.8534
+          ],
+          "bank_write_rate": [
+            0.9259,
+            1.0
+          ],
+          "active_prefix_tokens": [
+            298.0,
+            298.0
+          ]
+        },
+        "em": 0.25,
+        "f1": 0.4062,
+        "semantic_acc": 0.25,
+        "edit_latency_ms": 51.5398,
+        "mean_strip_gate": 0.8402,
+        "bank_write_rate": 1.0,
+        "active_prefix_tokens": 298.0,
+        "max_toc_diff": 0.0
+      },
+      "by_suite": {
+        "verbatim": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.2292,
+              0.4167
+            ],
+            "semantic_acc": [
+              0.0,
+              0.138
+            ],
+            "edit_latency_ms": [
+              51.1075,
+              51.6939
+            ],
+            "mean_strip_gate": [
+              0.8636,
+              0.8711
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.0,
+          "f1": 0.3125,
+          "semantic_acc": 0.0,
+          "edit_latency_ms": 51.3749,
+          "mean_strip_gate": 0.8675,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "What is the updated protocol for Service HarborGate-10?",
+              "edit": "Approved revision: Service HarborGate-10 updated its protocol from TLS-1.2 to TLS-1.3.",
+              "gold": "TLS-1.3",
+              "pred": "TLS-1.2",
+              "em": 0.0,
+              "f1": 0.5,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 50.864,
+              "mean_strip_gate": 0.8684,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated retention window for Service CloudVault-11?",
+              "edit": "Approved revision: Service CloudVault-11 updated its retention window from 14 days to 45 days.",
+              "gold": "45 days",
+              "pred": "14 days",
+              "em": 0.0,
+              "f1": 0.5,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 51.353,
+              "mean_strip_gate": 0.8775,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated sampling interval for Service MetricPulse-12?",
+              "edit": "Approved revision: Service MetricPulse-12 updated its sampling interval from 30 seconds to 5 seconds.",
+              "gold": "5 seconds",
+              "pred": "30 seconds",
+              "em": 0.0,
+              "f1": 0.5,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 52.884,
+              "mean_strip_gate": 0.8721,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        },
+        "implicit": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.3143,
+              0.6857
+            ],
+            "f1": [
+              0.3143,
+              0.6857
+            ],
+            "semantic_acc": [
+              0.3143,
+              0.6857
+            ],
+            "edit_latency_ms": [
+              51.4852,
+              51.9495
+            ],
+            "mean_strip_gate": [
+              0.7914,
+              0.8343
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.5,
+          "f1": 0.5,
+          "semantic_acc": 0.5,
+          "edit_latency_ms": 51.7048,
+          "mean_strip_gate": 0.8129,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "Can the TokyoBilling-1 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Asia region switch to read-only mode tomorrow.",
+              "gold": "No",
+              "pred": "Yes",
+              "em": 0.0,
+              "f1": 0.0,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 51.387,
+              "mean_strip_gate": 0.8608,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Can the SeoulLedger-2 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Nordic region are promoted to full read-write mode tomorrow.",
+              "gold": "Yes",
+              "pred": "Yes",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 50.931,
+              "mean_strip_gate": 0.8497,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Is contractor OsakaPay-3 permitted to enter the Archive Room? Answer Yes or No.",
+              "edit": "Security update: Entering the Archive Room strictly requires Tier-A clearance.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 50.913,
+              "mean_strip_gate": 0.7604,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        }
+      }
+    },
+    "deltaZ_OFF_bank_ON": {
+      "continuous_delta_z": false,
+      "discrete_exact_bank": true,
+      "overall": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.8602,
+            0.9885
+          ],
+          "f1": [
+            0.8602,
+            0.9885
+          ],
+          "semantic_acc": [
+            0.8602,
+            0.9885
+          ],
+          "edit_latency_ms": [
+            51.3775,
+            51.8041
+          ],
+          "mean_strip_gate": [
+            0.8242,
+            0.8534
+          ],
+          "bank_write_rate": [
+            0.9259,
+            1.0
+          ],
+          "active_prefix_tokens": [
+            298.0,
+            298.0
+          ]
+        },
+        "em": 0.9583,
+        "f1": 0.9583,
+        "semantic_acc": 0.9583,
+        "edit_latency_ms": 51.589,
+        "mean_strip_gate": 0.8402,
+        "bank_write_rate": 1.0,
+        "active_prefix_tokens": 298.0,
+        "max_toc_diff": 0.0
+      },
+      "by_suite": {
+        "verbatim": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.862,
+              1.0
+            ],
+            "f1": [
+              0.862,
+              1.0
+            ],
+            "semantic_acc": [
+              0.862,
+              1.0
+            ],
+            "edit_latency_ms": [
+              51.2402,
+              51.8903
+            ],
+            "mean_strip_gate": [
+              0.8636,
+              0.8711
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 1.0,
+          "f1": 1.0,
+          "semantic_acc": 1.0,
+          "edit_latency_ms": 51.545,
+          "mean_strip_gate": 0.8675,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "What is the updated protocol for Service HarborGate-10?",
+              "edit": "Approved revision: Service HarborGate-10 updated its protocol from TLS-1.2 to TLS-1.3.",
+              "gold": "TLS-1.3",
+              "pred": "TLS-1.3",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 51.563,
+              "mean_strip_gate": 0.8684,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated retention window for Service CloudVault-11?",
+              "edit": "Approved revision: Service CloudVault-11 updated its retention window from 14 days to 45 days.",
+              "gold": "45 days",
+              "pred": "45 days",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 51.227,
+              "mean_strip_gate": 0.8775,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated sampling interval for Service MetricPulse-12?",
+              "edit": "Approved revision: Service MetricPulse-12 updated its sampling interval from 30 seconds to 5 seconds.",
+              "gold": "5 seconds",
+              "pred": "5 seconds",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 51.399,
+              "mean_strip_gate": 0.8721,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        },
+        "implicit": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.7416,
+              0.9769
+            ],
+            "f1": [
+              0.7416,
+              0.9769
+            ],
+            "semantic_acc": [
+              0.7416,
+              0.9769
+            ],
+            "edit_latency_ms": [
+              51.259,
+              51.9491
+            ],
+            "mean_strip_gate": [
+              0.7914,
+              0.8343
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.9167,
+          "f1": 0.9167,
+          "semantic_acc": 0.9167,
+          "edit_latency_ms": 51.6331,
+          "mean_strip_gate": 0.8129,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "Can the TokyoBilling-1 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Asia region switch to read-only mode tomorrow.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 50.486,
+              "mean_strip_gate": 0.8608,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Can the SeoulLedger-2 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Nordic region are promoted to full read-write mode tomorrow.",
+              "gold": "Yes",
+              "pred": "Yes",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 52.521,
+              "mean_strip_gate": 0.8497,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Is contractor OsakaPay-3 permitted to enter the Archive Room? Answer Yes or No.",
+              "edit": "Security update: Entering the Archive Room strictly requires Tier-A clearance.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 52.028,
+              "mean_strip_gate": 0.7604,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        }
+      }
+    },
+    "deltaZ_OFF_bank_OFF": {
+      "continuous_delta_z": false,
+      "discrete_exact_bank": false,
+      "overall": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.1331,
+            0.3654
+          ],
+          "f1": [
+            0.2812,
+            0.5104
+          ],
+          "semantic_acc": [
+            0.1331,
+            0.3654
+          ],
+          "edit_latency_ms": [
+            51.5311,
+            51.966
+          ],
+          "mean_strip_gate": [
+            0.8242,
+            0.8534
+          ],
+          "bank_write_rate": [
+            0.9259,
+            1.0
+          ],
+          "active_prefix_tokens": [
+            298.0,
+            298.0
+          ]
+        },
+        "em": 0.2292,
+        "f1": 0.3854,
+        "semantic_acc": 0.2292,
+        "edit_latency_ms": 51.7324,
+        "mean_strip_gate": 0.8402,
+        "bank_write_rate": 1.0,
+        "active_prefix_tokens": 298.0,
+        "max_toc_diff": 0.0
+      },
+      "by_suite": {
+        "verbatim": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.2292,
+              0.4167
+            ],
+            "semantic_acc": [
+              0.0,
+              0.138
+            ],
+            "edit_latency_ms": [
+              51.4742,
+              52.2236
+            ],
+            "mean_strip_gate": [
+              0.8636,
+              0.8711
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.0,
+          "f1": 0.3125,
+          "semantic_acc": 0.0,
+          "edit_latency_ms": 51.832,
+          "mean_strip_gate": 0.8675,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "What is the updated protocol for Service HarborGate-10?",
+              "edit": "Approved revision: Service HarborGate-10 updated its protocol from TLS-1.2 to TLS-1.3.",
+              "gold": "TLS-1.3",
+              "pred": "TLS-1.2",
+              "em": 0.0,
+              "f1": 0.5,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 52.093,
+              "mean_strip_gate": 0.8684,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated retention window for Service CloudVault-11?",
+              "edit": "Approved revision: Service CloudVault-11 updated its retention window from 14 days to 45 days.",
+              "gold": "45 days",
+              "pred": "14 days",
+              "em": 0.0,
+              "f1": 0.5,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 51.528,
+              "mean_strip_gate": 0.8775,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "What is the updated sampling interval for Service MetricPulse-12?",
+              "edit": "Approved revision: Service MetricPulse-12 updated its sampling interval from 30 seconds to 5 seconds.",
+              "gold": "5 seconds",
+              "pred": "30 seconds",
+              "em": 0.0,
+              "f1": 0.5,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 51.444,
+              "mean_strip_gate": 0.8721,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        },
+        "implicit": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.2789,
+              0.6492
+            ],
+            "f1": [
+              0.2789,
+              0.6492
+            ],
+            "semantic_acc": [
+              0.2789,
+              0.6492
+            ],
+            "edit_latency_ms": [
+              51.3831,
+              51.8871
+            ],
+            "mean_strip_gate": [
+              0.7914,
+              0.8343
+            ],
+            "bank_write_rate": [
+              0.862,
+              1.0
+            ],
+            "active_prefix_tokens": [
+              298.0,
+              298.0
+            ]
+          },
+          "em": 0.4583,
+          "f1": 0.4583,
+          "semantic_acc": 0.4583,
+          "edit_latency_ms": 51.6327,
+          "mean_strip_gate": 0.8129,
+          "bank_write_rate": 1.0,
+          "active_prefix_tokens": 298.0,
+          "max_toc_diff": 0.0,
+          "samples": [
+            {
+              "question": "Can the TokyoBilling-1 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Asia region switch to read-only mode tomorrow.",
+              "gold": "No",
+              "pred": "Yes",
+              "em": 0.0,
+              "f1": 0.0,
+              "semantic_acc": 0.0,
+              "edit_latency_ms": 51.922,
+              "mean_strip_gate": 0.8608,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Can the SeoulLedger-2 service perform write operations tomorrow? Answer Yes or No.",
+              "edit": "Policy bulletin: All services hosted in the Nordic region are promoted to full read-write mode tomorrow.",
+              "gold": "Yes",
+              "pred": "Yes",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 52.16,
+              "mean_strip_gate": 0.8497,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            },
+            {
+              "question": "Is contractor OsakaPay-3 permitted to enter the Archive Room? Answer Yes or No.",
+              "edit": "Security update: Entering the Archive Room strictly requires Tier-A clearance.",
+              "gold": "No",
+              "pred": "No",
+              "em": 1.0,
+              "f1": 1.0,
+              "semantic_acc": 1.0,
+              "edit_latency_ms": 51.571,
+              "mean_strip_gate": 0.7604,
+              "bank_write_rate": 1.0,
+              "active_prefix_tokens": 298.0,
+              "max_toc_diff": 0.0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "ablation_1d_vs_3d": null,
+  "true_kv_baselines": {
+    "iso_token_budget": 298,
+    "num_pages": 8,
+    "icae_params": 11713536,
+    "icae_train_steps": 240,
+    "systems": {
+      "full_kv_bf16": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.0115,
+            0.1398
+          ],
+          "substring_match": [
+            0.9259,
+            1.0
+          ],
+          "f1": [
+            0.2789,
+            0.3715
+          ],
+          "tok_acc": [
+            0.8906,
+            0.9063
+          ],
+          "per_query_ms": [
+            641.9326,
+            740.8011
+          ]
+        },
+        "em": 0.0417,
+        "substring_match": 1.0,
+        "f1": 0.3214,
+        "tok_acc": 0.8975,
+        "per_query_ms": 694.5102,
+        "ppl": 14.2913,
+        "active_tokens_mean": 2048.0,
+        "exact_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0231,
+              0.2584
+            ],
+            "substring_match": [
+              0.862,
+              1.0
+            ],
+            "f1": [
+              0.3175,
+              0.4861
+            ],
+            "tok_acc": [
+              0.9,
+              0.9208
+            ]
+          },
+          "em": 0.0833,
+          "substring_match": 1.0,
+          "f1": 0.3929,
+          "tok_acc": 0.9083
+        },
+        "semantic_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "substring_match": [
+              0.862,
+              1.0
+            ],
+            "f1": [
+              0.2347,
+              0.2646
+            ],
+            "tok_acc": [
+              0.8791,
+              0.8976
+            ]
+          },
+          "em": 0.0,
+          "substring_match": 1.0,
+          "f1": 0.25,
+          "tok_acc": 0.8866
+        },
+        "peak_vram_mb": 5378.89,
+        "samples": [
+          {
+            "needle_type": "exact",
+            "gold": "5438-6121",
+            "pred_first_line": "The exact code for API-KEY is 5438-6121.",
+            "pred_raw": " The exact code for API-KEY is 5438-6121.\n",
+            "em": 0.0,
+            "substring_match": 1.0,
+            "f1": 0.2857142857142857,
+            "tok_acc": 0.9000000357627869,
+            "per_query_ms": 910.303
+          },
+          {
+            "needle_type": "semantic",
+            "gold": "before",
+            "pred_first_line": "Backups are encrypted before cross-region replication.",
+            "pred_raw": " Backups are encrypted before cross-region replication.\n\n",
+            "em": 0.0,
+            "substring_match": 1.0,
+            "f1": 0.2857142857142857,
+            "tok_acc": 0.875,
+            "per_query_ms": 487.63
+          },
+          {
+            "needle_type": "exact",
+            "gold": "2720-8009",
+            "pred_first_line": "The exact code for NODE-PORT is 2720-8009.",
+            "pred_raw": " The exact code for NODE-PORT is 2720-8009.\n",
+            "em": 0.0,
+            "substring_match": 1.0,
+            "f1": 0.2857142857142857,
+            "tok_acc": 0.9000000357627869,
+            "per_query_ms": 909.708
+          },
+          {
+            "needle_type": "semantic",
+            "gold": "latency",
+            "pred_first_line": "The note says that canary deployments roll back automatically on latency spikes.",
+            "pred_raw": " The note says that canary deployments roll back automatically on latency spikes.\n\n",
+            "em": 0.0,
+            "substring_match": 1.0,
+            "f1": 0.16666666666666669,
+            "tok_acc": 0.8888888955116272,
+            "per_query_ms": 695.04
+          }
+        ]
+      },
+      "true_int4_kv_cache": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.0215,
+            0.1684
+          ],
+          "substring_match": [
+            0.753,
+            0.9414
+          ],
+          "f1": [
+            0.2751,
+            0.402
+          ],
+          "tok_acc": [
+            0.8841,
+            0.8989
+          ],
+          "per_query_ms": [
+            585.3979,
+            709.1385
+          ]
+        },
+        "em": 0.0625,
+        "substring_match": 0.875,
+        "f1": 0.3391,
+        "tok_acc": 0.891,
+        "per_query_ms": 648.1559,
+        "ppl": 17.7621,
+        "active_tokens_mean": 2048.0,
+        "exact_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0434,
+              0.31
+            ],
+            "substring_match": [
+              0.5953,
+              0.9076
+            ],
+            "f1": [
+              0.2758,
+              0.5278
+            ],
+            "tok_acc": [
+              0.8833,
+              0.9167
+            ]
+          },
+          "em": 0.125,
+          "substring_match": 0.7917,
+          "f1": 0.4028,
+          "tok_acc": 0.9
+        },
+        "semantic_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "substring_match": [
+              0.7975,
+              0.9926
+            ],
+            "f1": [
+              0.2283,
+              0.3267
+            ],
+            "tok_acc": [
+              0.8791,
+              0.8848
+            ]
+          },
+          "em": 0.0,
+          "substring_match": 0.9583,
+          "f1": 0.2754,
+          "tok_acc": 0.8819
+        },
+        "peak_vram_mb": 5826.89,
+        "samples": [
+          {
+            "needle_type": "exact",
+            "gold": "5438-6121",
+            "pred_first_line": "The code to be inserted:",
+            "pred_raw": " The code to be inserted: \n\n",
+            "em": 0.0,
+            "substring_match": 0.0,
+            "f1": 0.0,
+            "tok_acc": 0.800000011920929,
+            "per_query_ms": 415.51
+          },
+          {
+            "needle_type": "semantic",
+            "gold": "before",
+            "pred_first_line": "The backups are encrypted before cross-region replication.",
+            "pred_raw": " The backups are encrypted before cross-region replication.\n\n",
+            "em": 0.0,
+            "substring_match": 1.0,
+            "f1": 0.2857142857142857,
+            "tok_acc": 0.875,
+            "per_query_ms": 497.933
+          },
+          {
+            "needle_type": "exact",
+            "gold": "2720-8009",
+            "pred_first_line": "The exact code for NODE-PORT is 2720-8009.",
+            "pred_raw": " The exact code for NODE-PORT is 2720-8009.\n",
+            "em": 0.0,
+            "substring_match": 1.0,
+            "f1": 0.2857142857142857,
+            "tok_acc": 0.9000000357627869,
+            "per_query_ms": 924.385
+          },
+          {
+            "needle_type": "semantic",
+            "gold": "latency",
+            "pred_first_line": "The canary deployments roll back automatically on latency spikes.",
+            "pred_raw": " The canary deployments roll back automatically on latency spikes.\n\n",
+            "em": 0.0,
+            "substring_match": 1.0,
+            "f1": 0.2222222222222222,
+            "tok_acc": 0.8888888955116272,
+            "per_query_ms": 581.563
+          }
+        ],
+        "analytical_kv_4k_mib": 112.0
+      },
+      "true_attn_h2o_snapkv": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.0,
+            0.0741
+          ],
+          "substring_match": [
+            0.1824,
+            0.4318
+          ],
+          "f1": [
+            0.0428,
+            0.1077
+          ],
+          "tok_acc": [
+            0.2065,
+            0.3432
+          ],
+          "per_query_ms": [
+            846.9235,
+            1005.0548
+          ]
+        },
+        "em": 0.0,
+        "substring_match": 0.2917,
+        "f1": 0.0751,
+        "tok_acc": 0.2777,
+        "per_query_ms": 922.7137,
+        "ppl": 16.8972,
+        "active_tokens_mean": 298.0,
+        "exact_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "substring_match": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.0,
+              0.138
+            ],
+            "tok_acc": [
+              0.0542,
+              0.1417
+            ]
+          },
+          "em": 0.0,
+          "substring_match": 0.0,
+          "f1": 0.0,
+          "tok_acc": 0.0958
+        },
+        "semantic_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "substring_match": [
+              0.3883,
+              0.7553
+            ],
+            "f1": [
+              0.0974,
+              0.1995
+            ],
+            "tok_acc": [
+              0.3843,
+              0.5289
+            ]
+          },
+          "em": 0.0,
+          "substring_match": 0.5833,
+          "f1": 0.1503,
+          "tok_acc": 0.4595
+        },
+        "peak_vram_mb": 9667.5,
+        "samples": [
+          {
+            "needle_type": "exact",
+            "gold": "5438-6121",
+            "pred_first_line": "The exact code for API-KEY is: 55555555555555",
+            "pred_raw": " The exact code for API-KEY is: 55555555555555",
+            "em": 0.0,
+            "substring_match": 0.0,
+            "f1": 0.0,
+            "tok_acc": 0.4000000059604645,
+            "per_query_ms": 1254.66
+          },
+          {
+            "needle_type": "semantic",
+            "gold": "before",
+            "pred_first_line": "Backups are encrypted before they are replicated.",
+            "pred_raw": " Backups are encrypted before they are replicated. \n\n",
+            "em": 0.0,
+            "substring_match": 1.0,
+            "f1": 0.25,
+            "tok_acc": 0.5,
+            "per_query_ms": 617.759
+          },
+          {
+            "needle_type": "exact",
+            "gold": "2720-8009",
+            "pred_first_line": "The exact code for NODE-PORT is: 3000",
+            "pred_raw": " The exact code for NODE-PORT is: 3000\n",
+            "em": 0.0,
+            "substring_match": 0.0,
+            "f1": 0.0,
+            "tok_acc": 0.10000000149011612,
+            "per_query_ms": 833.622
+          },
+          {
+            "needle_type": "semantic",
+            "gold": "latency",
+            "pred_first_line": "The organization of the games is a key factor in the automatic canary rollback. The canary rollback is a process that",
+            "pred_raw": " The organization of the games is a key factor in the automatic canary rollback. The canary rollback is a process that",
+            "em": 0.0,
+            "substring_match": 0.0,
+            "f1": 0.0,
+            "tok_acc": 0.2222222238779068,
+            "per_query_ms": 1254.756
+          }
+        ]
+      },
+      "icae_1d_latent_baseline": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.0,
+            0.0741
+          ],
+          "substring_match": [
+            0.0,
+            0.0741
+          ],
+          "f1": [
+            0.0,
+            0.0741
+          ],
+          "tok_acc": [
+            0.4375,
+            0.5856
+          ],
+          "per_query_ms": [
+            1025.9255,
+            1125.5631
+          ]
+        },
+        "em": 0.0,
+        "substring_match": 0.0,
+        "f1": 0.0,
+        "tok_acc": 0.5132,
+        "per_query_ms": 1078.2896,
+        "ppl": 131.044,
+        "active_tokens_mean": 296.0,
+        "exact_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "substring_match": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.0,
+              0.138
+            ],
+            "tok_acc": [
+              0.2375,
+              0.2875
+            ]
+          },
+          "em": 0.0,
+          "substring_match": 0.0,
+          "f1": 0.0,
+          "tok_acc": 0.2625
+        },
+        "semantic_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0,
+              0.138
+            ],
+            "substring_match": [
+              0.0,
+              0.138
+            ],
+            "f1": [
+              0.0,
+              0.138
+            ],
+            "tok_acc": [
+              0.7581,
+              0.7697
+            ]
+          },
+          "em": 0.0,
+          "substring_match": 0.0,
+          "f1": 0.0,
+          "tok_acc": 0.7639
+        },
+        "peak_vram_mb": 5187.14,
+        "samples": [
+          {
+            "needle_type": "exact",
+            "gold": "5438-6121",
+            "pred_first_line": "4121-8371-4423-1677",
+            "pred_raw": " 4121-8371-4423-1677\n",
+            "em": 0.0,
+            "substring_match": 0.0,
+            "f1": 0.0,
+            "tok_acc": 0.30000001192092896,
+            "per_query_ms": 992.01
+          },
+          {
+            "needle_type": "semantic",
+            "gold": "before",
+            "pred_first_line": "When the data is encrypted at rest, the backups are encrypted at rest. 1. When the data is encrypted at",
+            "pred_raw": " When the data is encrypted at rest, the backups are encrypted at rest. 1. When the data is encrypted at",
+            "em": 0.0,
+            "substring_match": 0.0,
+            "f1": 0.0,
+            "tok_acc": 0.75,
+            "per_query_ms": 1156.646
+          },
+          {
+            "needle_type": "exact",
+            "gold": "2720-8009",
+            "pred_first_line": "419-101-101-101-101-101",
+            "pred_raw": " 419-101-101-101-101-101",
+            "em": 0.0,
+            "substring_match": 0.0,
+            "f1": 0.0,
+            "tok_acc": 0.20000000298023224,
+            "per_query_ms": 1157.036
+          },
+          {
+            "needle_type": "semantic",
+            "gold": "latency",
+            "pred_first_line": "Canary builds and feature branches trigger canary rollbacks based on certain conditions. For example: - The build version is lower",
+            "pred_raw": " Canary builds and feature branches trigger canary rollbacks based on certain conditions. For example: - The build versi",
+            "em": 0.0,
+            "substring_match": 0.0,
+            "f1": 0.0,
+            "tok_acc": 0.7777777910232544,
+            "per_query_ms": 1160.319
+          }
+        ]
+      },
+      "lslc_v3_universal": {
+        "num_episodes": 48,
+        "ci95": {
+          "em": [
+            0.3447,
+            0.6167
+          ],
+          "substring_match": [
+            0.8602,
+            0.9885
+          ],
+          "f1": [
+            0.666,
+            0.8281
+          ],
+          "tok_acc": [
+            0.8927,
+            0.9439
+          ],
+          "per_query_ms": [
+            435.8681,
+            519.1829
+          ]
+        },
+        "em": 0.4792,
+        "substring_match": 0.9583,
+        "f1": 0.7462,
+        "tok_acc": 0.9182,
+        "per_query_ms": 478.2028,
+        "ppl": 54.0009,
+        "active_tokens_mean": 298.0,
+        "exact_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.7416,
+              0.9769
+            ],
+            "substring_match": [
+              0.7416,
+              0.9769
+            ],
+            "f1": [
+              0.7416,
+              0.9769
+            ],
+            "tok_acc": [
+              0.95,
+              1.0
+            ]
+          },
+          "em": 0.9167,
+          "substring_match": 0.9167,
+          "f1": 0.9167,
+          "tok_acc": 0.9833
+        },
+        "semantic_niah": {
+          "num_episodes": 24,
+          "ci95": {
+            "em": [
+              0.0074,
+              0.2025
+            ],
+            "substring_match": [
+              0.862,
+              1.0
+            ],
+            "f1": [
+              0.5222,
+              0.6319
+            ],
+            "tok_acc": [
+              0.8281,
+              0.8756
+            ]
+          },
+          "em": 0.0417,
+          "substring_match": 1.0,
+          "f1": 0.5757,
+          "tok_acc": 0.853
+        },
+        "peak_vram_mb": 4491.73,
+        "samples": [
+          {
+            "needle_type": "exact",
+            "gold": "5438-6121",
+            "pred_first_line": "5438-6121",
+            "pred_raw": " 5438-6121\n",
+            "em": 1.0,
+            "substring_match": 1.0,
+            "f1": 1.0,
+            "tok_acc": 1.0,
+            "per_query_ms": 631.566
+          },
+          {
+            "needle_type": "semantic",
+            "gold": "before",
+            "pred_first_line": "before cross-region replication",
+            "pred_raw": " before cross-region replication\n",
+            "em": 0.0,
+            "substring_match": 1.0,
+            "f1": 0.5,
+            "tok_acc": 0.875,
+            "per_query_ms": 379.863
+          },
+          {
+            "needle_type": "exact",
+            "gold": "2720-8009",
+            "pred_first_line": "2720-08",
+            "pred_raw": " 2720-08\n",
+            "em": 0.0,
+            "substring_match": 0.0,
+            "f1": 0.0,
+            "tok_acc": 0.699999988079071,
+            "per_query_ms": 535.453
+          },
+          {
+            "needle_type": "semantic",
+            "gold": "latency",
+            "pred_first_line": "latency spikes",
+            "pred_raw": " latency spikes\n",
+            "em": 0.0,
+            "substring_match": 1.0,
+            "f1": 0.6666666666666666,
+            "tok_acc": 0.8888888955116272,
+            "per_query_ms": 279.694
+          }
+        ]
+      }
+    }
+  },
+  "fair_g2_and_coding_n24": {
+    "gate2_fair_formatting": {
+      "bm25_rag_immutable": {
+        "num_episodes": 48,
+        "ci95": {
+          "strict_em": [
+            0.2522,
+            0.5164
+          ],
+          "normalized_numeric_em": [
+            0.2522,
+            0.5164
+          ],
+          "f1": [
+            0.25,
+            0.5208
+          ],
+          "active_tokens": [
+            1027.125,
+            1027.8542
+          ]
+        },
+        "strict_em": 0.375,
+        "normalized_numeric_em": 0.375,
+        "f1": 0.3854,
+        "active_tokens": 1027.5,
+        "by_mode": {
+          "budget": {
+            "num_episodes": 24,
+            "ci95": {
+              "strict_em": [
+                0.2116,
+                0.5729
+              ],
+              "normalized_numeric_em": [
+                0.2116,
+                0.5729
+              ],
+              "f1": [
+                0.2083,
+                0.6042
+              ],
+              "active_tokens": [
+                1027.25,
+                1028.1667
+              ]
+            },
+            "strict_em": 0.375,
+            "normalized_numeric_em": 0.375,
+            "f1": 0.3958,
+            "active_tokens": 1027.7083
+          },
+          "symbolic": {
+            "num_episodes": 24,
+            "ci95": {
+              "strict_em": [
+                0.2116,
+                0.5729
+              ],
+              "normalized_numeric_em": [
+                0.2116,
+                0.5729
+              ],
+              "f1": [
+                0.2116,
+                0.5729
+              ],
+              "active_tokens": [
+                1026.75,
+                1027.875
+              ]
+            },
+            "strict_em": 0.375,
+            "normalized_numeric_em": 0.375,
+            "f1": 0.375,
+            "active_tokens": 1027.2917
+          }
+        }
+      },
+      "bm25_rag_append_errata": {
+        "num_episodes": 48,
+        "ci95": {
+          "strict_em": [
+            0.3447,
+            0.6167
+          ],
+          "normalized_numeric_em": [
+            0.3447,
+            0.6167
+          ],
+          "f1": [
+            0.3542,
+            0.6458
+          ],
+          "active_tokens": [
+            1071.3333,
+            1091.5
+          ]
+        },
+        "strict_em": 0.4792,
+        "normalized_numeric_em": 0.4792,
+        "f1": 0.5,
+        "active_tokens": 1082.3542,
+        "by_mode": {
+          "budget": {
+            "num_episodes": 24,
+            "ci95": {
+              "strict_em": [
+                0.3508,
+                0.7211
+              ],
+              "normalized_numeric_em": [
+                0.3508,
+                0.7211
+              ],
+              "f1": [
+                0.3958,
+                0.7708
+              ],
+              "active_tokens": [
+                1056.4167,
+                1077.0417
+              ]
+            },
+            "strict_em": 0.5417,
+            "normalized_numeric_em": 0.5417,
+            "f1": 0.5833,
+            "active_tokens": 1068.5
+          },
+          "symbolic": {
+            "num_episodes": 24,
+            "ci95": {
+              "strict_em": [
+                0.2447,
+                0.6117
+              ],
+              "normalized_numeric_em": [
+                0.2447,
+                0.6117
+              ],
+              "f1": [
+                0.2447,
+                0.6117
+              ],
+              "active_tokens": [
+                1079.4583,
+                1107.9583
+              ]
+            },
+            "strict_em": 0.4167,
+            "normalized_numeric_em": 0.4167,
+            "f1": 0.4167,
+            "active_tokens": 1096.2083
+          }
+        }
+      },
+      "bm25_rag_oracle_verified": {
+        "num_episodes": 48,
+        "ci95": {
+          "strict_em": [
+            0.753,
+            0.9414
+          ],
+          "normalized_numeric_em": [
+            0.753,
+            0.9414
+          ],
+          "f1": [
+            0.7917,
+            0.9583
+          ],
+          "active_tokens": [
+            1027.125,
+            1027.8542
+          ]
+        },
+        "strict_em": 0.875,
+        "normalized_numeric_em": 0.875,
+        "f1": 0.8854,
+        "active_tokens": 1027.5,
+        "by_mode": {
+          "budget": {
+            "num_episodes": 24,
+            "ci95": {
+              "strict_em": [
+                0.69,
+                0.9566
+              ],
+              "normalized_numeric_em": [
+                0.69,
+                0.9566
+              ],
+              "f1": [
+                0.7708,
+                0.9792
+              ],
+              "active_tokens": [
+                1027.25,
+                1028.1667
+              ]
+            },
+            "strict_em": 0.875,
+            "normalized_numeric_em": 0.875,
+            "f1": 0.8958,
+            "active_tokens": 1027.7083
+          },
+          "symbolic": {
+            "num_episodes": 24,
+            "ci95": {
+              "strict_em": [
+                0.69,
+                0.9566
+              ],
+              "normalized_numeric_em": [
+                0.69,
+                0.9566
+              ],
+              "f1": [
+                0.69,
+                0.9566
+              ],
+              "active_tokens": [
+                1026.75,
+                1027.875
+              ]
+            },
+            "strict_em": 0.875,
+            "normalized_numeric_em": 0.875,
+            "f1": 0.875,
+            "active_tokens": 1027.2917
+          }
+        }
+      },
+      "lslc_v3_e2e_gpu": {
+        "num_episodes": 48,
+        "ci95": {
+          "strict_em": [
+            0.4836,
+            0.7478
+          ],
+          "normalized_numeric_em": [
+            0.4836,
+            0.7478
+          ],
+          "f1": [
+            0.5229,
+            0.8021
+          ],
+          "active_tokens": [
+            306.0,
+            306.0
+          ]
+        },
+        "strict_em": 0.625,
+        "normalized_numeric_em": 0.625,
+        "f1": 0.6625,
+        "active_tokens": 306.0,
+        "by_mode": {
+          "budget": {
+            "num_episodes": 24,
+            "ci95": {
+              "strict_em": [
+                0.4271,
+                0.7884
+              ],
+              "normalized_numeric_em": [
+                0.4271,
+                0.7884
+              ],
+              "f1": [
+                0.5333,
+                0.8667
+              ],
+              "active_tokens": [
+                306.0,
+                306.0
+              ]
+            },
+            "strict_em": 0.625,
+            "normalized_numeric_em": 0.625,
+            "f1": 0.7,
+            "active_tokens": 306.0
+          },
+          "symbolic": {
+            "num_episodes": 24,
+            "ci95": {
+              "strict_em": [
+                0.4271,
+                0.7884
+              ],
+              "normalized_numeric_em": [
+                0.4271,
+                0.7884
+              ],
+              "f1": [
+                0.4271,
+                0.7884
+              ],
+              "active_tokens": [
+                306.0,
+                306.0
+              ]
+            },
+            "strict_em": 0.625,
+            "normalized_numeric_em": 0.625,
+            "f1": 0.625,
+            "active_tokens": 306.0
+          }
+        }
+      }
+    },
+    "gate3_coding_n24": {
+      "num_tasks": 24,
+      "num_distractors": 58,
+      "path_hints_removed": true,
+      "systems": {
+        "lslc_v3_k2": {
+          "num_tasks": 24,
+          "pass_at_1": 0.0,
+          "hidden_test_pass_rate": 0.0,
+          "stale_signature_used_rate": 1.0,
+          "decoy_value_used_rate": 0.0,
+          "homonym_preserved_rate": 0.7917,
+          "files_read_mean": 68.0,
+          "repeated_file_reads_mean": 0.0,
+          "search_calls_mean": 0.0,
+          "active_prefix_tokens_mean": 168.0,
+          "memory_update_ms_mean": 132.0535,
+          "modular_reencode_ms_mean": 132.0535,
+          "delta_update_ms_mean": 0.0,
+          "generation_ms_mean": 0.0,
+          "wall_clock_ms_mean": 15419.4927,
+          "peak_vram_mb_max": 4491.73,
+          "router_core_hit_rate": 0.4028,
+          "router_session_hit_rate": 1.0,
+          "router_both_hit_rate": 0.4028,
+          "tasks": [
+            {
+              "task_id": "eval_01_load_config",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 131.83,
+              "modular_reencode_ms": 131.83,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 14979.869,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_02_open_session",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 130.567,
+              "modular_reencode_ms": 130.567,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15007.864,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_03_emit_metric",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 131.209,
+              "modular_reencode_ms": 131.209,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15734.862,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.0
+            },
+            {
+              "task_id": "eval_04_resolve_route",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 129.616,
+              "modular_reencode_ms": 129.616,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15345.88,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_05_acquire_lease",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 128.53,
+              "modular_reencode_ms": 128.53,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 13892.634,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_06_render_invoice",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 139.073,
+              "modular_reencode_ms": 139.073,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16225.125,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.0
+            },
+            {
+              "task_id": "eval_07_verify_digest",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 129.737,
+              "modular_reencode_ms": 129.737,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 14831.819,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.0
+            },
+            {
+              "task_id": "eval_08_publish_event",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 128.64,
+              "modular_reencode_ms": 128.64,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 14730.598,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_09_allocate_slot",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 132.345,
+              "modular_reencode_ms": 132.345,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 14783.467,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.0
+            },
+            {
+              "task_id": "eval_10_sign_payload",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 131.045,
+              "modular_reencode_ms": 131.045,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 14744.343,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_11_query_index",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 132.137,
+              "modular_reencode_ms": 132.137,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 14787.086,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_12_rotate_secret",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 135.451,
+              "modular_reencode_ms": 135.451,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15590.128,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_13_schedule_backup",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": false,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 133.599,
+              "modular_reencode_ms": 133.599,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15307.891,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_14_compile_rule",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 133.579,
+              "modular_reencode_ms": 133.579,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15124.683,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.0
+            },
+            {
+              "task_id": "eval_15_check_quota",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": false,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 129.783,
+              "modular_reencode_ms": 129.783,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16341.967,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_16_fetch_artifact",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": false,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 135.078,
+              "modular_reencode_ms": 135.078,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15214.238,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_17_drain_queue",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 131.914,
+              "modular_reencode_ms": 131.914,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16297.113,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_18_audit_record",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 130.688,
+              "modular_reencode_ms": 130.688,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16054.631,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.0
+            },
+            {
+              "task_id": "eval_19_sync_replica",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 135.915,
+              "modular_reencode_ms": 135.915,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16506.781,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_20_parse_filter",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 130.907,
+              "modular_reencode_ms": 130.907,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15564.68,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_21_bind_socket",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 136.52,
+              "modular_reencode_ms": 136.52,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16033.125,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_22_flush_buffer",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": false,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 129.882,
+              "modular_reencode_ms": 129.882,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15721.395,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.0
+            },
+            {
+              "task_id": "eval_23_resolve_alias",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 131.291,
+              "modular_reencode_ms": 131.291,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 14747.003,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_24_export_report",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": false,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 129.949,
+              "modular_reencode_ms": 129.949,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16500.644,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            }
+          ],
+          "pass_at_1_ci95": [
+            0.0,
+            0.138
+          ],
+          "initial_scan_files_mean": 64.0,
+          "path_hints_in_query": false
+        },
+        "lslc_v3_dynamic_k": {
+          "num_tasks": 24,
+          "pass_at_1": 0.0,
+          "hidden_test_pass_rate": 0.0,
+          "stale_signature_used_rate": 1.0,
+          "decoy_value_used_rate": 0.0,
+          "homonym_preserved_rate": 0.7917,
+          "files_read_mean": 68.0,
+          "repeated_file_reads_mean": 0.0,
+          "search_calls_mean": 0.0,
+          "active_prefix_tokens_mean": 226.0,
+          "memory_update_ms_mean": 132.5812,
+          "modular_reencode_ms_mean": 132.5812,
+          "delta_update_ms_mean": 0.0,
+          "generation_ms_mean": 0.0,
+          "wall_clock_ms_mean": 15145.4456,
+          "peak_vram_mb_max": 4491.73,
+          "router_core_hit_rate": 0.5833,
+          "router_session_hit_rate": 1.0,
+          "router_both_hit_rate": 0.5833,
+          "tasks": [
+            {
+              "task_id": "eval_01_load_config",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": false,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 288,
+              "memory_update_ms": 131.066,
+              "modular_reencode_ms": 131.066,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16544.864,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_02_open_session",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 264,
+              "memory_update_ms": 128.652,
+              "modular_reencode_ms": 128.652,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15703.129,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_03_emit_metric",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 216,
+              "memory_update_ms": 129.477,
+              "modular_reencode_ms": 129.477,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15800.927,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.0
+            },
+            {
+              "task_id": "eval_04_resolve_route",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 192,
+              "memory_update_ms": 130.979,
+              "modular_reencode_ms": 130.979,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15276.265,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_05_acquire_lease",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 192,
+              "memory_update_ms": 134.759,
+              "modular_reencode_ms": 134.759,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 14126.727,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_06_render_invoice",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 240,
+              "memory_update_ms": 140.376,
+              "modular_reencode_ms": 140.376,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16270.703,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_07_verify_digest",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 216,
+              "memory_update_ms": 133.482,
+              "modular_reencode_ms": 133.482,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15284.386,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_08_publish_event",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 216,
+              "memory_update_ms": 129.428,
+              "modular_reencode_ms": 129.428,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15012.908,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_09_allocate_slot",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 192,
+              "memory_update_ms": 140.538,
+              "modular_reencode_ms": 140.538,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 14853.697,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.0
+            },
+            {
+              "task_id": "eval_10_sign_payload",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 130.94,
+              "modular_reencode_ms": 130.94,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 14695.164,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_11_query_index",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 312,
+              "memory_update_ms": 130.674,
+              "modular_reencode_ms": 130.674,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15066.875,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_12_rotate_secret",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 192,
+              "memory_update_ms": 127.761,
+              "modular_reencode_ms": 127.761,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15654.992,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_13_schedule_backup",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": false,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 192,
+              "memory_update_ms": 129.764,
+              "modular_reencode_ms": 129.764,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15162.257,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_14_compile_rule",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 168,
+              "memory_update_ms": 130.827,
+              "modular_reencode_ms": 130.827,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15366.722,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.0
+            },
+            {
+              "task_id": "eval_15_check_quota",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 264,
+              "memory_update_ms": 130.862,
+              "modular_reencode_ms": 130.862,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 12252.529,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_16_fetch_artifact",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": false,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 216,
+              "memory_update_ms": 131.972,
+              "modular_reencode_ms": 131.972,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15376.743,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_17_drain_queue",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 192,
+              "memory_update_ms": 130.376,
+              "modular_reencode_ms": 130.376,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16330.321,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_18_audit_record",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 216,
+              "memory_update_ms": 131.926,
+              "modular_reencode_ms": 131.926,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16084.741,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.3333,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.3333
+            },
+            {
+              "task_id": "eval_19_sync_replica",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 264,
+              "memory_update_ms": 132.556,
+              "modular_reencode_ms": 132.556,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 12842.454,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_20_parse_filter",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 288,
+              "memory_update_ms": 134.343,
+              "modular_reencode_ms": 134.343,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 12545.23,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_21_bind_socket",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 240,
+              "memory_update_ms": 143.687,
+              "modular_reencode_ms": 143.687,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16137.562,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_22_flush_buffer",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": false,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 192,
+              "memory_update_ms": 131.545,
+              "modular_reencode_ms": 131.545,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 15703.387,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 0.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 0.0
+            },
+            {
+              "task_id": "eval_23_resolve_alias",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": true,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 288,
+              "memory_update_ms": 129.745,
+              "modular_reencode_ms": 129.745,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 14788.517,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            },
+            {
+              "task_id": "eval_24_export_report",
+              "patch_correct": false,
+              "hidden_test_passed": false,
+              "stale_signature_used": true,
+              "decoy_value_used": false,
+              "homonym_preserved": false,
+              "files_read_total": 68,
+              "initial_scan_files": 64,
+              "incremental_files_read": 4,
+              "repeated_file_reads": 0,
+              "search_calls": 0,
+              "active_prefix_tokens": 216,
+              "memory_update_ms": 136.215,
+              "modular_reencode_ms": 136.215,
+              "delta_update_ms": 0.0,
+              "generation_ms": 0.0,
+              "wall_clock_ms": 16609.595,
+              "peak_vram_mb": 4491.73,
+              "router_core_hit_rate": 1.0,
+              "router_session_hit_rate": 1.0,
+              "router_both_hit_rate": 1.0
+            }
+          ],
+          "pass_at_1_ci95": [
+            0.0,
+            0.138
+          ],
+          "initial_scan_files_mean": 64.0,
+          "path_hints_in_query": false,
+          "dynamic_k_deep_mean": 2.81
+        }
+      }
+    }
+  }
+}

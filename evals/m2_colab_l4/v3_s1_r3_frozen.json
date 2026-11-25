@@ -1,0 +1,3065 @@
+{
+  "version": "3.0.0-clean-phase1",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "stage1_only": true,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "hf_hub_release/lslc_qwen3_1.7b_adapter.safetensors",
+    "missing_keys": [
+      "salience_gate.ctx_conv2.weight",
+      "salience_gate.ctx_conv2.bias",
+      "projector.toc_slot_attn.weight",
+      "projector.toc_slot_attn.bias",
+      "router.bank_key_alpha",
+      "router.logit_scale",
+      "router.q_norm.weight",
+      "router.q_norm.bias",
+      "router.k_norm.weight",
+      "router.k_norm.bias",
+      "router.q_token_gate.weight",
+      "router.q_token_gate.bias",
+      "router.bank_key_gate.weight",
+      "router.bank_key_gate.bias",
+      "delta_updater.sticky_queries",
+      "delta_updater.sticky_attn.in_proj_weight",
+      "delta_updater.sticky_attn.in_proj_bias",
+      "delta_updater.sticky_attn.out_proj.weight",
+      "delta_updater.sticky_attn.out_proj.bias",
+      "delta_updater.sticky_norm.weight",
+      "delta_updater.sticky_norm.bias"
+    ],
+    "unexpected_keys": [
+      "router.q_proj.bias",
+      "router.k_proj.bias"
+    ]
+  },
+  "lora": {
+    "r": 0
+  },
+  "lm_ppl_pre": {
+    "n_chunks": 32,
+    "tokens": 8192,
+    "mean_nll": 2.9255,
+    "ppl": 18.6433
+  },
+  "lm_ppl_post": {
+    "n_chunks": 32,
+    "tokens": 8192,
+    "mean_nll": 2.9255,
+    "ppl": 18.6433
+  },
+  "ood_ppl_pre": {
+    "code_ood": {
+      "tokens": 292,
+      "mean_nll": 1.6142,
+      "ppl": 5.0241
+    },
+    "prose_ood": {
+      "tokens": 116,
+      "mean_nll": 5.8836,
+      "ppl": 359.0966
+    },
+    "overall": {
+      "tokens": 408,
+      "mean_nll": 3.7489,
+      "ppl": 42.4751
+    }
+  },
+  "ood_ppl_post": {
+    "code_ood": {
+      "tokens": 292,
+      "mean_nll": 1.6142,
+      "ppl": 5.0241
+    },
+    "prose_ood": {
+      "tokens": 116,
+      "mean_nll": 5.8836,
+      "ppl": 359.0966
+    },
+    "overall": {
+      "tokens": 408,
+      "mean_nll": 3.7489,
+      "ppl": 42.4751
+    }
+  },
+  "config": {
+    "use_contextual_edit_encoding": true,
+    "contextual_edit_layer": 14,
+    "distill_mode": "cond_b",
+    "lambda_cond_b_distill": 0.5,
+    "salience_mode": "learned_surprisal",
+    "delta_pooling_mode": "cross_attn",
+    "router_mode": "content_attn",
+    "k_exact": 24,
+    "train_style": "mixed_natural",
+    "salience_route_weight": 0.0,
+    "timing_salience_route_weight": 2.0,
+    "num_pages": 16,
+    "page_size": 256
+  },
+  "identifier_trace": {
+    "pre_stage1": {
+      "cond_b_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.0417,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.0417,
+        "in_generated_answer_rate": 0.0,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.1667,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 10,
+            "router_deep_idx": [
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": "  @\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 2,
+            "router_deep_idx": [
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 10000000000000000000000"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_top1": 5,
+            "router_deep_idx": [
+              5
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 10000000000000000000000"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "eu-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 10000000000000000000000"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 7,
+            "router_deep_idx": [
+              7
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": "  @\n"
+          }
+        ]
+      },
+      "cond_b_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.0417,
+        "router_top1_recall": 0.125,
+        "router_top2_recall": 0.25,
+        "router_hit_rate": 0.25,
+        "in_assembled_prefix_rate": 0.0,
+        "in_generated_answer_rate": 0.0,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 0.3333,
+            "router_top2_recall": 0.3333,
+            "router_hit_rate": 0.3333,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 0.0,
+            "router_hit_rate": 0.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 0.1667,
+            "router_top2_recall": 0.5,
+            "router_hit_rate": 0.5,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 0.1667,
+            "router_hit_rate": 0.1667,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 8,
+            "router_deep_idx": [
+              3,
+              8
+            ],
+            "router_hit": false,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual cross-continental deployments dual cross-continental deployments dual cross-continental deployments dual cross-continental deployments dual cross-continental"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 11,
+            "router_deep_idx": [
+              13,
+              11
+            ],
+            "router_hit": false,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual cross dual cross dual cross dual cross dual cross dual cross dual cross dual cross dual cross dual cross dual cross dual cross"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_top1": 7,
+            "router_deep_idx": [
+              11,
+              7
+            ],
+            "router_hit": false,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 1,
+            "router_deep_idx": [
+              2,
+              1
+            ],
+            "router_hit": false,
+            "answer_str": "eu-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 10000000000000000000000"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 10,
+            "router_deep_idx": [
+              1,
+              10
+            ],
+            "router_hit": false,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": false,
+            "gen_text": " dual cross-validated cross-validation dual cross-validation dual cross-validation dual cross-validation dual cross-validation dual cross-validation dual cross-validation"
+          }
+        ]
+      },
+      "cond_b_hybrid_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.0417,
+        "router_top1_recall": 0.7083,
+        "router_top2_recall": 0.75,
+        "router_hit_rate": 0.75,
+        "in_assembled_prefix_rate": 0.0417,
+        "in_generated_answer_rate": 0.0,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.1667,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 0.8333,
+            "router_top2_recall": 0.8333,
+            "router_hit_rate": 0.8333,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 0.3333,
+            "router_top2_recall": 0.3333,
+            "router_hit_rate": 0.3333,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 0.6667,
+            "router_top2_recall": 0.8333,
+            "router_hit_rate": 0.8333,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 10,
+            "router_deep_idx": [
+              8,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 10000000000000000000000"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 2,
+            "router_deep_idx": [
+              1,
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual cross-validated cross-validated cross-validated cross-validated cross-validated cross-validated cross-validated cross-"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_top1": 5,
+            "router_deep_idx": [
+              12,
+              5
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual cross-validated cross-validated cross-validated cross-validated cross-validated cross-validated cross-validated cross-"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 11,
+            "router_deep_idx": [
+              1,
+              11
+            ],
+            "router_hit": false,
+            "answer_str": "eu-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual cross-cultural dual cross-cultural dual cross-cultural dual cross-cultural dual cross-cultural dual cross-cultural dual cross-cultural dual cross-cultural"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 7,
+            "router_deep_idx": [
+              9,
+              7
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual"
+          }
+        ]
+      },
+      "cond_c_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.0417,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.0417,
+        "in_generated_answer_rate": 0.0,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.1667,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 10,
+            "router_deep_idx": [
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 1\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 2,
+            "router_deep_idx": [
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 10000000000000000000000"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_top1": 5,
+            "router_deep_idx": [
+              5
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 10000000000000000000000"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "eu-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 10000000000000000000000"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 7,
+            "router_deep_idx": [
+              7
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " 10000000000000000000000"
+          }
+        ]
+      },
+      "cond_c_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.0417,
+        "router_top1_recall": 0.4167,
+        "router_top2_recall": 0.5417,
+        "router_hit_rate": 0.5417,
+        "in_assembled_prefix_rate": 0.0,
+        "in_generated_answer_rate": 0.0,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 0.5,
+            "router_top2_recall": 0.6667,
+            "router_hit_rate": 0.6667,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 0.0,
+            "router_hit_rate": 0.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 0.1667,
+            "router_top2_recall": 0.5,
+            "router_hit_rate": 0.5,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 10,
+            "router_deep_idx": [
+              8,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " _______\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 2,
+            "router_deep_idx": [
+              11,
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual cross-validated cross-validated cross-validated cross-validated cross-validated cross-validated cross-validated cross-"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_top1": 7,
+            "router_deep_idx": [
+              11,
+              7
+            ],
+            "router_hit": false,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer dual-layer"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 6,
+            "router_deep_idx": [
+              1,
+              6
+            ],
+            "router_hit": false,
+            "answer_str": "eu-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual cross-cylinder dual cross-cylinder dual cross-cylinder dual cross-cylinder dual cross-cylinder dual cross-cylinder"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 10,
+            "router_deep_idx": [
+              7,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " ____\n"
+          }
+        ]
+      },
+      "cond_c_hybrid_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.0417,
+        "router_top1_recall": 0.625,
+        "router_top2_recall": 0.7917,
+        "router_hit_rate": 0.7917,
+        "in_assembled_prefix_rate": 0.0417,
+        "in_generated_answer_rate": 0.0,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.1667,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 0.3333,
+            "router_top2_recall": 0.8333,
+            "router_hit_rate": 0.8333,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 0.1667,
+            "router_top2_recall": 0.3333,
+            "router_hit_rate": 0.3333,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 10,
+            "router_deep_idx": [
+              8,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " _______\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 2,
+            "router_deep_idx": [
+              14,
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " ___________ dual cross-validation cross-validation dual cross-validation dual cross-validation dual cross-validation dual cross-validation dual cross-validation dual"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 5,
+            "router_top1": 12,
+            "router_deep_idx": [
+              5,
+              12
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual dual"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 6,
+            "router_deep_idx": [
+              11,
+              6
+            ],
+            "router_hit": false,
+            "answer_str": "eu-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual cross-connects dual cross-connects dual cross-connects dual cross-connects dual cross-connects dual cross-connects"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 7,
+            "router_deep_idx": [
+              9,
+              7
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-m into eufurt\n"
+          }
+        ]
+      }
+    },
+    "post_stage1": {
+      "cond_b_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 1.0,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 1.0,
+        "in_generated_answer_rate": 0.8333,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.3333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "ten percent",
+            "ans_tok_ids": [
+              5779,
+              3266
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 1000\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "five hundred rps",
+            "ans_tok_ids": [
+              4236,
+              7739,
+              435,
+              1690
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 500\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 14,
+            "router_top1": 14,
+            "router_deep_idx": [
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "five hundred rps",
+            "ans_tok_ids": [
+              4236,
+              7739,
+              435,
+              1690
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 500\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 4,
+            "router_top1": 4,
+            "router_deep_idx": [
+              4
+            ],
+            "router_hit": true,
+            "answer_str": "unit and fuzz",
+            "ans_tok_ids": [
+              4982,
+              323,
+              76142
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " unit and fuzz checks\n"
+          }
+        ]
+      },
+      "cond_b_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 1.0,
+        "router_top1_recall": 0.8333,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 1.0,
+        "in_generated_answer_rate": 0.9583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 0.8333,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 0.5,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 4,
+            "router_top1": 4,
+            "router_deep_idx": [
+              0,
+              4
+            ],
+            "router_hit": true,
+            "answer_str": "unit and fuzz",
+            "ans_tok_ids": [
+              4982,
+              323,
+              76142
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " unit and fuzz checks\n"
+          }
+        ]
+      },
+      "cond_b_hybrid_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 1.0,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 1.0,
+        "in_generated_answer_rate": 0.9583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 4,
+            "router_top1": 4,
+            "router_deep_idx": [
+              0,
+              4
+            ],
+            "router_hit": true,
+            "answer_str": "unit and fuzz",
+            "ans_tok_ids": [
+              4982,
+              323,
+              76142
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " unit and fuzz checks\n"
+          }
+        ]
+      },
+      "cond_c_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.625,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.625,
+        "in_generated_answer_rate": 0.4167,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.3333,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.3333,
+            "in_generated_answer_rate": 0.3333
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.3333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.1667,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 10,
+            "router_deep_idx": [
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " complete\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 2,
+            "router_deep_idx": [
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 7,
+            "router_deep_idx": [
+              7
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " eu-central-furt\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_top1": 13,
+            "router_deep_idx": [
+              13
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " us-west-oregon\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "ten percent",
+            "ans_tok_ids": [
+              5779,
+              3266
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 1000\n"
+          }
+        ]
+      },
+      "cond_c_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.625,
+        "router_top1_recall": 0.7083,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.625,
+        "in_generated_answer_rate": 0.4583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.3333,
+            "router_top1_recall": 0.6667,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.3333,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 0.8333,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 0.3333,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.1667,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 10,
+            "router_deep_idx": [
+              2,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 14,
+            "router_deep_idx": [
+              2,
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 7,
+            "router_deep_idx": [
+              9,
+              7
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_top1": 13,
+            "router_deep_idx": [
+              10,
+              13
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 11,
+            "router_top1": 11,
+            "router_deep_idx": [
+              10,
+              11
+            ],
+            "router_hit": true,
+            "answer_str": "draining-maintenance",
+            "ans_tok_ids": [
+              73009,
+              1448,
+              24559
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          }
+        ]
+      },
+      "cond_c_hybrid_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.625,
+        "router_top1_recall": 0.5417,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.625,
+        "in_generated_answer_rate": 0.4583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.3333,
+            "router_top1_recall": 0.1667,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.3333,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.1667,
+            "router_top1_recall": 0.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.1667,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 10,
+            "router_top1": 10,
+            "router_deep_idx": [
+              2,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 14,
+            "router_deep_idx": [
+              2,
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 7,
+            "router_top1": 9,
+            "router_deep_idx": [
+              7,
+              9
+            ],
+            "router_hit": true,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 13,
+            "router_top1": 10,
+            "router_deep_idx": [
+              13,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 11,
+            "router_top1": 10,
+            "router_deep_idx": [
+              11,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "draining-maintenance",
+            "ans_tok_ids": [
+              73009,
+              1448,
+              24559
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          }
+        ]
+      }
+    },
+    "post_stage1_headerless": {
+      "cond_b_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.9167,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.9167,
+        "in_generated_answer_rate": 0.8333,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 1.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.6667
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.8333
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 13,
+            "router_top1": 13,
+            "router_deep_idx": [
+              13
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 10000000000000000000000"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 10,
+            "router_top1": 10,
+            "router_deep_idx": [
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "unit and fuzz",
+            "ans_tok_ids": [
+              4982,
+              323,
+              76142
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " unit fuzz checks\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 3,
+            "router_top1": 3,
+            "router_deep_idx": [
+              3
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " production\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 14,
+            "router_top1": 14,
+            "router_deep_idx": [
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "ninety days",
+            "ans_tok_ids": [
+              77876,
+              2849
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " 90 days\n"
+          }
+        ]
+      },
+      "cond_b_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.9167,
+        "router_top1_recall": 0.4583,
+        "router_top2_recall": 0.8333,
+        "router_hit_rate": 0.8333,
+        "in_assembled_prefix_rate": 0.7917,
+        "in_generated_answer_rate": 0.5833,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 0.3333,
+            "router_top2_recall": 0.5,
+            "router_hit_rate": 0.5,
+            "in_assembled_prefix_rate": 0.5,
+            "in_generated_answer_rate": 0.5
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 0.6667,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 0.6667,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.5
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 0.1667,
+            "router_top2_recall": 0.8333,
+            "router_hit_rate": 0.8333,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.5
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 11,
+            "router_top1": 13,
+            "router_deep_idx": [
+              2,
+              13
+            ],
+            "router_hit": false,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": false,
+            "gen_text": " plus-24\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 4,
+            "router_top1": 7,
+            "router_deep_idx": [
+              4,
+              7
+            ],
+            "router_hit": true,
+            "answer_str": "active-passive",
+            "ans_tok_ids": [
+              4541,
+              46967,
+              533
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " fail active-passive\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 11,
+            "router_deep_idx": [
+              2,
+              11
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 5,
+            "router_top1": 10,
+            "router_deep_idx": [
+              0,
+              10
+            ],
+            "router_hit": false,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": false,
+            "gen_text": " plus-127\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 14,
+            "router_top1": 11,
+            "router_deep_idx": [
+              14,
+              11
+            ],
+            "router_hit": true,
+            "answer_str": "us-west-oregon",
+            "ans_tok_ids": [
+              601,
+              37602,
+              12,
+              460,
+              11670
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " read-only-replica\n"
+          }
+        ]
+      },
+      "cond_b_hybrid_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.9167,
+        "router_top1_recall": 0.875,
+        "router_top2_recall": 0.9167,
+        "router_hit_rate": 0.9167,
+        "in_assembled_prefix_rate": 0.8333,
+        "in_generated_answer_rate": 0.6667,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 0.8333,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 0.6667,
+            "router_top2_recall": 0.6667,
+            "router_hit_rate": 0.6667,
+            "in_assembled_prefix_rate": 0.6667,
+            "in_generated_answer_rate": 0.6667
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.6667
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.5
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 2,
+            "router_deep_idx": [
+              11,
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " current production topology Rigel routes live workloads via read-only-replica ."
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 0,
+            "router_top1": 6,
+            "router_deep_idx": [
+              0,
+              6
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " skerry-layra\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 0,
+            "router_top1": 0,
+            "router_deep_idx": [
+              2,
+              0
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " plus-100\n"
+          },
+          {
+            "query_type": "neighbor_preservation",
+            "target_page": 13,
+            "router_top1": 0,
+            "router_deep_idx": [
+              3,
+              0
+            ],
+            "router_hit": false,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": false,
+            "gen_text": " plus-1277\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 10,
+            "router_top1": 10,
+            "router_deep_idx": [
+              9,
+              10
+            ],
+            "router_hit": true,
+            "answer_str": "unit and fuzz",
+            "ans_tok_ids": [
+              4982,
+              323,
+              76142
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " unit fuzz checks\n"
+          }
+        ]
+      },
+      "cond_c_oracle": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.6667,
+        "router_top1_recall": 1.0,
+        "router_top2_recall": 1.0,
+        "router_hit_rate": 1.0,
+        "in_assembled_prefix_rate": 0.6667,
+        "in_generated_answer_rate": 0.5417,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.6667
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.6667
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 1,
+            "router_top1": 1,
+            "router_deep_idx": [
+              1
+            ],
+            "router_hit": true,
+            "answer_str": "dual-region-mesh",
+            "ans_tok_ids": [
+              18579,
+              60679,
+              1448,
+              4288
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " unapproved\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 2,
+            "router_deep_idx": [
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " ap-southeast-1\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 14,
+            "router_top1": 14,
+            "router_deep_idx": [
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "us-west-oregon",
+            "ans_tok_ids": [
+              601,
+              37602,
+              12,
+              460,
+              11670
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 0,
+            "router_top1": 0,
+            "router_deep_idx": [
+              0
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " active-read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 0,
+            "router_top1": 0,
+            "router_deep_idx": [
+              0
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " us-west-oregon\n"
+          }
+        ]
+      },
+      "cond_c_natural_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.6667,
+        "router_top1_recall": 0.375,
+        "router_top2_recall": 0.8333,
+        "router_hit_rate": 0.8333,
+        "in_assembled_prefix_rate": 0.5,
+        "in_generated_answer_rate": 0.2917,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 0.3333,
+            "router_top2_recall": 0.5,
+            "router_hit_rate": 0.5,
+            "in_assembled_prefix_rate": 0.3333,
+            "in_generated_answer_rate": 0.0
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 0.3333,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 1.0,
+            "in_generated_answer_rate": 0.8333
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 0.6667,
+            "router_top2_recall": 0.8333,
+            "router_hit_rate": 0.8333,
+            "in_assembled_prefix_rate": 0.6667,
+            "in_generated_answer_rate": 0.3333
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 0.1667,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "accepted_override",
+            "target_page": 11,
+            "router_top1": 13,
+            "router_deep_idx": [
+              2,
+              13
+            ],
+            "router_hit": false,
+            "answer_str": "eu-central-frankfurt",
+            "ans_tok_ids": [
+              15555,
+              84081,
+              50378,
+              1180,
+              38186
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": false,
+            "gen_text": " plus-2023\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 1,
+            "router_top1": 0,
+            "router_deep_idx": [
+              1,
+              0
+            ],
+            "router_hit": true,
+            "answer_str": "dual-region-mesh",
+            "ans_tok_ids": [
+              18579,
+              60679,
+              1448,
+              4288
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " RigelUnapproved shiftigel runtime ap-southeast-sapore discarded\n"
+          },
+          {
+            "query_type": "randomized_static_retention",
+            "target_page": 4,
+            "router_top1": 7,
+            "router_deep_idx": [
+              4,
+              7
+            ],
+            "router_hit": true,
+            "answer_str": "active-passive",
+            "ans_tok_ids": [
+              4541,
+              46967,
+              533
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " fail active-passive\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 4,
+            "router_top1": 4,
+            "router_deep_idx": [
+              9,
+              4
+            ],
+            "router_hit": true,
+            "answer_str": "draining-maintenance",
+            "ans_tok_ids": [
+              73009,
+              1448,
+              24559
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " gateSigned rollout notice moves Lyra to draining-maintenance\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 11,
+            "router_deep_idx": [
+              2,
+              11
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          }
+        ]
+      },
+      "cond_c_hybrid_router": {
+        "num_episodes": 24,
+        "in_source_page_rate": 1.0,
+        "in_exact_bank_rate": 0.6667,
+        "router_top1_recall": 0.9167,
+        "router_top2_recall": 0.9167,
+        "router_hit_rate": 0.9167,
+        "in_assembled_prefix_rate": 0.5833,
+        "in_generated_answer_rate": 0.4583,
+        "by_query_type": {
+          "accepted_override": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.5
+          },
+          "neighbor_preservation": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 1.0,
+            "router_top1_recall": 0.6667,
+            "router_top2_recall": 0.6667,
+            "router_hit_rate": 0.6667,
+            "in_assembled_prefix_rate": 0.6667,
+            "in_generated_answer_rate": 0.6667
+          },
+          "randomized_static_retention": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.8333,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.8333,
+            "in_generated_answer_rate": 0.6667
+          },
+          "rejected_proposal": {
+            "num_episodes": 6,
+            "in_source_page_rate": 1.0,
+            "in_exact_bank_rate": 0.0,
+            "router_top1_recall": 1.0,
+            "router_top2_recall": 1.0,
+            "router_hit_rate": 1.0,
+            "in_assembled_prefix_rate": 0.0,
+            "in_generated_answer_rate": 0.0
+          }
+        },
+        "failed_samples": [
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 1,
+            "router_top1": 1,
+            "router_deep_idx": [
+              0,
+              1
+            ],
+            "router_hit": true,
+            "answer_str": "dual-region-mesh",
+            "ans_tok_ids": [
+              18579,
+              60679,
+              1448,
+              4288
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " RigelUnapproved shiftigel runtime ap-southeast-sapore discarded\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 2,
+            "router_top1": 2,
+            "router_deep_idx": [
+              11,
+              2
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " current production topology Rigel routes live workloads viaUnapproved shiftigel runtime ap-southeast-sapore discarded\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 14,
+            "router_top1": 14,
+            "router_deep_idx": [
+              11,
+              14
+            ],
+            "router_hit": true,
+            "answer_str": "us-west-oregon",
+            "ans_tok_ids": [
+              601,
+              37602,
+              12,
+              460,
+              11670
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " dual-region-mesh\n"
+          },
+          {
+            "query_type": "accepted_override",
+            "target_page": 0,
+            "router_top1": 0,
+            "router_deep_idx": [
+              6,
+              0
+            ],
+            "router_hit": true,
+            "answer_str": "read-only-replica",
+            "ans_tok_ids": [
+              1349,
+              15382,
+              5504,
+              79,
+              15317
+            ],
+            "in_source": true,
+            "in_bank": true,
+            "in_prefix": true,
+            "gen_text": " Lyra Cluster health update puts Lyra actively read-only-replica\n"
+          },
+          {
+            "query_type": "rejected_proposal",
+            "target_page": 0,
+            "router_top1": 0,
+            "router_deep_idx": [
+              2,
+              0
+            ],
+            "router_hit": true,
+            "answer_str": "ap-southeast-singapore",
+            "ans_tok_ids": [
+              1443,
+              1331,
+              283,
+              14759,
+              1331,
+              287,
+              17665
+            ],
+            "in_source": true,
+            "in_bank": false,
+            "in_prefix": false,
+            "gen_text": " plus-1000\n"
+          }
+        ]
+      }
+    },
+    "post_stage2": null
+  },
+  "router_stress_p64": {
+    "num_pages": 64,
+    "num_entity_pages": 12,
+    "in_exact_bank_rate": 1.0,
+    "dense_w0_top1_recall": 0.0833,
+    "dense_w0_top2_recall": 0.25,
+    "hybrid_w2_top1_recall": 1.0,
+    "hybrid_w2_top2_recall": 1.0
+  },
+  "router_stress_p128": {
+    "num_pages": 128,
+    "num_entity_pages": 20,
+    "in_exact_bank_rate": 1.0,
+    "dense_w0_top1_recall": 0.05,
+    "dense_w0_top2_recall": 0.1,
+    "hybrid_w2_top1_recall": 1.0,
+    "hybrid_w2_top2_recall": 1.0
+  },
+  "stage1_train": {
+    "steps": 400,
+    "elapsed_sec": 387.93,
+    "peak_vram_gb": 6.251,
+    "final_loss": 7.1595,
+    "final_ntp": 1.1334,
+    "final_rec": 3.377,
+    "final_mat": 2.2773,
+    "final_sal": 0.8457,
+    "final_route": 0.0067,
+    "final_cond_b": 0.0,
+    "final_gate": 0.0,
+    "final_lm_reg": 0.0
+  },
+  "stage2_train": null,
+  "stage3_eval_holdout_budget": null,
+  "stage3_eval_holdout_symbolic": null,
+  "stage4_oracle_and_breakeven": {
+    "oracle_abc_symbolic": {
+      "A_raw_text_base_frozen": {
+        "k=1": 0.6667,
+        "k=2": 0.75,
+        "k=3": 0.6667,
+        "k=5": 0.4167
+      },
+      "A_raw_text": {
+        "k=1": 0.6667,
+        "k=2": 0.75,
+        "k=3": 0.6667,
+        "k=5": 0.4167
+      },
+      "B_reencode_scratch": {
+        "k=1": 0.8333,
+        "k=2": 1.0,
+        "k=3": 0.9167,
+        "k=5": 0.9167
+      },
+      "C_delta_updater": {
+        "k=1": 0.3333,
+        "k=2": 0.5833,
+        "k=3": 0.5833,
+        "k=5": 0.5833
+      },
+      "a_failed_samples": [
+        {
+          "answer": "active-passive",
+          "gen_text": " The static failover cluster operates in active-passive mode.\n\n",
+          "k_edits": 1
+        },
+        {
+          "answer": "unit and fuzz",
+          "gen_text": " The static CI policy mandates unit and fuzz checks.\n",
+          "k_edits": 1
+        },
+        {
+          "answer": "dual-region-mesh",
+          "gen_text": " The approved deployment state for Altair is\n",
+          "k_edits": 1
+        }
+      ]
+    },
+    "oracle_abc_budget": {
+      "A_raw_text_base_frozen": {
+        "k=1": 0.6667,
+        "k=2": 0.75,
+        "k=3": 0.75,
+        "k=5": 0.6667
+      },
+      "A_raw_text": {
+        "k=1": 0.6667,
+        "k=2": 0.75,
+        "k=3": 0.75,
+        "k=5": 0.6667
+      },
+      "B_reencode_scratch": {
+        "k=1": 0.75,
+        "k=2": 0.8333,
+        "k=3": 0.9167,
+        "k=5": 0.75
+      },
+      "C_delta_updater": {
+        "k=1": 0.4167,
+        "k=2": 0.3333,
+        "k=3": 0.4167,
+        "k=5": 0.25
+      },
+      "a_failed_samples": [
+        {
+          "answer": "five hundred rps",
+          "gen_text": " The static default API rate limit is 500 requests per second.\n",
+          "k_edits": 1
+        },
+        {
+          "answer": "ten percent",
+          "gen_text": " The answer is: \\boxed{10\\%}\n",
+          "k_edits": 1
+        },
+        {
+          "answer": "29M",
+          "gen_text": " The approved budget for Lyra is $29,000,000.\n",
+          "k_edits": 1
+        }
+      ]
+    },
+    "page_scaling": {
+      "P=4": {
+        "clone_ms": 33.992,
+        "in_place_ms": 6.572,
+        "clone_peak_mb": 3451.264,
+        "in_place_peak_mb": 3451.235
+      },
+      "P=128": {
+        "clone_ms": 6.274,
+        "in_place_ms": 6.087,
+        "clone_peak_mb": 3459.96,
+        "in_place_peak_mb": 3461.043
+      },
+      "P=1024": {
+        "clone_ms": 6.063,
+        "in_place_ms": 5.955,
+        "clone_peak_mb": 3525.39,
+        "in_place_peak_mb": 3523.74
+      }
+    },
+    "q_breakeven": {
+      "lora_merged_for_timing": false,
+      "timing_salience_route_weight": 2.0,
+      "single_page_reencode_ms": 7.313,
+      "local_write_ms": 7.519,
+      "contextual_encode_ms": 42.598,
+      "end_to_end_edit_ms": 50.117,
+      "lslc_per_query_ms": 45.063,
+      "lslc_per_query_ms_dense_w0": 43.61,
+      "rag_edit_ms": 0.944,
+      "rag_per_query_ms": 60.111,
+      "full_context_per_query_ms": 427.87,
+      "q_star_vs_rag_bm25": 4,
+      "q_star_vs_full_context": 1,
+      "by_q": {
+        "Q=1": {
+          "lslc_total_ms": 95.181,
+          "rag_bm25_total_ms": 61.055,
+          "full_context_total_ms": 427.87,
+          "speedup_vs_rag_x": 0.641,
+          "speedup_vs_full_x": 4.495
+        },
+        "Q=10": {
+          "lslc_total_ms": 500.75,
+          "rag_bm25_total_ms": 602.058,
+          "full_context_total_ms": 4278.704,
+          "speedup_vs_rag_x": 1.202,
+          "speedup_vs_full_x": 8.545
+        },
+        "Q=100": {
+          "lslc_total_ms": 4556.444,
+          "rag_bm25_total_ms": 6012.085,
+          "full_context_total_ms": 42787.037,
+          "speedup_vs_rag_x": 1.319,
+          "speedup_vs_full_x": 9.39
+        }
+      },
+      "by_k_deep": {
+        "k_deep=2": {
+          "k_deep": 2,
+          "k_skim": 2,
+          "lslc_prefix_tokens": 116,
+          "rag_prefix_tokens": 512,
+          "lslc_per_query_ms": 45.516,
+          "rag_per_query_ms": 58.764,
+          "per_query_speedup_vs_rag_x": 1.291,
+          "q_star_vs_rag_bm25": 4,
+          "by_q": {
+            "Q=1": {
+              "lslc_total_ms": 95.633,
+              "rag_bm25_total_ms": 59.708,
+              "speedup_vs_rag_x": 0.624
+            },
+            "Q=10": {
+              "lslc_total_ms": 505.274,
+              "rag_bm25_total_ms": 588.584,
+              "speedup_vs_rag_x": 1.165
+            },
+            "Q=100": {
+              "lslc_total_ms": 4601.681,
+              "rag_bm25_total_ms": 5877.353,
+              "speedup_vs_rag_x": 1.277
+            }
+          }
+        },
+        "k_deep=8": {
+          "k_deep": 8,
+          "k_skim": 2,
+          "lslc_prefix_tokens": 398,
+          "rag_prefix_tokens": 2048,
+          "lslc_per_query_ms": 46.491,
+          "rag_per_query_ms": 210.403,
+          "per_query_speedup_vs_rag_x": 4.526,
+          "q_star_vs_rag_bm25": 1,
+          "by_q": {
+            "Q=1": {
+              "lslc_total_ms": 96.608,
+              "rag_bm25_total_ms": 211.346,
+              "speedup_vs_rag_x": 2.188
+            },
+            "Q=10": {
+              "lslc_total_ms": 515.026,
+              "rag_bm25_total_ms": 2104.972,
+              "speedup_vs_rag_x": 4.087
+            },
+            "Q=100": {
+              "lslc_total_ms": 4699.203,
+              "rag_bm25_total_ms": 21041.23,
+              "speedup_vs_rag_x": 4.478
+            }
+          }
+        }
+      }
+    },
+    "analytical_memory_4k": {
+      "num_tokens": 4096,
+      "pages": 16,
+      "k_toc": 12,
+      "k_skim": 2,
+      "k_deep": 2,
+      "active_dense_tokens": 68,
+      "active_exact_tokens": 48,
+      "active_total_tokens": 116,
+      "kv_kib_per_token": 112.0,
+      "book_mib": 0.1875,
+      "exact_bank_mib": 0.0029296875,
+      "active_kv_mib": 12.6875,
+      "lslc_net_mib": 12.8779296875,
+      "full_fp16_kv_mib": 448.0,
+      "int4_kv_mib": 112.0,
+      "h2o_20pct_mib": 89.60000038146973,
+      "ratio_vs_fp16": 34.78820050049291,
+      "ratio_vs_int4": 8.697050125123228
+    },
+    "sample_page_size": 256
+  }
+}

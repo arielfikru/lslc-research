@@ -1,0 +1,4658 @@
+{
+  "version": "3.0.0-path-tiebreaker-audit",
+  "model": "Qwen/Qwen3-1.7B",
+  "mock_llm": false,
+  "device": "cuda",
+  "data_source": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "init_checkpoint": {
+    "path": "/content/lslc_results/lslc_universal_v2_qwen3_1.7b.safetensors",
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "config": {
+    "page_size": 256,
+    "k_exact": 48,
+    "salience_span_len": 16,
+    "salience_route_weight": 1.5,
+    "bge_model": "BAAI/bge-small-en-v1.5",
+    "seeds": [
+      2026,
+      2027,
+      2028
+    ]
+  },
+  "gate2_tiebreaker_n200": null,
+  "coding_tiebreaker_n24": null,
+  "ruler_bge_and_unified_profile": null,
+  "ood_kv_baselines": {
+    "context_length": 4096,
+    "num_ruler_episodes": 48,
+    "num_ppl_episodes": 16,
+    "iso_token_budget": 306,
+    "icae_strawman_removed": true,
+    "systems": {
+      "full_kv_bf16": {
+        "num_episodes": 48,
+        "ci95": {
+          "extracted_em": [
+            0.59,
+            0.8343
+          ],
+          "substring_match": [
+            0.59,
+            0.8343
+          ],
+          "token_f1": [
+            0.59,
+            0.8343
+          ],
+          "active_kv_tokens": [
+            4096.0,
+            4096.0
+          ],
+          "eviction_eager_ms": [
+            0.0,
+            0.0741
+          ],
+          "sdpa_inference_ms": [
+            404.9996,
+            454.7564
+          ]
+        },
+        "extracted_em": 0.7292,
+        "substring_match": 0.7292,
+        "token_f1": 0.7292,
+        "active_kv_tokens": 4096.0,
+        "eviction_eager_ms": 0.0,
+        "sdpa_inference_ms": 427.9133,
+        "wikitext_ppl": 13.788,
+        "sdpa_inference_peak_vram_mb": 6821.29,
+        "by_task": {
+          "s_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.8064,
+                1.0
+              ],
+              "substring_match": [
+                0.8064,
+                1.0
+              ],
+              "token_f1": [
+                0.8064,
+                1.0
+              ],
+              "active_kv_tokens": [
+                4096.0,
+                4096.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                427.1436,
+                430.3896
+              ]
+            },
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 428.6883
+          },
+          "mk_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.8064,
+                1.0
+              ],
+              "substring_match": [
+                0.8064,
+                1.0
+              ],
+              "token_f1": [
+                0.8064,
+                1.0
+              ],
+              "active_kv_tokens": [
+                4096.0,
+                4096.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                427.5315,
+                433.6085
+              ]
+            },
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 430.468
+          },
+          "vt": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.0659,
+                0.4301
+              ],
+              "substring_match": [
+                0.0659,
+                0.4301
+              ],
+              "token_f1": [
+                0.0659,
+                0.4301
+              ],
+              "active_kv_tokens": [
+                4096.0,
+                4096.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                347.6291,
+                499.4537
+              ]
+            },
+            "extracted_em": 0.1875,
+            "substring_match": 0.1875,
+            "token_f1": 0.1875,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 424.5836
+          }
+        },
+        "episodes": [
+          {
+            "episode_idx": 0,
+            "task": "s_niah",
+            "gold": "9448775",
+            "pred": "9448775",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 431.466
+          },
+          {
+            "episode_idx": 1,
+            "task": "s_niah",
+            "gold": "3863469",
+            "pred": "3863469",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 424.759
+          },
+          {
+            "episode_idx": 2,
+            "task": "s_niah",
+            "gold": "9940303",
+            "pred": "9940303",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 429.651
+          },
+          {
+            "episode_idx": 3,
+            "task": "s_niah",
+            "gold": "9371381",
+            "pred": "9371381",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 436.805
+          },
+          {
+            "episode_idx": 4,
+            "task": "s_niah",
+            "gold": "1273779",
+            "pred": "1273779",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 424.893
+          },
+          {
+            "episode_idx": 5,
+            "task": "s_niah",
+            "gold": "2992611",
+            "pred": "2992611",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 430.212
+          },
+          {
+            "episode_idx": 6,
+            "task": "s_niah",
+            "gold": "1853490",
+            "pred": "1853490",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 428.478
+          },
+          {
+            "episode_idx": 7,
+            "task": "s_niah",
+            "gold": "6656412",
+            "pred": "6656412",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 424.562
+          },
+          {
+            "episode_idx": 8,
+            "task": "s_niah",
+            "gold": "7477292",
+            "pred": "7477292",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 427.027
+          },
+          {
+            "episode_idx": 9,
+            "task": "s_niah",
+            "gold": "4979565",
+            "pred": "4979565",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 428.019
+          },
+          {
+            "episode_idx": 10,
+            "task": "s_niah",
+            "gold": "2266875",
+            "pred": "2266875",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 429.115
+          },
+          {
+            "episode_idx": 11,
+            "task": "s_niah",
+            "gold": "4750488",
+            "pred": "4750488",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 433.904
+          },
+          {
+            "episode_idx": 12,
+            "task": "s_niah",
+            "gold": "7428627",
+            "pred": "7428627",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 430.14
+          },
+          {
+            "episode_idx": 13,
+            "task": "s_niah",
+            "gold": "9060761",
+            "pred": "9060761",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 424.983
+          },
+          {
+            "episode_idx": 14,
+            "task": "s_niah",
+            "gold": "1891777",
+            "pred": "1891777",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 427.844
+          },
+          {
+            "episode_idx": 15,
+            "task": "s_niah",
+            "gold": "8761489",
+            "pred": "8761489",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 427.155
+          },
+          {
+            "episode_idx": 16,
+            "task": "mk_niah",
+            "gold": "7041466",
+            "pred": "7041466",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 434.319
+          },
+          {
+            "episode_idx": 17,
+            "task": "mk_niah",
+            "gold": "9918939",
+            "pred": "9918939",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 441.376
+          },
+          {
+            "episode_idx": 18,
+            "task": "mk_niah",
+            "gold": "6826740",
+            "pred": "6826740",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 439.746
+          },
+          {
+            "episode_idx": 19,
+            "task": "mk_niah",
+            "gold": "4711016",
+            "pred": "4711016",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 440.897
+          },
+          {
+            "episode_idx": 20,
+            "task": "mk_niah",
+            "gold": "3496352",
+            "pred": "3496352",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 438.195
+          },
+          {
+            "episode_idx": 21,
+            "task": "mk_niah",
+            "gold": "4333064",
+            "pred": "4333064",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 427.796
+          },
+          {
+            "episode_idx": 22,
+            "task": "mk_niah",
+            "gold": "3451876",
+            "pred": "3451876",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 426.541
+          },
+          {
+            "episode_idx": 23,
+            "task": "mk_niah",
+            "gold": "1958378",
+            "pred": "1958378",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 424.403
+          },
+          {
+            "episode_idx": 24,
+            "task": "mk_niah",
+            "gold": "3815241",
+            "pred": "3815241",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 425.125
+          },
+          {
+            "episode_idx": 25,
+            "task": "mk_niah",
+            "gold": "8267787",
+            "pred": "8267787",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 423.979
+          },
+          {
+            "episode_idx": 26,
+            "task": "mk_niah",
+            "gold": "6135517",
+            "pred": "6135517",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 432.555
+          },
+          {
+            "episode_idx": 27,
+            "task": "mk_niah",
+            "gold": "5599040",
+            "pred": "5599040",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 429.772
+          },
+          {
+            "episode_idx": 28,
+            "task": "mk_niah",
+            "gold": "7568432",
+            "pred": "7568432",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 426.921
+          },
+          {
+            "episode_idx": 29,
+            "task": "mk_niah",
+            "gold": "8084118",
+            "pred": "8084118",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 426.758
+          },
+          {
+            "episode_idx": 30,
+            "task": "mk_niah",
+            "gold": "2111608",
+            "pred": "2111608",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 424.912
+          },
+          {
+            "episode_idx": 31,
+            "task": "mk_niah",
+            "gold": "9401987",
+            "pred": "9401987",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 424.193
+          },
+          {
+            "episode_idx": 32,
+            "task": "vt",
+            "gold": "27560",
+            "pred": "The numeric value assigned to VAR_D0 is 119.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 703.455
+          },
+          {
+            "episode_idx": 33,
+            "task": "vt",
+            "gold": "79253",
+            "pred": "79253",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 344.705
+          },
+          {
+            "episode_idx": 34,
+            "task": "vt",
+            "gold": "96856",
+            "pred": "92634.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 386.128
+          },
+          {
+            "episode_idx": 35,
+            "task": "vt",
+            "gold": "81296",
+            "pred": "81296",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 345.658
+          },
+          {
+            "episode_idx": 36,
+            "task": "vt",
+            "gold": "60909",
+            "pred": "The numeric value assigned to VAR_R4 is 926.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 708.595
+          },
+          {
+            "episode_idx": 37,
+            "task": "vt",
+            "gold": "89343",
+            "pred": "The numeric value assigned to VAR_X5 is 95890.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 787.919
+          },
+          {
+            "episode_idx": 38,
+            "task": "vt",
+            "gold": "35132",
+            "pred": "30@,@ 068",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 467.336
+          },
+          {
+            "episode_idx": 39,
+            "task": "vt",
+            "gold": "70086",
+            "pred": "39684",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 345.832
+          },
+          {
+            "episode_idx": 40,
+            "task": "vt",
+            "gold": "67117",
+            "pred": "76838.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 384.682
+          },
+          {
+            "episode_idx": 41,
+            "task": "vt",
+            "gold": "53304",
+            "pred": "300",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 267.884
+          },
+          {
+            "episode_idx": 42,
+            "task": "vt",
+            "gold": "80562",
+            "pred": "30677",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 351.739
+          },
+          {
+            "episode_idx": 43,
+            "task": "vt",
+            "gold": "39098",
+            "pred": "35.71",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 357.794
+          },
+          {
+            "episode_idx": 44,
+            "task": "vt",
+            "gold": "55908",
+            "pred": "73804",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 355.669
+          },
+          {
+            "episode_idx": 45,
+            "task": "vt",
+            "gold": "98463",
+            "pred": "900",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 271.458
+          },
+          {
+            "episode_idx": 46,
+            "task": "vt",
+            "gold": "24008",
+            "pred": "24008",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 356.157
+          },
+          {
+            "episode_idx": 47,
+            "task": "vt",
+            "gold": "14674",
+            "pred": "15975",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 358.326
+          }
+        ]
+      },
+      "sim_int4_kv_qdq": {
+        "num_episodes": 48,
+        "ci95": {
+          "extracted_em": [
+            0.5254,
+            0.7832
+          ],
+          "substring_match": [
+            0.5254,
+            0.7832
+          ],
+          "token_f1": [
+            0.2259,
+            0.461
+          ],
+          "active_kv_tokens": [
+            4096.0,
+            4096.0
+          ],
+          "eviction_eager_ms": [
+            0.0,
+            0.0741
+          ],
+          "sdpa_inference_ms": [
+            735.0879,
+            869.5469
+          ]
+        },
+        "extracted_em": 0.6667,
+        "substring_match": 0.6667,
+        "token_f1": 0.3478,
+        "active_kv_tokens": 4096.0,
+        "eviction_eager_ms": 0.0,
+        "sdpa_inference_ms": 798.044,
+        "wikitext_ppl": 18.2429,
+        "sdpa_inference_peak_vram_mb": 7717.29,
+        "honest_quantization_note": "Quantize-dequantize simulated INT4 (BF16 tensor storage; VRAM is NOT packed INT4)",
+        "analytical_packed_int4_kv_mib": 112.0,
+        "by_task": {
+          "s_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.7167,
+                0.9889
+              ],
+              "substring_match": [
+                0.7167,
+                0.9889
+              ],
+              "token_f1": [
+                0.3849,
+                0.804
+              ],
+              "active_kv_tokens": [
+                4096.0,
+                4096.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                590.0474,
+                892.1123
+              ]
+            },
+            "extracted_em": 0.9375,
+            "substring_match": 0.9375,
+            "token_f1": 0.5923,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 732.4117
+          },
+          "mk_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.7167,
+                0.9889
+              ],
+              "substring_match": [
+                0.7167,
+                0.9889
+              ],
+              "token_f1": [
+                0.25,
+                0.5781
+              ],
+              "active_kv_tokens": [
+                4096.0,
+                4096.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                741.1535,
+                987.4289
+              ]
+            },
+            "extracted_em": 0.9375,
+            "substring_match": 0.9375,
+            "token_f1": 0.4176,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 875.4128
+          },
+          "vt": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.035,
+                0.3602
+              ],
+              "substring_match": [
+                0.035,
+                0.3602
+              ],
+              "token_f1": [
+                0.0,
+                0.0804
+              ],
+              "active_kv_tokens": [
+                4096.0,
+                4096.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                727.0169,
+                846.5933
+              ]
+            },
+            "extracted_em": 0.125,
+            "substring_match": 0.125,
+            "token_f1": 0.0335,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 786.3075
+          }
+        },
+        "episodes": [
+          {
+            "episode_idx": 0,
+            "task": "s_niah",
+            "gold": "9448775",
+            "pred": "The special magic number for amber-80 is 9448775.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 922.711
+          },
+          {
+            "episode_idx": 1,
+            "task": "s_niah",
+            "gold": "3863469",
+            "pred": "3863469",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 440.717
+          },
+          {
+            "episode_idx": 2,
+            "task": "s_niah",
+            "gold": "9940303",
+            "pred": "The special magic number for cedar-54 mentioned in the provided text is:\n\n",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 758.506
+          },
+          {
+            "episode_idx": 3,
+            "task": "s_niah",
+            "gold": "9371381",
+            "pred": "The special magic number for delta-61 is 9371381.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 920.954
+          },
+          {
+            "episode_idx": 4,
+            "task": "s_niah",
+            "gold": "1273779",
+            "pred": "1273779",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 442.091
+          },
+          {
+            "episode_idx": 5,
+            "task": "s_niah",
+            "gold": "2992611",
+            "pred": "The special magic number for falcon-76 mentioned in the text is **2992611**",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.18181818181818182,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1116.242
+          },
+          {
+            "episode_idx": 6,
+            "task": "s_niah",
+            "gold": "1853490",
+            "pred": "1853490",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 440.86
+          },
+          {
+            "episode_idx": 7,
+            "task": "s_niah",
+            "gold": "6656412",
+            "pred": "6656412",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 443.154
+          },
+          {
+            "episode_idx": 8,
+            "task": "s_niah",
+            "gold": "7477292",
+            "pred": "7477292",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 442.116
+          },
+          {
+            "episode_idx": 9,
+            "task": "s_niah",
+            "gold": "4979565",
+            "pred": "The special magic number for jasper-91 mentioned in the text is **4979565**",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.18181818181818182,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1122.668
+          },
+          {
+            "episode_idx": 10,
+            "task": "s_niah",
+            "gold": "2266875",
+            "pred": "The special magic number for kestrel-27 is 2266875.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1042.141
+          },
+          {
+            "episode_idx": 11,
+            "task": "s_niah",
+            "gold": "4750488",
+            "pred": "The special magic number for lumen-65 mentioned in the text is **4750488**",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.18181818181818182,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1162.266
+          },
+          {
+            "episode_idx": 12,
+            "task": "s_niah",
+            "gold": "7428627",
+            "pred": "The special magic number for marble-92 mentioned in the text is **7428627**.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.18181818181818182,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1133.241
+          },
+          {
+            "episode_idx": 13,
+            "task": "s_niah",
+            "gold": "9060761",
+            "pred": "9060761",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 438.838
+          },
+          {
+            "episode_idx": 14,
+            "task": "s_niah",
+            "gold": "1891777",
+            "pred": "1891777",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 456.33
+          },
+          {
+            "episode_idx": 15,
+            "task": "s_niah",
+            "gold": "8761489",
+            "pred": "8761489",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 435.753
+          },
+          {
+            "episode_idx": 16,
+            "task": "mk_niah",
+            "gold": "7041466",
+            "pred": "7041466",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 437.323
+          },
+          {
+            "episode_idx": 17,
+            "task": "mk_niah",
+            "gold": "9918939",
+            "pred": "The special magic number for lumen-node-11 is 9918939.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1004.425
+          },
+          {
+            "episode_idx": 18,
+            "task": "mk_niah",
+            "gold": "6826740",
+            "pred": "The special magic number for pebble-node-37 is 6826740.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 992.911
+          },
+          {
+            "episode_idx": 19,
+            "task": "mk_niah",
+            "gold": "4711016",
+            "pred": "The special magic number for laurel-node-33 is **4711016**.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1034.47
+          },
+          {
+            "episode_idx": 20,
+            "task": "mk_niah",
+            "gold": "3496352",
+            "pred": "The special magic number for flint-node-27 is 3496352.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 988.385
+          },
+          {
+            "episode_idx": 21,
+            "task": "mk_niah",
+            "gold": "4333064",
+            "pred": "4333064",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 439.402
+          },
+          {
+            "episode_idx": 22,
+            "task": "mk_niah",
+            "gold": "3451876",
+            "pred": "The special magic number for cedar-node-02 is **3451876**.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 998.525
+          },
+          {
+            "episode_idx": 23,
+            "task": "mk_niah",
+            "gold": "1958378",
+            "pred": "1958378.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 477.079
+          },
+          {
+            "episode_idx": 24,
+            "task": "mk_niah",
+            "gold": "3815241",
+            "pred": "The special magic number for zenith-node-22 is **3815241**.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1004.389
+          },
+          {
+            "episode_idx": 25,
+            "task": "mk_niah",
+            "gold": "8267787",
+            "pred": "The special magic number for nebula-node-13 is 8267787.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1035.183
+          },
+          {
+            "episode_idx": 26,
+            "task": "mk_niah",
+            "gold": "6135517",
+            "pred": "6135517",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 459.065
+          },
+          {
+            "episode_idx": 27,
+            "task": "mk_niah",
+            "gold": "5599040",
+            "pred": "The special magic number for velvet-node-20 is **2810665**.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1008.162
+          },
+          {
+            "episode_idx": 28,
+            "task": "mk_niah",
+            "gold": "7568432",
+            "pred": "The special magic number for marble-node-12 is 7568432.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 965.967
+          },
+          {
+            "episode_idx": 29,
+            "task": "mk_niah",
+            "gold": "8084118",
+            "pred": "The special magic number for garnet-node-28 is **8084118**.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1051.31
+          },
+          {
+            "episode_idx": 30,
+            "task": "mk_niah",
+            "gold": "2111608",
+            "pred": "The special magic number for zircon-node-44 is 2111608.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 995.455
+          },
+          {
+            "episode_idx": 31,
+            "task": "mk_niah",
+            "gold": "9401987",
+            "pred": "The special magic number for agate-node-45 mentioned in the text is **9401987",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.18181818181818182,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 1114.554
+          },
+          {
+            "episode_idx": 32,
+            "task": "vt",
+            "gold": "27560",
+            "pred": "The numeric value assigned to VAR_D0 is 119.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 721.898
+          },
+          {
+            "episode_idx": 33,
+            "task": "vt",
+            "gold": "79253",
+            "pred": "The numeric value assigned to **VAR_X1** is **60,000**.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 957.356
+          },
+          {
+            "episode_idx": 34,
+            "task": "vt",
+            "gold": "96856",
+            "pred": "The numeric value assigned to VAR_T2 is 18006.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 792.383
+          },
+          {
+            "episode_idx": 35,
+            "task": "vt",
+            "gold": "81296",
+            "pred": "The numeric value assigned to **VAR_Z3** is **81296**.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 914.271
+          },
+          {
+            "episode_idx": 36,
+            "task": "vt",
+            "gold": "60909",
+            "pred": "The numeric value assigned to **VAR_R4** is **926**.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 836.58
+          },
+          {
+            "episode_idx": 37,
+            "task": "vt",
+            "gold": "89343",
+            "pred": "VAR_X5 is assigned the value 1919.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 693.972
+          },
+          {
+            "episode_idx": 38,
+            "task": "vt",
+            "gold": "35132",
+            "pred": "The numeric value assigned to VAR_K6 is 3068.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 785.5
+          },
+          {
+            "episode_idx": 39,
+            "task": "vt",
+            "gold": "70086",
+            "pred": "VAR_O7 is assigned the numeric value **1966**.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 777.945
+          },
+          {
+            "episode_idx": 40,
+            "task": "vt",
+            "gold": "67117",
+            "pred": "The numeric value assigned to **VAR_M8** is **76838**.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 915.438
+          },
+          {
+            "episode_idx": 41,
+            "task": "vt",
+            "gold": "53304",
+            "pred": "VAR_T9 is assigned the numeric value **53304**.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.2857142857142857,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 790.111
+          },
+          {
+            "episode_idx": 42,
+            "task": "vt",
+            "gold": "80562",
+            "pred": "The numeric value assigned to VAR_Z0 is 492.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 717.38
+          },
+          {
+            "episode_idx": 43,
+            "task": "vt",
+            "gold": "39098",
+            "pred": "VAR_Z1 is assigned the numeric value **1**.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 644.824
+          },
+          {
+            "episode_idx": 44,
+            "task": "vt",
+            "gold": "55908",
+            "pred": "VAR_S2 is assigned the numeric value 15250.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 759.336
+          },
+          {
+            "episode_idx": 45,
+            "task": "vt",
+            "gold": "98463",
+            "pred": "VAR_T3 = 900",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 481.911
+          },
+          {
+            "episode_idx": 46,
+            "task": "vt",
+            "gold": "24008",
+            "pred": "The numeric value assigned to **VAR_T4** is **1979**.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 876.996
+          },
+          {
+            "episode_idx": 47,
+            "task": "vt",
+            "gold": "14674",
+            "pred": "The numeric value assigned to **VAR_E5** is **15975**.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 4096.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 915.019
+          }
+        ]
+      },
+      "query_agnostic_h2o": {
+        "num_episodes": 48,
+        "ci95": {
+          "extracted_em": [
+            0.0037,
+            0.109
+          ],
+          "substring_match": [
+            0.0037,
+            0.109
+          ],
+          "token_f1": [
+            0.0037,
+            0.109
+          ],
+          "active_kv_tokens": [
+            306.0,
+            306.0
+          ],
+          "eviction_eager_ms": [
+            347.5385,
+            354.6218
+          ],
+          "sdpa_inference_ms": [
+            316.1422,
+            431.2137
+          ]
+        },
+        "extracted_em": 0.0208,
+        "substring_match": 0.0208,
+        "token_f1": 0.0208,
+        "active_kv_tokens": 306.0,
+        "eviction_eager_ms": 350.1882,
+        "sdpa_inference_ms": 375.8711,
+        "wikitext_ppl": 24.2785,
+        "sdpa_inference_peak_vram_mb": 6216.73,
+        "eviction_eager_peak_vram_mb": 23492.8,
+        "by_task": {
+          "s_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.0111,
+                0.2833
+              ],
+              "substring_match": [
+                0.0111,
+                0.2833
+              ],
+              "token_f1": [
+                0.0111,
+                0.2833
+              ],
+              "active_kv_tokens": [
+                306.0,
+                306.0
+              ],
+              "eviction_eager_ms": [
+                348.1511,
+                368.9222
+              ],
+              "sdpa_inference_ms": [
+                210.9467,
+                378.5834
+              ]
+            },
+            "extracted_em": 0.0625,
+            "substring_match": 0.0625,
+            "token_f1": 0.0625,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 355.3732,
+            "sdpa_inference_ms": 282.9567
+          },
+          "mk_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.1936
+              ],
+              "substring_match": [
+                0.0,
+                0.1936
+              ],
+              "token_f1": [
+                0.0,
+                0.1936
+              ],
+              "active_kv_tokens": [
+                306.0,
+                306.0
+              ],
+              "eviction_eager_ms": [
+                347.0186,
+                349.5623
+              ],
+              "sdpa_inference_ms": [
+                252.0302,
+                503.2312
+              ]
+            },
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 348.3129,
+            "sdpa_inference_ms": 375.2365
+          },
+          "vt": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.0,
+                0.1936
+              ],
+              "substring_match": [
+                0.0,
+                0.1936
+              ],
+              "token_f1": [
+                0.0,
+                0.1936
+              ],
+              "active_kv_tokens": [
+                306.0,
+                306.0
+              ],
+              "eviction_eager_ms": [
+                346.1039,
+                347.8571
+              ],
+              "sdpa_inference_ms": [
+                418.7947,
+                518.2019
+              ]
+            },
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 346.8784,
+            "sdpa_inference_ms": 469.4201
+          }
+        },
+        "episodes": [
+          {
+            "episode_idx": 0,
+            "task": "s_niah",
+            "gold": "9448775",
+            "pred": "30",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 451.987,
+            "sdpa_inference_ms": 139.582
+          },
+          {
+            "episode_idx": 1,
+            "task": "s_niah",
+            "gold": "3863469",
+            "pred": "The special magic number for basalt-91 is 91.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 351.524,
+            "sdpa_inference_ms": 670.9
+          },
+          {
+            "episode_idx": 2,
+            "task": "s_niah",
+            "gold": "9940303",
+            "pred": "54",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 348.096,
+            "sdpa_inference_ms": 137.156
+          },
+          {
+            "episode_idx": 3,
+            "task": "s_niah",
+            "gold": "9371381",
+            "pred": "156.Poplar Springs Drive",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 351.845,
+            "sdpa_inference_ms": 339.497
+          },
+          {
+            "episode_idx": 4,
+            "task": "s_niah",
+            "gold": "1273779",
+            "pred": "127377",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 346.37,
+            "sdpa_inference_ms": 299.005
+          },
+          {
+            "episode_idx": 5,
+            "task": "s_niah",
+            "gold": "2992611",
+            "pred": "76",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 347.012,
+            "sdpa_inference_ms": 134.966
+          },
+          {
+            "episode_idx": 6,
+            "task": "s_niah",
+            "gold": "1853490",
+            "pred": "117",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 351.723,
+            "sdpa_inference_ms": 176.701
+          },
+          {
+            "episode_idx": 7,
+            "task": "s_niah",
+            "gold": "6656412",
+            "pred": "58",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 350.345,
+            "sdpa_inference_ms": 134.934
+          },
+          {
+            "episode_idx": 8,
+            "task": "s_niah",
+            "gold": "7477292",
+            "pred": "195-81",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 351.536,
+            "sdpa_inference_ms": 303.079
+          },
+          {
+            "episode_idx": 9,
+            "task": "s_niah",
+            "gold": "4979565",
+            "pred": "9199",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 347.205,
+            "sdpa_inference_ms": 218.275
+          },
+          {
+            "episode_idx": 10,
+            "task": "s_niah",
+            "gold": "2266875",
+            "pred": "The special magic number for kestrel-27 is 13.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 349.6,
+            "sdpa_inference_ms": 707.482
+          },
+          {
+            "episode_idx": 11,
+            "task": "s_niah",
+            "gold": "4750488",
+            "pred": "123456",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 346.389,
+            "sdpa_inference_ms": 299.02
+          },
+          {
+            "episode_idx": 12,
+            "task": "s_niah",
+            "gold": "7428627",
+            "pred": "70.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 347.127,
+            "sdpa_inference_ms": 177.672
+          },
+          {
+            "episode_idx": 13,
+            "task": "s_niah",
+            "gold": "9060761",
+            "pred": "12345",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 350.439,
+            "sdpa_inference_ms": 265.578
+          },
+          {
+            "episode_idx": 14,
+            "task": "s_niah",
+            "gold": "1891777",
+            "pred": "1891777",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 348.291,
+            "sdpa_inference_ms": 345.472
+          },
+          {
+            "episode_idx": 15,
+            "task": "s_niah",
+            "gold": "8761489",
+            "pred": "100",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 346.482,
+            "sdpa_inference_ms": 177.989
+          },
+          {
+            "episode_idx": 16,
+            "task": "mk_niah",
+            "gold": "7041466",
+            "pred": "12345",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 350.455,
+            "sdpa_inference_ms": 258.191
+          },
+          {
+            "episode_idx": 17,
+            "task": "mk_niah",
+            "gold": "9918939",
+            "pred": "The special magic number for lumen-node-11 is 11.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 348.058,
+            "sdpa_inference_ms": 707.834
+          },
+          {
+            "episode_idx": 18,
+            "task": "mk_niah",
+            "gold": "6826740",
+            "pred": "37",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.772,
+            "sdpa_inference_ms": 136.195
+          },
+          {
+            "episode_idx": 19,
+            "task": "mk_niah",
+            "gold": "4711016",
+            "pred": "The special magic number for laurel-node-33 is 42.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 351.624,
+            "sdpa_inference_ms": 711.512
+          },
+          {
+            "episode_idx": 20,
+            "task": "mk_niah",
+            "gold": "3496352",
+            "pred": "27",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 346.069,
+            "sdpa_inference_ms": 136.354
+          },
+          {
+            "episode_idx": 21,
+            "task": "mk_niah",
+            "gold": "4333064",
+            "pred": "222.5",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 351.525,
+            "sdpa_inference_ms": 265.82
+          },
+          {
+            "episode_idx": 22,
+            "task": "mk_niah",
+            "gold": "3451876",
+            "pred": "The special magic number for cedar-node-02 is 3.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 348.017,
+            "sdpa_inference_ms": 626.496
+          },
+          {
+            "episode_idx": 23,
+            "task": "mk_niah",
+            "gold": "1958378",
+            "pred": "9",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.613,
+            "sdpa_inference_ms": 94.654
+          },
+          {
+            "episode_idx": 24,
+            "task": "mk_niah",
+            "gold": "3815241",
+            "pred": "1285",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 352.146,
+            "sdpa_inference_ms": 217.228
+          },
+          {
+            "episode_idx": 25,
+            "task": "mk_niah",
+            "gold": "8267787",
+            "pred": "13",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 349.478,
+            "sdpa_inference_ms": 136.885
+          },
+          {
+            "episode_idx": 26,
+            "task": "mk_niah",
+            "gold": "6135517",
+            "pred": "12345",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 351.496,
+            "sdpa_inference_ms": 258.03
+          },
+          {
+            "episode_idx": 27,
+            "task": "mk_niah",
+            "gold": "5599040",
+            "pred": "1234567890",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 348.231,
+            "sdpa_inference_ms": 462.728
+          },
+          {
+            "episode_idx": 28,
+            "task": "mk_niah",
+            "gold": "7568432",
+            "pred": "The special magic number for marble-node-12 is 12.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.744,
+            "sdpa_inference_ms": 668.214
+          },
+          {
+            "episode_idx": 29,
+            "task": "mk_niah",
+            "gold": "8084118",
+            "pred": "The special magic number for garnet-node-28 is not mentioned in the provided text.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.845,
+            "sdpa_inference_ms": 843.141
+          },
+          {
+            "episode_idx": 30,
+            "task": "mk_niah",
+            "gold": "2111608",
+            "pred": "2211608",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 346.328,
+            "sdpa_inference_ms": 342.815
+          },
+          {
+            "episode_idx": 31,
+            "task": "mk_niah",
+            "gold": "9401987",
+            "pred": "35",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 346.606,
+            "sdpa_inference_ms": 137.687
+          },
+          {
+            "episode_idx": 32,
+            "task": "vt",
+            "gold": "27560",
+            "pred": "VAR_D0 is assigned the numeric value 5.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 351.963,
+            "sdpa_inference_ms": 503.221
+          },
+          {
+            "episode_idx": 33,
+            "task": "vt",
+            "gold": "79253",
+            "pred": "VAR_X1 = 1000",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.937,
+            "sdpa_inference_ms": 422.412
+          },
+          {
+            "episode_idx": 34,
+            "task": "vt",
+            "gold": "96856",
+            "pred": "VAR_T2 is assigned the value 150.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.809,
+            "sdpa_inference_ms": 543.368
+          },
+          {
+            "episode_idx": 35,
+            "task": "vt",
+            "gold": "81296",
+            "pred": "VAR_Z3 is assigned the value 2006.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 346.423,
+            "sdpa_inference_ms": 592.57
+          },
+          {
+            "episode_idx": 36,
+            "task": "vt",
+            "gold": "60909",
+            "pred": "VAR_R4 is assigned the numeric value 16.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 346.249,
+            "sdpa_inference_ms": 557.186
+          },
+          {
+            "episode_idx": 37,
+            "task": "vt",
+            "gold": "89343",
+            "pred": "VAR_X5 = 16000",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 346.228,
+            "sdpa_inference_ms": 466.812
+          },
+          {
+            "episode_idx": 38,
+            "task": "vt",
+            "gold": "35132",
+            "pred": "VAR_K6 is assigned the value 1500.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.987,
+            "sdpa_inference_ms": 595.145
+          },
+          {
+            "episode_idx": 39,
+            "task": "vt",
+            "gold": "70086",
+            "pred": "VAR_O7 is assigned the value 1966.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.739,
+            "sdpa_inference_ms": 587.783
+          },
+          {
+            "episode_idx": 40,
+            "task": "vt",
+            "gold": "67117",
+            "pred": "VAR_M8 = 104",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.44,
+            "sdpa_inference_ms": 380.937
+          },
+          {
+            "episode_idx": 41,
+            "task": "vt",
+            "gold": "53304",
+            "pred": "VAR_T9 = 900",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.668,
+            "sdpa_inference_ms": 383.369
+          },
+          {
+            "episode_idx": 42,
+            "task": "vt",
+            "gold": "80562",
+            "pred": "14 touchdowns",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.758,
+            "sdpa_inference_ms": 177.114
+          },
+          {
+            "episode_idx": 43,
+            "task": "vt",
+            "gold": "39098",
+            "pred": "VAR_Z1 is assigned the value 100.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 350.896,
+            "sdpa_inference_ms": 545.611
+          },
+          {
+            "episode_idx": 44,
+            "task": "vt",
+            "gold": "55908",
+            "pred": "VAR_S2 = 980",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 345.943,
+            "sdpa_inference_ms": 404.455
+          },
+          {
+            "episode_idx": 45,
+            "task": "vt",
+            "gold": "98463",
+            "pred": "VAR_T3 is assigned the numeric value 3.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 347.981,
+            "sdpa_inference_ms": 526.697
+          },
+          {
+            "episode_idx": 46,
+            "task": "vt",
+            "gold": "24008",
+            "pred": "VAR_T4 = 4",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 346.958,
+            "sdpa_inference_ms": 313.211
+          },
+          {
+            "episode_idx": 47,
+            "task": "vt",
+            "gold": "14674",
+            "pred": "VAR_E5 is assigned the numeric value 4.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 347.075,
+            "sdpa_inference_ms": 510.83
+          }
+        ]
+      },
+      "query_aware_snapkv": {
+        "num_episodes": 48,
+        "ci95": {
+          "extracted_em": [
+            0.2343,
+            0.4956
+          ],
+          "substring_match": [
+            0.2343,
+            0.4956
+          ],
+          "token_f1": [
+            0.2083,
+            0.4844
+          ],
+          "active_kv_tokens": [
+            306.0,
+            306.0
+          ],
+          "eviction_eager_ms": [
+            368.9746,
+            385.1555
+          ],
+          "sdpa_inference_ms": [
+            317.2363,
+            437.0876
+          ]
+        },
+        "extracted_em": 0.3542,
+        "substring_match": 0.3542,
+        "token_f1": 0.3385,
+        "active_kv_tokens": 306.0,
+        "eviction_eager_ms": 376.8749,
+        "sdpa_inference_ms": 372.6176,
+        "wikitext_ppl": 22.5646,
+        "sdpa_inference_peak_vram_mb": 6664.94,
+        "eviction_eager_peak_vram_mb": 23901.56,
+        "by_task": {
+          "s_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.6398,
+                0.965
+              ],
+              "substring_match": [
+                0.6398,
+                0.965
+              ],
+              "token_f1": [
+                0.6398,
+                0.965
+              ],
+              "active_kv_tokens": [
+                306.0,
+                306.0
+              ],
+              "eviction_eager_ms": [
+                371.8189,
+                412.0212
+              ],
+              "sdpa_inference_ms": [
+                332.3887,
+                347.0445
+              ]
+            },
+            "extracted_em": 0.875,
+            "substring_match": 0.875,
+            "token_f1": 0.875,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 392.0393,
+            "sdpa_inference_ms": 340.4893
+          },
+          "mk_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.0111,
+                0.2833
+              ],
+              "substring_match": [
+                0.0111,
+                0.2833
+              ],
+              "token_f1": [
+                0.0111,
+                0.2833
+              ],
+              "active_kv_tokens": [
+                306.0,
+                306.0
+              ],
+              "eviction_eager_ms": [
+                365.8646,
+                392.8341
+              ],
+              "sdpa_inference_ms": [
+                233.1505,
+                420.2672
+              ]
+            },
+            "extracted_em": 0.0625,
+            "substring_match": 0.0625,
+            "token_f1": 0.0625,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 377.7991,
+            "sdpa_inference_ms": 309.0582
+          },
+          "vt": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.035,
+                0.3602
+              ],
+              "substring_match": [
+                0.035,
+                0.3602
+              ],
+              "token_f1": [
+                0.0,
+                0.1875
+              ],
+              "active_kv_tokens": [
+                306.0,
+                306.0
+              ],
+              "eviction_eager_ms": [
+                359.9944,
+                361.6639
+              ],
+              "sdpa_inference_ms": [
+                341.3465,
+                602.2156
+              ]
+            },
+            "extracted_em": 0.125,
+            "substring_match": 0.125,
+            "token_f1": 0.0781,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 360.7862,
+            "sdpa_inference_ms": 468.3055
+          }
+        },
+        "episodes": [
+          {
+            "episode_idx": 0,
+            "task": "s_niah",
+            "gold": "9448775",
+            "pred": "9448775",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 472.983,
+            "sdpa_inference_ms": 339.447
+          },
+          {
+            "episode_idx": 1,
+            "task": "s_niah",
+            "gold": "3863469",
+            "pred": "3863469",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 426.437,
+            "sdpa_inference_ms": 343.513
+          },
+          {
+            "episode_idx": 2,
+            "task": "s_niah",
+            "gold": "9940303",
+            "pred": "9940303",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 352.847,
+            "sdpa_inference_ms": 351.833
+          },
+          {
+            "episode_idx": 3,
+            "task": "s_niah",
+            "gold": "9371381",
+            "pred": "9371381",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 352.711,
+            "sdpa_inference_ms": 359.182
+          },
+          {
+            "episode_idx": 4,
+            "task": "s_niah",
+            "gold": "1273779",
+            "pred": "1273779",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 352.723,
+            "sdpa_inference_ms": 362.55
+          },
+          {
+            "episode_idx": 5,
+            "task": "s_niah",
+            "gold": "2992611",
+            "pred": "299261",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 422.974,
+            "sdpa_inference_ms": 301.167
+          },
+          {
+            "episode_idx": 6,
+            "task": "s_niah",
+            "gold": "1853490",
+            "pred": "1853490",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 353.603,
+            "sdpa_inference_ms": 336.027
+          },
+          {
+            "episode_idx": 7,
+            "task": "s_niah",
+            "gold": "6656412",
+            "pred": "6656412",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 352.554,
+            "sdpa_inference_ms": 340.758
+          },
+          {
+            "episode_idx": 8,
+            "task": "s_niah",
+            "gold": "7477292",
+            "pred": "7477292",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 423.119,
+            "sdpa_inference_ms": 347.18
+          },
+          {
+            "episode_idx": 9,
+            "task": "s_niah",
+            "gold": "4979565",
+            "pred": "4979565",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 422.846,
+            "sdpa_inference_ms": 344.002
+          },
+          {
+            "episode_idx": 10,
+            "task": "s_niah",
+            "gold": "2266875",
+            "pred": "226687",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 365.116,
+            "sdpa_inference_ms": 300.896
+          },
+          {
+            "episode_idx": 11,
+            "task": "s_niah",
+            "gold": "4750488",
+            "pred": "4750488",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 423.397,
+            "sdpa_inference_ms": 342.035
+          },
+          {
+            "episode_idx": 12,
+            "task": "s_niah",
+            "gold": "7428627",
+            "pred": "7428627",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 352.796,
+            "sdpa_inference_ms": 348.409
+          },
+          {
+            "episode_idx": 13,
+            "task": "s_niah",
+            "gold": "9060761",
+            "pred": "9060761",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 423.156,
+            "sdpa_inference_ms": 343.066
+          },
+          {
+            "episode_idx": 14,
+            "task": "s_niah",
+            "gold": "1891777",
+            "pred": "1891777",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 422.857,
+            "sdpa_inference_ms": 341.932
+          },
+          {
+            "episode_idx": 15,
+            "task": "s_niah",
+            "gold": "8761489",
+            "pred": "8761489",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 352.51,
+            "sdpa_inference_ms": 345.831
+          },
+          {
+            "episode_idx": 16,
+            "task": "mk_niah",
+            "gold": "7041466",
+            "pred": "77777",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 361.043,
+            "sdpa_inference_ms": 261.6
+          },
+          {
+            "episode_idx": 17,
+            "task": "mk_niah",
+            "gold": "9918939",
+            "pred": "99999",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 362.456,
+            "sdpa_inference_ms": 259.924
+          },
+          {
+            "episode_idx": 18,
+            "task": "mk_niah",
+            "gold": "6826740",
+            "pred": "60000",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 361.903,
+            "sdpa_inference_ms": 262.755
+          },
+          {
+            "episode_idx": 19,
+            "task": "mk_niah",
+            "gold": "4711016",
+            "pred": "456789",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 362.115,
+            "sdpa_inference_ms": 315.281
+          },
+          {
+            "episode_idx": 20,
+            "task": "mk_niah",
+            "gold": "3496352",
+            "pred": "33555",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 361.516,
+            "sdpa_inference_ms": 271.684
+          },
+          {
+            "episode_idx": 21,
+            "task": "mk_niah",
+            "gold": "4333064",
+            "pred": "45648",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 361.914,
+            "sdpa_inference_ms": 265.036
+          },
+          {
+            "episode_idx": 22,
+            "task": "mk_niah",
+            "gold": "3451876",
+            "pred": "3366",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 423.383,
+            "sdpa_inference_ms": 220.939
+          },
+          {
+            "episode_idx": 23,
+            "task": "mk_niah",
+            "gold": "1958378",
+            "pred": "1985",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 363.465,
+            "sdpa_inference_ms": 219.079
+          },
+          {
+            "episode_idx": 24,
+            "task": "mk_niah",
+            "gold": "3815241",
+            "pred": "33131",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 425.037,
+            "sdpa_inference_ms": 261.313
+          },
+          {
+            "episode_idx": 25,
+            "task": "mk_niah",
+            "gold": "8267787",
+            "pred": "8888888888",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 362.229,
+            "sdpa_inference_ms": 467.503
+          },
+          {
+            "episode_idx": 26,
+            "task": "mk_niah",
+            "gold": "6135517",
+            "pred": "66737",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 359.662,
+            "sdpa_inference_ms": 258.646
+          },
+          {
+            "episode_idx": 27,
+            "task": "mk_niah",
+            "gold": "5599040",
+            "pred": "20555",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 423.563,
+            "sdpa_inference_ms": 261.736
+          },
+          {
+            "episode_idx": 28,
+            "task": "mk_niah",
+            "gold": "7568432",
+            "pred": "7",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 423.541,
+            "sdpa_inference_ms": 95.808
+          },
+          {
+            "episode_idx": 29,
+            "task": "mk_niah",
+            "gold": "8084118",
+            "pred": "8.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 366.548,
+            "sdpa_inference_ms": 137.89
+          },
+          {
+            "episode_idx": 30,
+            "task": "mk_niah",
+            "gold": "2111608",
+            "pred": "2111608",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 365.935,
+            "sdpa_inference_ms": 344.357
+          },
+          {
+            "episode_idx": 31,
+            "task": "mk_niah",
+            "gold": "9401987",
+            "pred": "999999999999999999999999",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 360.476,
+            "sdpa_inference_ms": 1041.38
+          },
+          {
+            "episode_idx": 32,
+            "task": "vt",
+            "gold": "27560",
+            "pred": "The numeric value assigned to VAR_D0 is 27560.",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 0.25,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 359.55,
+            "sdpa_inference_ms": 716.405
+          },
+          {
+            "episode_idx": 33,
+            "task": "vt",
+            "gold": "79253",
+            "pred": "70000",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 359.374,
+            "sdpa_inference_ms": 261.426
+          },
+          {
+            "episode_idx": 34,
+            "task": "vt",
+            "gold": "96856",
+            "pred": "VAR_T2 = 18063.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 361.88,
+            "sdpa_inference_ms": 516.702
+          },
+          {
+            "episode_idx": 35,
+            "task": "vt",
+            "gold": "81296",
+            "pred": "80000",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 359.851,
+            "sdpa_inference_ms": 272.118
+          },
+          {
+            "episode_idx": 36,
+            "task": "vt",
+            "gold": "60909",
+            "pred": "The numeric value assigned to VAR_R4 is 999.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 362.072,
+            "sdpa_inference_ms": 657.039
+          },
+          {
+            "episode_idx": 37,
+            "task": "vt",
+            "gold": "89343",
+            "pred": "VAR_X5 = VAR_M5 = VAR_Y5 = VAR_Z5 = VAR_P5 = VAR_N5 =",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 359.48,
+            "sdpa_inference_ms": 1042.511
+          },
+          {
+            "episode_idx": 38,
+            "task": "vt",
+            "gold": "35132",
+            "pred": "The numeric value assigned to VAR_K6 is 254.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 359.512,
+            "sdpa_inference_ms": 632.409
+          },
+          {
+            "episode_idx": 39,
+            "task": "vt",
+            "gold": "70086",
+            "pred": "VAR_O7 = VAR_S7 = VAR_Q7 = VAR_Z7 = 26543.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 359.438,
+            "sdpa_inference_ms": 1001.192
+          },
+          {
+            "episode_idx": 40,
+            "task": "vt",
+            "gold": "67117",
+            "pred": "VAR_M8 = 42.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 359.532,
+            "sdpa_inference_ms": 384.733
+          },
+          {
+            "episode_idx": 41,
+            "task": "vt",
+            "gold": "53304",
+            "pred": "3.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 359.706,
+            "sdpa_inference_ms": 137.998
+          },
+          {
+            "episode_idx": 42,
+            "task": "vt",
+            "gold": "80562",
+            "pred": "30000",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 365.406,
+            "sdpa_inference_ms": 263.323
+          },
+          {
+            "episode_idx": 43,
+            "task": "vt",
+            "gold": "39098",
+            "pred": "VAR_Z1 = 32567.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 361.943,
+            "sdpa_inference_ms": 511.777
+          },
+          {
+            "episode_idx": 44,
+            "task": "vt",
+            "gold": "55908",
+            "pred": "75555.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 359.831,
+            "sdpa_inference_ms": 304.307
+          },
+          {
+            "episode_idx": 45,
+            "task": "vt",
+            "gold": "98463",
+            "pred": "93803",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 361.034,
+            "sdpa_inference_ms": 260.432
+          },
+          {
+            "episode_idx": 46,
+            "task": "vt",
+            "gold": "24008",
+            "pred": "82546",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 362.177,
+            "sdpa_inference_ms": 268.6
+          },
+          {
+            "episode_idx": 47,
+            "task": "vt",
+            "gold": "14674",
+            "pred": "14674",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 361.793,
+            "sdpa_inference_ms": 261.916
+          }
+        ]
+      },
+      "standalone_discrete_span_bank": {
+        "num_episodes": 48,
+        "ci95": {
+          "extracted_em": [
+            0.4631,
+            0.7298
+          ],
+          "substring_match": [
+            0.4631,
+            0.7298
+          ],
+          "token_f1": [
+            0.4631,
+            0.7298
+          ],
+          "active_kv_tokens": [
+            192.0,
+            192.0
+          ],
+          "eviction_eager_ms": [
+            0.0,
+            0.0741
+          ],
+          "sdpa_inference_ms": [
+            384.9199,
+            454.0067
+          ]
+        },
+        "extracted_em": 0.6042,
+        "substring_match": 0.6042,
+        "token_f1": 0.6042,
+        "active_kv_tokens": 192.0,
+        "eviction_eager_ms": 0.0,
+        "sdpa_inference_ms": 418.0206,
+        "wikitext_ppl": 26.3279,
+        "sdpa_inference_peak_vram_mb": 5102.88,
+        "by_task": {
+          "s_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.8064,
+                1.0
+              ],
+              "substring_match": [
+                0.8064,
+                1.0
+              ],
+              "token_f1": [
+                0.8064,
+                1.0
+              ],
+              "active_kv_tokens": [
+                192.0,
+                192.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                392.1858,
+                396.7854
+              ]
+            },
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 394.2891
+          },
+          "mk_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.3318,
+                0.769
+              ],
+              "substring_match": [
+                0.3318,
+                0.769
+              ],
+              "token_f1": [
+                0.3318,
+                0.769
+              ],
+              "active_kv_tokens": [
+                192.0,
+                192.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                394.8001,
+                398.2918
+              ]
+            },
+            "extracted_em": 0.5625,
+            "substring_match": 0.5625,
+            "token_f1": 0.5625,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 396.5126
+          },
+          "vt": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.1018,
+                0.495
+              ],
+              "substring_match": [
+                0.1018,
+                0.495
+              ],
+              "token_f1": [
+                0.1018,
+                0.495
+              ],
+              "active_kv_tokens": [
+                192.0,
+                192.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                363.3871,
+                565.3685
+              ]
+            },
+            "extracted_em": 0.25,
+            "substring_match": 0.25,
+            "token_f1": 0.25,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 463.26
+          }
+        },
+        "episodes": [
+          {
+            "episode_idx": 0,
+            "task": "s_niah",
+            "gold": "9448775",
+            "pred": "9448775",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 396.119
+          },
+          {
+            "episode_idx": 1,
+            "task": "s_niah",
+            "gold": "3863469",
+            "pred": "3863469",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 394.33
+          },
+          {
+            "episode_idx": 2,
+            "task": "s_niah",
+            "gold": "9940303",
+            "pred": "9940303",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 397.042
+          },
+          {
+            "episode_idx": 3,
+            "task": "s_niah",
+            "gold": "9371381",
+            "pred": "9371381",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 393.177
+          },
+          {
+            "episode_idx": 4,
+            "task": "s_niah",
+            "gold": "1273779",
+            "pred": "1273779",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 384.791
+          },
+          {
+            "episode_idx": 5,
+            "task": "s_niah",
+            "gold": "2992611",
+            "pred": "2992611",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 394.984
+          },
+          {
+            "episode_idx": 6,
+            "task": "s_niah",
+            "gold": "1853490",
+            "pred": "1853490",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 391.713
+          },
+          {
+            "episode_idx": 7,
+            "task": "s_niah",
+            "gold": "6656412",
+            "pred": "6656412",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 394.572
+          },
+          {
+            "episode_idx": 8,
+            "task": "s_niah",
+            "gold": "7477292",
+            "pred": "7477292",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 391.316
+          },
+          {
+            "episode_idx": 9,
+            "task": "s_niah",
+            "gold": "4979565",
+            "pred": "4979565",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 389.619
+          },
+          {
+            "episode_idx": 10,
+            "task": "s_niah",
+            "gold": "2266875",
+            "pred": "2266875",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 390.753
+          },
+          {
+            "episode_idx": 11,
+            "task": "s_niah",
+            "gold": "4750488",
+            "pred": "4750488",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 391.909
+          },
+          {
+            "episode_idx": 12,
+            "task": "s_niah",
+            "gold": "7428627",
+            "pred": "7428627",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 394.54
+          },
+          {
+            "episode_idx": 13,
+            "task": "s_niah",
+            "gold": "9060761",
+            "pred": "9060761",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 401.012
+          },
+          {
+            "episode_idx": 14,
+            "task": "s_niah",
+            "gold": "1891777",
+            "pred": "1891777",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 405.698
+          },
+          {
+            "episode_idx": 15,
+            "task": "s_niah",
+            "gold": "8761489",
+            "pred": "8761489",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 397.05
+          },
+          {
+            "episode_idx": 16,
+            "task": "mk_niah",
+            "gold": "7041466",
+            "pred": "7041466",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 396.022
+          },
+          {
+            "episode_idx": 17,
+            "task": "mk_niah",
+            "gold": "9918939",
+            "pred": "9265951",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 395.909
+          },
+          {
+            "episode_idx": 18,
+            "task": "mk_niah",
+            "gold": "6826740",
+            "pred": "6826740",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 392.338
+          },
+          {
+            "episode_idx": 19,
+            "task": "mk_niah",
+            "gold": "4711016",
+            "pred": "4711016",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 395.616
+          },
+          {
+            "episode_idx": 20,
+            "task": "mk_niah",
+            "gold": "3496352",
+            "pred": "3496352",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 394.794
+          },
+          {
+            "episode_idx": 21,
+            "task": "mk_niah",
+            "gold": "4333064",
+            "pred": "3931235",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 391.986
+          },
+          {
+            "episode_idx": 22,
+            "task": "mk_niah",
+            "gold": "3451876",
+            "pred": "3451876",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 393.44
+          },
+          {
+            "episode_idx": 23,
+            "task": "mk_niah",
+            "gold": "1958378",
+            "pred": "1958378",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 404.186
+          },
+          {
+            "episode_idx": 24,
+            "task": "mk_niah",
+            "gold": "3815241",
+            "pred": "7239293",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 396.846
+          },
+          {
+            "episode_idx": 25,
+            "task": "mk_niah",
+            "gold": "8267787",
+            "pred": "8267787",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 394.221
+          },
+          {
+            "episode_idx": 26,
+            "task": "mk_niah",
+            "gold": "6135517",
+            "pred": "6135517",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 400.382
+          },
+          {
+            "episode_idx": 27,
+            "task": "mk_niah",
+            "gold": "5599040",
+            "pred": "5599040",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 397.056
+          },
+          {
+            "episode_idx": 28,
+            "task": "mk_niah",
+            "gold": "7568432",
+            "pred": "2269356",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 392.156
+          },
+          {
+            "episode_idx": 29,
+            "task": "mk_niah",
+            "gold": "8084118",
+            "pred": "6811997",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 398.045
+          },
+          {
+            "episode_idx": 30,
+            "task": "mk_niah",
+            "gold": "2111608",
+            "pred": "6461087",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 397.796
+          },
+          {
+            "episode_idx": 31,
+            "task": "mk_niah",
+            "gold": "9401987",
+            "pred": "1030372",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 403.409
+          },
+          {
+            "episode_idx": 32,
+            "task": "vt",
+            "gold": "27560",
+            "pred": "378",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 242.711
+          },
+          {
+            "episode_idx": 33,
+            "task": "vt",
+            "gold": "79253",
+            "pred": "The numeric value assigned to VAR_X1 is 53935.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 759.084
+          },
+          {
+            "episode_idx": 34,
+            "task": "vt",
+            "gold": "96856",
+            "pred": "18006",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 308.565
+          },
+          {
+            "episode_idx": 35,
+            "task": "vt",
+            "gold": "81296",
+            "pred": "The numeric value assigned to VAR_Z3 is 20618.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 765.267
+          },
+          {
+            "episode_idx": 36,
+            "task": "vt",
+            "gold": "60909",
+            "pred": "37929",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 306.073
+          },
+          {
+            "episode_idx": 37,
+            "task": "vt",
+            "gold": "89343",
+            "pred": "89343",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 313.46
+          },
+          {
+            "episode_idx": 38,
+            "task": "vt",
+            "gold": "35132",
+            "pred": "35132",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 309.449
+          },
+          {
+            "episode_idx": 39,
+            "task": "vt",
+            "gold": "70086",
+            "pred": "986",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 230.53
+          },
+          {
+            "episode_idx": 40,
+            "task": "vt",
+            "gold": "67117",
+            "pred": "100",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 236.037
+          },
+          {
+            "episode_idx": 41,
+            "task": "vt",
+            "gold": "53304",
+            "pred": "The numeric value assigned to VAR_T9 is 386.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 668.759
+          },
+          {
+            "episode_idx": 42,
+            "task": "vt",
+            "gold": "80562",
+            "pred": "The numeric value assigned to VAR_Z0 is 30.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 637.036
+          },
+          {
+            "episode_idx": 43,
+            "task": "vt",
+            "gold": "39098",
+            "pred": "39098",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 312.008
+          },
+          {
+            "episode_idx": 44,
+            "task": "vt",
+            "gold": "55908",
+            "pred": "The numeric value assigned to VAR_S2 is 15.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 642.871
+          },
+          {
+            "episode_idx": 45,
+            "task": "vt",
+            "gold": "98463",
+            "pred": "The numeric value assigned to VAR_T3 is 966.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 677.039
+          },
+          {
+            "episode_idx": 46,
+            "task": "vt",
+            "gold": "24008",
+            "pred": "The numeric value assigned to VAR_T4 is 224.",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 685.53
+          },
+          {
+            "episode_idx": 47,
+            "task": "vt",
+            "gold": "14674",
+            "pred": "14674",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 192.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 317.741
+          }
+        ]
+      },
+      "lslc_full": {
+        "num_episodes": 48,
+        "ci95": {
+          "extracted_em": [
+            0.3833,
+            0.6553
+          ],
+          "substring_match": [
+            0.3833,
+            0.6553
+          ],
+          "token_f1": [
+            0.3833,
+            0.6553
+          ],
+          "active_kv_tokens": [
+            306.0,
+            306.0
+          ],
+          "eviction_eager_ms": [
+            0.0,
+            0.0741
+          ],
+          "sdpa_inference_ms": [
+            331.0196,
+            373.2628
+          ]
+        },
+        "extracted_em": 0.5208,
+        "substring_match": 0.5208,
+        "token_f1": 0.5208,
+        "active_kv_tokens": 306.0,
+        "eviction_eager_ms": 0.0,
+        "sdpa_inference_ms": 353.751,
+        "wikitext_ppl": 49.196,
+        "sdpa_inference_peak_vram_mb": 5181.86,
+        "by_task": {
+          "s_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.8064,
+                1.0
+              ],
+              "substring_match": [
+                0.8064,
+                1.0
+              ],
+              "token_f1": [
+                0.8064,
+                1.0
+              ],
+              "active_kv_tokens": [
+                306.0,
+                306.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                392.6432,
+                401.1904
+              ]
+            },
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 396.7239
+          },
+          "mk_niah": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.28,
+                0.72
+              ],
+              "substring_match": [
+                0.28,
+                0.72
+              ],
+              "token_f1": [
+                0.28,
+                0.72
+              ],
+              "active_kv_tokens": [
+                306.0,
+                306.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                394.8573,
+                400.5631
+              ]
+            },
+            "extracted_em": 0.5,
+            "substring_match": 0.5,
+            "token_f1": 0.5,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 397.7643
+          },
+          "vt": {
+            "num_episodes": 16,
+            "ci95": {
+              "extracted_em": [
+                0.0111,
+                0.2833
+              ],
+              "substring_match": [
+                0.0111,
+                0.2833
+              ],
+              "token_f1": [
+                0.0111,
+                0.2833
+              ],
+              "active_kv_tokens": [
+                306.0,
+                306.0
+              ],
+              "eviction_eager_ms": [
+                0.0,
+                0.1936
+              ],
+              "sdpa_inference_ms": [
+                240.0635,
+                289.2936
+              ]
+            },
+            "extracted_em": 0.0625,
+            "substring_match": 0.0625,
+            "token_f1": 0.0625,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 266.7649
+          }
+        },
+        "episodes": [
+          {
+            "episode_idx": 0,
+            "task": "s_niah",
+            "gold": "9448775",
+            "pred": "9448775",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 398.777
+          },
+          {
+            "episode_idx": 1,
+            "task": "s_niah",
+            "gold": "3863469",
+            "pred": "3863469",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 390.415
+          },
+          {
+            "episode_idx": 2,
+            "task": "s_niah",
+            "gold": "9940303",
+            "pred": "9940303",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 389.787
+          },
+          {
+            "episode_idx": 3,
+            "task": "s_niah",
+            "gold": "9371381",
+            "pred": "9371381",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 390.349
+          },
+          {
+            "episode_idx": 4,
+            "task": "s_niah",
+            "gold": "1273779",
+            "pred": "1273779",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 396.927
+          },
+          {
+            "episode_idx": 5,
+            "task": "s_niah",
+            "gold": "2992611",
+            "pred": "2992611",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 395.006
+          },
+          {
+            "episode_idx": 6,
+            "task": "s_niah",
+            "gold": "1853490",
+            "pred": "1853490",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 388.005
+          },
+          {
+            "episode_idx": 7,
+            "task": "s_niah",
+            "gold": "6656412",
+            "pred": "6656412",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 398.04
+          },
+          {
+            "episode_idx": 8,
+            "task": "s_niah",
+            "gold": "7477292",
+            "pred": "7477292",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 400.536
+          },
+          {
+            "episode_idx": 9,
+            "task": "s_niah",
+            "gold": "4979565",
+            "pred": "4979565",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 388.8
+          },
+          {
+            "episode_idx": 10,
+            "task": "s_niah",
+            "gold": "2266875",
+            "pred": "2266875",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 388.902
+          },
+          {
+            "episode_idx": 11,
+            "task": "s_niah",
+            "gold": "4750488",
+            "pred": "4750488",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 410.177
+          },
+          {
+            "episode_idx": 12,
+            "task": "s_niah",
+            "gold": "7428627",
+            "pred": "7428627",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 395.588
+          },
+          {
+            "episode_idx": 13,
+            "task": "s_niah",
+            "gold": "9060761",
+            "pred": "9060761",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 420.258
+          },
+          {
+            "episode_idx": 14,
+            "task": "s_niah",
+            "gold": "1891777",
+            "pred": "1891777",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 398.97
+          },
+          {
+            "episode_idx": 15,
+            "task": "s_niah",
+            "gold": "8761489",
+            "pred": "8761489",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 397.045
+          },
+          {
+            "episode_idx": 16,
+            "task": "mk_niah",
+            "gold": "7041466",
+            "pred": "2256923",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 395.914
+          },
+          {
+            "episode_idx": 17,
+            "task": "mk_niah",
+            "gold": "9918939",
+            "pred": "9417482",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 406.211
+          },
+          {
+            "episode_idx": 18,
+            "task": "mk_niah",
+            "gold": "6826740",
+            "pred": "6826740",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 405.553
+          },
+          {
+            "episode_idx": 19,
+            "task": "mk_niah",
+            "gold": "4711016",
+            "pred": "4711016",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 392.228
+          },
+          {
+            "episode_idx": 20,
+            "task": "mk_niah",
+            "gold": "3496352",
+            "pred": "3496352",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 390.941
+          },
+          {
+            "episode_idx": 21,
+            "task": "mk_niah",
+            "gold": "4333064",
+            "pred": "3678631",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 399.223
+          },
+          {
+            "episode_idx": 22,
+            "task": "mk_niah",
+            "gold": "3451876",
+            "pred": "3451876",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 395.43
+          },
+          {
+            "episode_idx": 23,
+            "task": "mk_niah",
+            "gold": "1958378",
+            "pred": "7024295",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 405.555
+          },
+          {
+            "episode_idx": 24,
+            "task": "mk_niah",
+            "gold": "3815241",
+            "pred": "7475310",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 394.92
+          },
+          {
+            "episode_idx": 25,
+            "task": "mk_niah",
+            "gold": "8267787",
+            "pred": "8267787",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 398.544
+          },
+          {
+            "episode_idx": 26,
+            "task": "mk_niah",
+            "gold": "6135517",
+            "pred": "6135517",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 407.114
+          },
+          {
+            "episode_idx": 27,
+            "task": "mk_niah",
+            "gold": "5599040",
+            "pred": "5599040",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 399.49
+          },
+          {
+            "episode_idx": 28,
+            "task": "mk_niah",
+            "gold": "7568432",
+            "pred": "7568432",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 391.276
+          },
+          {
+            "episode_idx": 29,
+            "task": "mk_niah",
+            "gold": "8084118",
+            "pred": "6811997",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 393.117
+          },
+          {
+            "episode_idx": 30,
+            "task": "mk_niah",
+            "gold": "2111608",
+            "pred": "6461087",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 389.041
+          },
+          {
+            "episode_idx": 31,
+            "task": "mk_niah",
+            "gold": "9401987",
+            "pred": "7378599",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 399.671
+          },
+          {
+            "episode_idx": 32,
+            "task": "vt",
+            "gold": "27560",
+            "pred": "25266",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 312.34
+          },
+          {
+            "episode_idx": 33,
+            "task": "vt",
+            "gold": "79253",
+            "pred": "000",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 229.046
+          },
+          {
+            "episode_idx": 34,
+            "task": "vt",
+            "gold": "96856",
+            "pred": "18006",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 309.671
+          },
+          {
+            "episode_idx": 35,
+            "task": "vt",
+            "gold": "81296",
+            "pred": "0985",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 274.893
+          },
+          {
+            "episode_idx": 36,
+            "task": "vt",
+            "gold": "60909",
+            "pred": "926",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 233.419
+          },
+          {
+            "episode_idx": 37,
+            "task": "vt",
+            "gold": "89343",
+            "pred": "95269",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 325.175
+          },
+          {
+            "episode_idx": 38,
+            "task": "vt",
+            "gold": "35132",
+            "pred": "25164",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 319.644
+          },
+          {
+            "episode_idx": 39,
+            "task": "vt",
+            "gold": "70086",
+            "pred": "986",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 230.311
+          },
+          {
+            "episode_idx": 40,
+            "task": "vt",
+            "gold": "67117",
+            "pred": "U8",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 186.451
+          },
+          {
+            "episode_idx": 41,
+            "task": "vt",
+            "gold": "53304",
+            "pred": "386",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 226.153
+          },
+          {
+            "episode_idx": 42,
+            "task": "vt",
+            "gold": "80562",
+            "pred": "375110",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 347.78
+          },
+          {
+            "episode_idx": 43,
+            "task": "vt",
+            "gold": "39098",
+            "pred": "39098",
+            "extracted_em": 1.0,
+            "substring_match": 1.0,
+            "token_f1": 1.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 309.234
+          },
+          {
+            "episode_idx": 44,
+            "task": "vt",
+            "gold": "55908",
+            "pred": "1871",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 272.303
+          },
+          {
+            "episode_idx": 45,
+            "task": "vt",
+            "gold": "98463",
+            "pred": "1866",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 270.02
+          },
+          {
+            "episode_idx": 46,
+            "task": "vt",
+            "gold": "24008",
+            "pred": "224",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 230.612
+          },
+          {
+            "episode_idx": 47,
+            "task": "vt",
+            "gold": "14674",
+            "pred": "55",
+            "extracted_em": 0.0,
+            "substring_match": 0.0,
+            "token_f1": 0.0,
+            "active_kv_tokens": 306.0,
+            "eviction_eager_ms": 0.0,
+            "sdpa_inference_ms": 191.186
+          }
+        ]
+      }
+    },
+    "pairwise_extracted_em": {
+      "lslc_full__vs__standalone_discrete_span_bank": {
+        "n": 48,
+        "mean_a": 0.5208,
+        "mean_b": 0.6042,
+        "mean_diff": -0.0833,
+        "paired_diff_ci95": [
+          -0.1875,
+          0.0
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 24,
+          "n10_a_only": 1,
+          "n01_b_only": 5,
+          "n00_both_wrong": 18,
+          "discordant": 6,
+          "diff_a_minus_b": -0.0833,
+          "p_value_exact": 0.21875
+        }
+      },
+      "lslc_full__vs__query_aware_snapkv": {
+        "n": 48,
+        "mean_a": 0.5208,
+        "mean_b": 0.3542,
+        "mean_diff": 0.1667,
+        "paired_diff_ci95": [
+          0.0208,
+          0.3125
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 14,
+          "n10_a_only": 11,
+          "n01_b_only": 3,
+          "n00_both_wrong": 20,
+          "discordant": 14,
+          "diff_a_minus_b": 0.1667,
+          "p_value_exact": 0.057373
+        }
+      },
+      "standalone_discrete_span_bank__vs__query_aware_snapkv": {
+        "n": 48,
+        "mean_a": 0.6042,
+        "mean_b": 0.3542,
+        "mean_diff": 0.25,
+        "paired_diff_ci95": [
+          0.1042,
+          0.3958
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 15,
+          "n10_a_only": 14,
+          "n01_b_only": 2,
+          "n00_both_wrong": 17,
+          "discordant": 16,
+          "diff_a_minus_b": 0.25,
+          "p_value_exact": 0.004181
+        }
+      },
+      "standalone_discrete_span_bank__vs__query_agnostic_h2o": {
+        "n": 48,
+        "mean_a": 0.6042,
+        "mean_b": 0.0208,
+        "mean_diff": 0.5833,
+        "paired_diff_ci95": [
+          0.4375,
+          0.7292
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 1,
+          "n10_a_only": 28,
+          "n01_b_only": 0,
+          "n00_both_wrong": 19,
+          "discordant": 28,
+          "diff_a_minus_b": 0.5833,
+          "p_value_exact": 0.0
+        }
+      },
+      "query_aware_snapkv__vs__query_agnostic_h2o": {
+        "n": 48,
+        "mean_a": 0.3542,
+        "mean_b": 0.0208,
+        "mean_diff": 0.3333,
+        "paired_diff_ci95": [
+          0.2083,
+          0.4792
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 1,
+          "n10_a_only": 16,
+          "n01_b_only": 0,
+          "n00_both_wrong": 31,
+          "discordant": 16,
+          "diff_a_minus_b": 0.3333,
+          "p_value_exact": 3.1e-05
+        }
+      },
+      "standalone_discrete_span_bank__vs__full_kv_bf16": {
+        "n": 48,
+        "mean_a": 0.6042,
+        "mean_b": 0.7292,
+        "mean_diff": -0.125,
+        "paired_diff_ci95": [
+          -0.2708,
+          0.0208
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 25,
+          "n10_a_only": 4,
+          "n01_b_only": 10,
+          "n00_both_wrong": 9,
+          "discordant": 14,
+          "diff_a_minus_b": -0.125,
+          "p_value_exact": 0.179565
+        }
+      },
+      "lslc_full__vs__full_kv_bf16": {
+        "n": 48,
+        "mean_a": 0.5208,
+        "mean_b": 0.7292,
+        "mean_diff": -0.2083,
+        "paired_diff_ci95": [
+          -0.3333,
+          -0.0833
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 24,
+          "n10_a_only": 1,
+          "n01_b_only": 11,
+          "n00_both_wrong": 12,
+          "discordant": 12,
+          "diff_a_minus_b": -0.2083,
+          "p_value_exact": 0.006348
+        }
+      }
+    },
+    "pairwise_substring_match": {
+      "lslc_full__vs__standalone_discrete_span_bank": {
+        "n": 48,
+        "mean_a": 0.5208,
+        "mean_b": 0.6042,
+        "mean_diff": -0.0833,
+        "paired_diff_ci95": [
+          -0.1875,
+          0.0
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 24,
+          "n10_a_only": 1,
+          "n01_b_only": 5,
+          "n00_both_wrong": 18,
+          "discordant": 6,
+          "diff_a_minus_b": -0.0833,
+          "p_value_exact": 0.21875
+        }
+      },
+      "lslc_full__vs__query_aware_snapkv": {
+        "n": 48,
+        "mean_a": 0.5208,
+        "mean_b": 0.3542,
+        "mean_diff": 0.1667,
+        "paired_diff_ci95": [
+          0.0208,
+          0.3125
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 14,
+          "n10_a_only": 11,
+          "n01_b_only": 3,
+          "n00_both_wrong": 20,
+          "discordant": 14,
+          "diff_a_minus_b": 0.1667,
+          "p_value_exact": 0.057373
+        }
+      },
+      "standalone_discrete_span_bank__vs__query_aware_snapkv": {
+        "n": 48,
+        "mean_a": 0.6042,
+        "mean_b": 0.3542,
+        "mean_diff": 0.25,
+        "paired_diff_ci95": [
+          0.1042,
+          0.3958
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 15,
+          "n10_a_only": 14,
+          "n01_b_only": 2,
+          "n00_both_wrong": 17,
+          "discordant": 16,
+          "diff_a_minus_b": 0.25,
+          "p_value_exact": 0.004181
+        }
+      },
+      "standalone_discrete_span_bank__vs__query_agnostic_h2o": {
+        "n": 48,
+        "mean_a": 0.6042,
+        "mean_b": 0.0208,
+        "mean_diff": 0.5833,
+        "paired_diff_ci95": [
+          0.4375,
+          0.7292
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 1,
+          "n10_a_only": 28,
+          "n01_b_only": 0,
+          "n00_both_wrong": 19,
+          "discordant": 28,
+          "diff_a_minus_b": 0.5833,
+          "p_value_exact": 0.0
+        }
+      },
+      "query_aware_snapkv__vs__query_agnostic_h2o": {
+        "n": 48,
+        "mean_a": 0.3542,
+        "mean_b": 0.0208,
+        "mean_diff": 0.3333,
+        "paired_diff_ci95": [
+          0.2083,
+          0.4792
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 1,
+          "n10_a_only": 16,
+          "n01_b_only": 0,
+          "n00_both_wrong": 31,
+          "discordant": 16,
+          "diff_a_minus_b": 0.3333,
+          "p_value_exact": 3.1e-05
+        }
+      },
+      "standalone_discrete_span_bank__vs__full_kv_bf16": {
+        "n": 48,
+        "mean_a": 0.6042,
+        "mean_b": 0.7292,
+        "mean_diff": -0.125,
+        "paired_diff_ci95": [
+          -0.2708,
+          0.0208
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 25,
+          "n10_a_only": 4,
+          "n01_b_only": 10,
+          "n00_both_wrong": 9,
+          "discordant": 14,
+          "diff_a_minus_b": -0.125,
+          "p_value_exact": 0.179565
+        }
+      },
+      "lslc_full__vs__full_kv_bf16": {
+        "n": 48,
+        "mean_a": 0.5208,
+        "mean_b": 0.7292,
+        "mean_diff": -0.2083,
+        "paired_diff_ci95": [
+          -0.3333,
+          -0.0833
+        ],
+        "mcnemar": {
+          "n": 48,
+          "n11_both_correct": 24,
+          "n10_a_only": 1,
+          "n01_b_only": 11,
+          "n00_both_wrong": 12,
+          "discordant": 12,
+          "diff_a_minus_b": -0.2083,
+          "p_value_exact": 0.006348
+        }
+      }
+    }
+  },
+  "longmemeval_discrete_probe": null,
+  "ablation_edit_masked_old": null
+}
